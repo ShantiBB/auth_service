@@ -1,0 +1,14 @@
+services:
+  postgres:
+    image: "postgres:17.0"
+    container_name: "postgres"
+    volumes:
+      - "./volume/postgres:/data"
+    environment:
+      POSTGRES_DATA: "/data"
+      POSTGRES_USER: "$POSTGRES_USER"
+      POSTGRES_PASSWORD: "$POSTGRES_PASSWORD"
+      POSTGRES_DB: "$POSTGRES_DB"
+    ports:
+      - "5432:5432"
+    restart: unless-stopped
