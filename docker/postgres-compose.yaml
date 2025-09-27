@@ -5,7 +5,7 @@ services:
     volumes:
       - "./volume/postgres:/data"
     environment:
-      POSTGRES_DATA: "/data"
+      PGDATA: "/data"
       POSTGRES_USER: "$POSTGRES_USER"
       POSTGRES_PASSWORD: "$POSTGRES_PASSWORD"
       POSTGRES_DB: "$POSTGRES_DB"
