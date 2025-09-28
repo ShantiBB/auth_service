@@ -1,0 +1,9 @@
+server:
+  host: "localhost"
+  port: 8081
+postgres:
+  host: "localhost"
+  port: 5432
+  user: "sentinel"
+  password: "1221"
+  db: "auth"
