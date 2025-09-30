@@ -2,7 +2,7 @@ package handler
 
 import (
 	"auth_service/api/http/schemas"
-	"auth_service/internal/entity"
+	"auth_service/internal/domain/models"
 	"auth_service/internal/service"
 )
 
@@ -16,8 +16,8 @@ func New(userService service.UserService) *Handler {
 	}
 }
 
-func (h *Handler) UserCreateRequestToEntity(req *schemas.UserCreateRequest, hash string) *entity.UserCreate {
-	return &entity.UserCreate{
+func (h *Handler) UserCreateRequestToEntity(req *schemas.UserCreateRequest, hash string) *models.UserCreate {
+	return &models.UserCreate{
 		Username:    req.Username,
 		FirstName:   req.FirstName,
 		LastName:    req.LastName,
@@ -27,7 +27,7 @@ func (h *Handler) UserCreateRequestToEntity(req *schemas.UserCreateRequest, hash
 	}
 }
 
-func (h *Handler) UserEntityToResponse(user *entity.User) *schemas.UserResponse {
+func (h *Handler) UserEntityToResponse(user *models.User) *schemas.UserResponse {
 	return &schemas.UserResponse{
 		ID:          user.ID,
 		Username:    user.Username,
