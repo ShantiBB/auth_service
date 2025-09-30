@@ -1,21 +1,21 @@
 package models
 
+import "time"
+
 type UserCreate struct {
-	Username    string `db:"username"`
-	FirstName   string `db:"first_name"`
-	LastName    string `db:"last_name"`
-	Email       string `db:"email"`
-	Description string `db:"description"`
-	Password    string `db:"password"`
+	Username string
+	Email    string
+	Password string
 }
 
 type User struct {
-	ID          int64  `db:"id"`
-	Username    string `db:"username"`
-	FirstName   string `db:"first_name"`
-	LastName    string `db:"last_name"`
-	Email       string `db:"email"`
-	Description string `db:"description"`
+	ID        int64
+	Username  string
+	Email     string
+	Role      string
+	IsActive  bool
+	CreatedAt time.Time
+	UpdatedAt time.Time
 }
 
 type UserUpdatePassword struct {
@@ -26,10 +26,7 @@ type UserUpdatePassword struct {
 
 func (u UserCreate) ToUserRead() User {
 	return User{
-		Username:    u.Username,
-		FirstName:   u.FirstName,
-		LastName:    u.LastName,
-		Email:       u.Email,
-		Description: u.Description,
+		Username: u.Username,
+		Email:    u.Email,
 	}
 }
