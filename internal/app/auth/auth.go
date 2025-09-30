@@ -6,10 +6,10 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"auth_service/api/http/handler"
-	"auth_service/api/http/router"
 	"auth_service/internal/config"
 	"auth_service/internal/database/postgres"
+	"auth_service/internal/http/handler"
+	"auth_service/internal/http/router"
 	"auth_service/internal/service"
 )
 
@@ -25,10 +25,9 @@ func (app *App) MustLoad() {
 
 	userService := service.New(userRepo)
 	userHandler := handler.New(userService)
-	routerHandlers := router.NewHandlers(userHandler)
 
 	r := chi.NewRouter()
-	router.New(r, routerHandlers)
+	router.New(r, userHandler)
 
 	server := fmt.Sprintf("%s:%d", app.Config.Server.Host, app.Config.Server.Port)
 	fmt.Printf("Starting server on %s\n", server)

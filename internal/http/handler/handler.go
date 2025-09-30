@@ -1,22 +1,23 @@
 package handler
 
 import (
-	"auth_service/api/http/schemas"
 	"auth_service/internal/domain/models"
-	"auth_service/internal/service"
+	schemas2 "auth_service/internal/http/schemas"
 )
 
+type Service interface {
+	UserService
+}
+
 type Handler struct {
-	UserService service.UserService
+	svc Service
 }
 
-func New(userService service.UserService) *Handler {
-	return &Handler{
-		UserService: userService,
-	}
+func New(svc Service) *Handler {
+	return &Handler{svc: svc}
 }
 
-func (h *Handler) UserCreateRequestToEntity(req *schemas.UserCreateRequest, hash string) *models.UserCreate {
+func (h *Handler) UserCreateRequestToEntity(req *schemas2.UserCreateRequest, hash string) *models.UserCreate {
 	return &models.UserCreate{
 		Username:    req.Username,
 		FirstName:   req.FirstName,
@@ -27,8 +28,8 @@ func (h *Handler) UserCreateRequestToEntity(req *schemas.UserCreateRequest, hash
 	}
 }
 
-func (h *Handler) UserEntityToResponse(user *models.User) *schemas.UserResponse {
-	return &schemas.UserResponse{
+func (h *Handler) UserEntityToResponse(user *models.User) *schemas2.UserResponse {
+	return &schemas2.UserResponse{
 		ID:          user.ID,
 		Username:    user.Username,
 		FirstName:   user.FirstName,
