@@ -24,8 +24,8 @@ type UserUpdatePassword struct {
 	NewPassword string
 }
 
-func (u UserCreate) ToUserRead() *User {
-	return &User{
+func (u UserCreate) ToUserRead() User {
+	return User{
 		Username:    u.Username,
 		FirstName:   u.FirstName,
 		LastName:    u.LastName,
