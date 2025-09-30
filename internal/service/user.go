@@ -7,15 +7,17 @@ import (
 )
 
 type UserRepository interface {
-	CreateUser(ctx context.Context, user models.UserCreate) (*models.User, error)
-	GetUser(ctx context.Context, id int64) (*models.User, error)
-	GetAllUsers(ctx context.Context) ([]models.User, error)
-	UpdateUser(ctx context.Context, user models.User) error
-	DeleteUser(ctx context.Context, id int64) error
+	UserCreate(ctx context.Context, user models.UserCreate) (*models.User, error)
+	UserGetByID(ctx context.Context, id int64) (*models.User, error)
+	UserGetByUsername(ctx context.Context, username string) (*models.User, error)
+	UserGetByEmail(ctx context.Context, email string) (*models.User, error)
+	UserList(ctx context.Context) ([]models.User, error)
+	UserUpdateByID(ctx context.Context, user *models.User) error
+	UserDeleteByID(ctx context.Context, id int64) error
 }
 
-func (s *Service) CreateUser(ctx context.Context, user models.UserCreate) (*models.User, error) {
-	newUser, err := s.repo.CreateUser(ctx, user)
+func (s *Service) UserCreate(ctx context.Context, user models.UserCreate) (*models.User, error) {
+	newUser, err := s.repo.UserCreate(ctx, user)
 	if err != nil {
 		return nil, err
 	}
@@ -23,8 +25,8 @@ func (s *Service) CreateUser(ctx context.Context, user models.UserCreate) (*mode
 	return newUser, nil
 }
 
-func (s *Service) GetUser(ctx context.Context, id int64) (*models.User, error) {
-	user, err := s.repo.GetUser(ctx, id)
+func (s *Service) UserGetByID(ctx context.Context, id int64) (*models.User, error) {
+	user, err := s.repo.UserGetByID(ctx, id)
 	if err != nil {
 		return nil, err
 	}
@@ -32,8 +34,26 @@ func (s *Service) GetUser(ctx context.Context, id int64) (*models.User, error) {
 	return user, nil
 }
 
-func (s *Service) GetAllUsers(ctx context.Context) ([]models.User, error) {
-	users, err := s.repo.GetAllUsers(ctx)
+func (s *Service) UserGetByUsername(ctx context.Context, username string) (*models.User, error) {
+	user, err := s.repo.UserGetByUsername(ctx, username)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (s *Service) UserGetByEmail(ctx context.Context, email string) (*models.User, error) {
+	user, err := s.repo.UserGetByEmail(ctx, email)
+	if err != nil {
+		return nil, err
+	}
+
+	return user, nil
+}
+
+func (s *Service) UserList(ctx context.Context) ([]models.User, error) {
+	users, err := s.repo.UserList(ctx)
 	if err != nil {
 		return nil, err
 	}
@@ -41,12 +61,12 @@ func (s *Service) GetAllUsers(ctx context.Context) ([]models.User, error) {
 	return users, nil
 }
 
-func (s *Service) UpdateUser(ctx context.Context, user models.User) (*models.User, error) {
-	if err := s.repo.UpdateUser(ctx, user); err != nil {
+func (s *Service) UserUpdateByID(ctx context.Context, user *models.User) (*models.User, error) {
+	if err := s.repo.UserUpdateByID(ctx, user); err != nil {
 		return nil, err
 	}
 
-	updatedUser, err := s.repo.GetUser(ctx, user.ID)
+	updatedUser, err := s.repo.UserGetByID(ctx, user.ID)
 	if err != nil {
 		return nil, err
 	}
@@ -54,8 +74,8 @@ func (s *Service) UpdateUser(ctx context.Context, user models.User) (*models.Use
 	return updatedUser, nil
 }
 
-func (s *Service) DeleteUser(ctx context.Context, id int64) error {
-	err := s.repo.DeleteUser(ctx, id)
+func (s *Service) UserDeleteByID(ctx context.Context, id int64) error {
+	err := s.repo.UserDeleteByID(ctx, id)
 	if err != nil {
 		return err
 	}

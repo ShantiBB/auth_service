@@ -2,7 +2,7 @@ package handler
 
 import (
 	"auth_service/internal/domain/models"
-	schemas2 "auth_service/internal/http/schemas"
+	"auth_service/internal/http/schemas"
 )
 
 type Service interface {
@@ -17,24 +17,30 @@ func New(svc Service) *Handler {
 	return &Handler{svc: svc}
 }
 
-func (h *Handler) UserCreateRequestToEntity(req *schemas2.UserCreateRequest, hash string) *models.UserCreate {
+func (h *Handler) UserCreateRequestToEntity(req *schemas.UserCreateRequest, hash string) *models.UserCreate {
 	return &models.UserCreate{
-		Username:    req.Username,
-		FirstName:   req.FirstName,
-		LastName:    req.LastName,
-		Email:       req.Email,
-		Description: req.Description,
-		Password:    hash,
+		Username: req.Username,
+		Email:    req.Email,
+		Password: hash,
 	}
 }
 
-func (h *Handler) UserEntityToResponse(user *models.User) *schemas2.UserResponse {
-	return &schemas2.UserResponse{
-		ID:          user.ID,
-		Username:    user.Username,
-		FirstName:   user.FirstName,
-		LastName:    user.LastName,
-		Email:       user.Email,
-		Description: user.Description,
+func (h *Handler) UserUpdateRequestToEntity(req *schemas.UserUpdateRequest, id int64) *models.User {
+	return &models.User{
+		ID:       id,
+		Username: req.Username,
+		Email:    req.Email,
+	}
+}
+
+func (h *Handler) UserEntityToResponse(user *models.User) *schemas.UserResponse {
+	return &schemas.UserResponse{
+		ID:        user.ID,
+		Username:  user.Username,
+		Email:     user.Email,
+		Role:      user.Role,
+		IsActive:  user.IsActive,
+		CreatedAt: user.CreatedAt,
+		UpdatedAt: user.UpdatedAt,
 	}
 }

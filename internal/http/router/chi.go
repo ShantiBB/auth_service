@@ -14,8 +14,11 @@ func New(r chi.Router, h *handler.Handler) {
 	r.Use(middleware.Recoverer)
 
 	r.Route("/users", func(r chi.Router) {
-		r.Post("/", h.CreateUser)
-		r.Get("/{id}", h.GetUser)
-		r.Get("/", h.GetAllUsers)
+		r.Post("/", h.UserCreate)
+		r.Get("/", h.UserList)
+		r.Get("/search", h.UserGetByUsernameOrEmail)
+		r.Get("/{id}", h.UserGetByID)
+		r.Put("/{id}", h.UserUpdateByID)
+		r.Delete("/{id}", h.UserDeleteByID)
 	})
 }

@@ -1,5 +1,5 @@
 run:
-	go run ./main.go
+	go run ./cmd/auth/main.go
 
 postgres-run:
 	docker compose --env-file .env -f docker/postgres-compose.yaml up -d
