@@ -7,3 +7,4 @@ postgres:
   user: "sentinel"
   password: "1221"
   db: "auth"
+  sslmode: "disable"
