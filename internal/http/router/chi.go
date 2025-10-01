@@ -16,9 +16,13 @@ func New(r chi.Router, h *handler.Handler) {
 	r.Route("/users", func(r chi.Router) {
 		r.Post("/", h.UserCreate)
 		r.Get("/", h.UserList)
-		r.Get("/search", h.UserGetByUsernameOrEmail)
 		r.Get("/{id}", h.UserGetByID)
 		r.Put("/{id}", h.UserUpdateByID)
 		r.Delete("/{id}", h.UserDeleteByID)
+	})
+	r.Route("/auth", func(r chi.Router) {
+		r.Post("/register", h.RegisterByEmail)
+		r.Post("/refresh", h.RefreshToken)
+		r.Post("/login", h.LoginByEmail)
 	})
 }

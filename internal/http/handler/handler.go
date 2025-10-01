@@ -1,23 +1,30 @@
 package handler
 
 import (
+	"auth_service/internal/config"
 	"auth_service/internal/domain/models"
-	"auth_service/internal/http/schemas"
+	"auth_service/internal/http/lib/schemas/request"
+	"auth_service/internal/http/lib/schemas/response"
 )
 
 type Service interface {
 	UserService
+	TokenService
 }
 
 type Handler struct {
 	svc Service
+	cfg *config.Config
 }
 
-func New(svc Service) *Handler {
-	return &Handler{svc: svc}
+func New(svc Service, cfg *config.Config) *Handler {
+	return &Handler{
+		svc: svc,
+		cfg: cfg,
+	}
 }
 
-func (h *Handler) UserCreateRequestToEntity(req *schemas.UserCreateRequest, hash string) *models.UserCreate {
+func (h *Handler) UserCreateRequestToEntity(req *request.UserCreateRequest, hash string) *models.UserCreate {
 	return &models.UserCreate{
 		Username: req.Username,
 		Email:    req.Email,
@@ -25,7 +32,7 @@ func (h *Handler) UserCreateRequestToEntity(req *schemas.UserCreateRequest, hash
 	}
 }
 
-func (h *Handler) UserUpdateRequestToEntity(req *schemas.UserUpdateRequest, id int64) *models.User {
+func (h *Handler) UserUpdateRequestToEntity(req *request.UserUpdateRequest, id int64) *models.User {
 	return &models.User{
 		ID:       id,
 		Username: req.Username,
@@ -33,8 +40,8 @@ func (h *Handler) UserUpdateRequestToEntity(req *schemas.UserUpdateRequest, id i
 	}
 }
 
-func (h *Handler) UserEntityToResponse(user *models.User) *schemas.UserResponse {
-	return &schemas.UserResponse{
+func (h *Handler) UserEntityToResponse(user *models.User) *response.UserResponse {
+	return &response.UserResponse{
 		ID:        user.ID,
 		Username:  user.Username,
 		Email:     user.Email,

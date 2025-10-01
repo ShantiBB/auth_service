@@ -6,19 +6,17 @@ import (
 	"strconv"
 
 	"github.com/go-chi/chi/v5"
-	"github.com/go-chi/render"
 
 	"auth_service/internal/domain/models"
-	"auth_service/internal/http/lib/validation"
-	"auth_service/internal/http/schemas"
+	"auth_service/internal/http/lib/schemas"
+	"auth_service/internal/http/lib/schemas/request"
+	"auth_service/internal/http/lib/schemas/response"
 	"auth_service/package/utils/password"
 )
 
 type UserService interface {
 	UserCreate(ctx context.Context, user models.UserCreate) (*models.User, error)
 	UserGetByID(ctx context.Context, id int64) (*models.User, error)
-	UserGetByUsername(ctx context.Context, username string) (*models.User, error)
-	UserGetByEmail(ctx context.Context, email string) (*models.User, error)
 	UserList(ctx context.Context) ([]models.User, error)
 	UserUpdateByID(ctx context.Context, user *models.User) (*models.User, error)
 	UserDeleteByID(ctx context.Context, id int64) error
@@ -26,16 +24,9 @@ type UserService interface {
 
 func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	var req schemas.UserCreateRequest
+	var req request.UserCreateRequest
 
-	if err := render.DecodeJSON(r.Body, &req); err != nil {
-		errMsg := schemas.NewErrorResponse("Invalid JSON body")
-		h.sendError(w, r, http.StatusBadRequest, errMsg)
-		return
-	}
-
-	if errResp := validation.CheckErrors(&req); errResp != nil {
-		h.sendError(w, r, http.StatusBadRequest, errResp)
+	if ok := h.ParseJSON(w, r, &req); !ok {
 		return
 	}
 
@@ -80,44 +71,6 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 	h.sendJSON(w, r, http.StatusOK, userResponse)
 }
 
-func (h *Handler) UserGetByUsernameOrEmail(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	username := r.URL.Query().Get("username")
-	email := r.URL.Query().Get("email")
-	if username != "" && email != "" {
-		errMsg := schemas.NewErrorResponse("Provide either username or email, not both")
-		h.sendError(w, r, http.StatusBadRequest, errMsg)
-		return
-	} else if username == "" && email == "" {
-		errMsg := schemas.NewErrorResponse("Username or email is required")
-		h.sendError(w, r, http.StatusBadRequest, errMsg)
-		return
-	}
-
-	var user *models.User
-	var err error
-
-	if username != "" {
-		user, err = h.svc.UserGetByUsername(ctx, username)
-		if err != nil {
-			errMsg := schemas.NewErrorResponse("Error retrieving user")
-			h.sendError(w, r, http.StatusInternalServerError, errMsg)
-			return
-		}
-	} else {
-		user, err = h.svc.UserGetByEmail(ctx, email)
-		if err != nil {
-			errMsg := schemas.NewErrorResponse("Error retrieving user")
-			h.sendError(w, r, http.StatusInternalServerError, errMsg)
-			return
-		}
-	}
-
-	userResponse := h.UserEntityToResponse(user)
-	h.sendJSON(w, r, http.StatusOK, userResponse)
-}
-
 func (h *Handler) UserList(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
@@ -128,7 +81,7 @@ func (h *Handler) UserList(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	usersResp := make([]schemas.UserResponse, 0, len(users))
+	usersResp := make([]response.UserResponse, 0, len(users))
 	for _, user := range users {
 		userResponse := h.UserEntityToResponse(&user)
 		usersResp = append(usersResp, *userResponse)
@@ -147,15 +100,8 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var req schemas.UserUpdateRequest
-	if err = render.DecodeJSON(r.Body, &req); err != nil {
-		errMsg := schemas.NewErrorResponse("Invalid JSON body")
-		h.sendError(w, r, http.StatusBadRequest, errMsg)
-		return
-	}
-
-	if errResp := validation.CheckErrors(&req); errResp != nil {
-		h.sendError(w, r, http.StatusBadRequest, errResp)
+	var req request.UserUpdateRequest
+	if ok := h.ParseJSON(w, r, &req); !ok {
 		return
 	}
 

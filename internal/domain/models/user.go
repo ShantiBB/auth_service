@@ -24,6 +24,13 @@ type UserUpdatePassword struct {
 	NewPassword string
 }
 
+type UserCredentials struct {
+	ID       int64
+	Email    string
+	Role     string
+	Password string
+}
+
 func (u UserCreate) ToUserRead() User {
 	return User{
 		Username: u.Username,

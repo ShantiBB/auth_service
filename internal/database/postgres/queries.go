@@ -1,41 +1,35 @@
 package postgres
 
-var UserCreate = `
+const UserCreate = `
     INSERT INTO users (username, email, password)
     VALUES ($1, $2, $3)
     RETURNING id, role, is_active, created_at, updated_at
 `
 
-var UserGetByID = `
+const UserGetByID = `
     SELECT username, email, role, is_active, created_at, updated_at
     FROM users 
     WHERE id = $1
 `
 
-var UserGetByUsername = `
-    SELECT id, email, role, is_active, created_at, updated_at
-    FROM users 
-    WHERE username = $1
-`
-
-var UserGetByEmail = `
-    SELECT id, username, role, is_active, created_at, updated_at
+const UserGetCredentialsByEmail = `
+    SELECT id, role, password
     FROM users 
     WHERE email = $1
 `
 
-var UserGetAll = `
+const UserGetAll = `
     SELECT id, username, email, role, is_active, created_at, updated_at
     FROM users
 `
 
-var UserUpdate = `
+const UserUpdate = `
     UPDATE users
     SET username = $1, email = $2, updated_at = CURRENT_TIMESTAMP
     WHERE id = $3
 `
 
-var UserDelete = `
+const UserDelete = `
     DELETE FROM users
     WHERE id = $1
 `

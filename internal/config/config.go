@@ -1,33 +1,46 @@
 package config
 
 import (
+	"time"
+
 	"github.com/ilyakaznacheev/cleanenv"
 )
 
 type ServerConfig struct {
-	Host string `yaml:"host"`
-	Port int    `yaml:"port"`
+	Host string `yaml:"host" env:"HOST" env-required:"true"`
+	Port int    `yaml:"port" env:"PORT" env-required:"true"`
 }
 
 type PostgresConfig struct {
-	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
-	User     string `yaml:"user"`
-	Password string `yaml:"password"`
-	DB       string `yaml:"db"`
-	SSLMode  string `yaml:"sslmode"`
+	Host     string `yaml:"host"     env:"HOST" env-required:"true"`
+	Port     int    `yaml:"port"     env:"PORT" env-required:"true"`
+	User     string `yaml:"user"     env:"USER" env-required:"true"`
+	Password string `yaml:"password" env:"PASSWORD" env-required:"true"`
+	DB       string `yaml:"db"       env:"DB" env-required:"true"`
+	SSLMode  string `yaml:"sslmode"  env:"SSLMODE" env-required:"true"`
+}
+
+type JWTConfig struct {
+	AccessSecret    string        `yaml:"access_secret"     env:"ACCESS_SECRET" env-required:"true"`
+	RefreshSecret   string        `yaml:"refresh_secret"    env:"ACCESS_SECRET" env-required:"true"`
+	AccessTokenTTL  time.Duration `yaml:"access_token_ttl"  env:"ACCESS_TOKEN_TTL" env-default:"15m"`
+	RefreshTokenTTL time.Duration `yaml:"refresh_token_ttl" env:"REFRESH_TOKEN_TTL" env-default:"7d"`
 }
 
 type Config struct {
-	Server   ServerConfig   `yaml:"server"`
-	Postgres PostgresConfig `yaml:"postgres"`
+	Server   ServerConfig   `yaml:"server" env-prefix:"SERVER_"`
+	Postgres PostgresConfig `yaml:"postgres" env-prefix:"POSTGRES_"`
+	JWT      JWTConfig      `yaml:"jwt" env-prefix:"JWT_"`
 }
 
 func New(configPath string) (*Config, error) {
 	var config Config
-	err := cleanenv.ReadConfig(configPath, &config)
-	if err != nil {
+	if err := cleanenv.ReadConfig(configPath, &config); err != nil {
 		return nil, err
+	}
+
+	if err := cleanenv.ReadEnv(&config); err != nil {
+		panic(err)
 	}
 
 	return &config, nil

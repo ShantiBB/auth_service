@@ -24,7 +24,7 @@ func (app *App) MustLoad() {
 	}
 
 	userService := service.New(userRepo)
-	userHandler := handler.New(userService)
+	userHandler := handler.New(userService, app.Config)
 
 	r := chi.NewRouter()
 	router.New(r, userHandler)

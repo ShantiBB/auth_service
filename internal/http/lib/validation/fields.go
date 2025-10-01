@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 
-	"auth_service/internal/http/schemas"
+	"auth_service/internal/http/lib/schemas"
 )
 
 func formatValidationErrors(validationErrors validator.ValidationErrors) map[string]string {

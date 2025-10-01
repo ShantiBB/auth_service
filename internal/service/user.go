@@ -9,8 +9,7 @@ import (
 type UserRepository interface {
 	UserCreate(ctx context.Context, user models.UserCreate) (*models.User, error)
 	UserGetByID(ctx context.Context, id int64) (*models.User, error)
-	UserGetByUsername(ctx context.Context, username string) (*models.User, error)
-	UserGetByEmail(ctx context.Context, email string) (*models.User, error)
+	UserGetCredentialsByEmail(ctx context.Context, email string) (*models.UserCredentials, error)
 	UserList(ctx context.Context) ([]models.User, error)
 	UserUpdateByID(ctx context.Context, user *models.User) error
 	UserDeleteByID(ctx context.Context, id int64) error
@@ -27,24 +26,6 @@ func (s *Service) UserCreate(ctx context.Context, user models.UserCreate) (*mode
 
 func (s *Service) UserGetByID(ctx context.Context, id int64) (*models.User, error) {
 	user, err := s.repo.UserGetByID(ctx, id)
-	if err != nil {
-		return nil, err
-	}
-
-	return user, nil
-}
-
-func (s *Service) UserGetByUsername(ctx context.Context, username string) (*models.User, error) {
-	user, err := s.repo.UserGetByUsername(ctx, username)
-	if err != nil {
-		return nil, err
-	}
-
-	return user, nil
-}
-
-func (s *Service) UserGetByEmail(ctx context.Context, email string) (*models.User, error) {
-	user, err := s.repo.UserGetByEmail(ctx, email)
 	if err != nil {
 		return nil, err
 	}

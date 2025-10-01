@@ -1,4 +1,4 @@
-package schemas
+package request
 
 type UserCreateRequest struct {
 	Username string `json:"username" validate:"required"`
