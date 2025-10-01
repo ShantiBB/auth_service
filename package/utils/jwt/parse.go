@@ -4,6 +4,7 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 
 	"auth_service/internal/domain/entity"
+	"auth_service/package/utils/errs"
 )
 
 func parseToken(tokenStr string, secret []byte) (*entity.Claims, error) {
@@ -12,7 +13,7 @@ func parseToken(tokenStr string, secret []byte) (*entity.Claims, error) {
 	}
 	token, err := jwt.ParseWithClaims(tokenStr, &entity.Claims{}, tokenFunc)
 	if err != nil {
-		return nil, err
+		return nil, errs.InvalidToken
 	}
 
 	claims, ok := token.Claims.(*entity.Claims)

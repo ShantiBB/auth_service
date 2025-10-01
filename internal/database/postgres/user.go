@@ -2,9 +2,12 @@ package postgres
 
 import (
 	"context"
-	"fmt"
+	"errors"
+
+	"github.com/jackc/pgx/v5"
 
 	"auth_service/internal/domain/models"
+	"auth_service/package/utils/errs"
 )
 
 func (r *Repository) UserCreate(ctx context.Context, u models.UserCreate) (*models.User, error) {
@@ -24,6 +27,9 @@ func (r *Repository) UserGetByID(ctx context.Context, id int64) (*models.User, e
 	if err := r.db.QueryRow(ctx, UserGetByID, id).Scan(
 		&u.Username, &u.Email, &u.Role, &u.IsActive, &u.CreatedAt, &u.UpdatedAt,
 	); err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, errs.UserNotFound
+		}
 		return nil, err
 	}
 
@@ -36,6 +42,9 @@ func (r *Repository) UserGetCredentialsByEmail(ctx context.Context, email string
 		&u.ID, &u.Role, &u.Password,
 	)
 	if err != nil {
+		if errors.Is(err, pgx.ErrNoRows) {
+			return nil, errs.UserNotFound
+		}
 		return nil, err
 	}
 
@@ -73,7 +82,7 @@ func (r *Repository) UserUpdateByID(ctx context.Context, u *models.User) error {
 
 	rowsAffected := rows.RowsAffected()
 	if rowsAffected == 0 {
-		return fmt.Errorf("user with id %d is not found", u.ID)
+		return errs.UserNotFound
 	}
 
 	return nil
@@ -87,7 +96,7 @@ func (r *Repository) UserDeleteByID(ctx context.Context, id int64) error {
 
 	rowsAffected := rows.RowsAffected()
 	if rowsAffected == 0 {
-		return fmt.Errorf("user with id %d is not found", id)
+		return errs.UserNotFound
 	}
 
 	return nil

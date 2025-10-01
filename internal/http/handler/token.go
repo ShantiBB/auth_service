@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"errors"
 	"net/http"
 
 	"auth_service/internal/config"
@@ -9,6 +10,7 @@ import (
 	"auth_service/internal/http/lib/schemas"
 	"auth_service/internal/http/lib/schemas/request"
 	"auth_service/internal/http/lib/schemas/response"
+	"auth_service/package/utils/errs"
 	"auth_service/package/utils/password"
 )
 
@@ -55,6 +57,11 @@ func (h *Handler) LoginByEmail(w http.ResponseWriter, r *http.Request) {
 
 	tokens, err := h.svc.LoginByEmail(ctx, req.Email, req.Password, h.cfg)
 	if err != nil {
+		if errors.Is(err, errs.InvalidCredentials) || errors.Is(err, errs.UserNotFound) {
+			errMsg := schemas.NewErrorResponse("Invalid email or password")
+			h.sendError(w, r, http.StatusNotFound, errMsg)
+			return
+		}
 		errMsg := schemas.NewErrorResponse("Error logging in user")
 		h.sendError(w, r, http.StatusInternalServerError, errMsg)
 		return
@@ -75,6 +82,11 @@ func (h *Handler) RefreshToken(w http.ResponseWriter, r *http.Request) {
 	token := &entity.Token{Refresh: req.RefreshToken}
 	tokens, err := h.svc.RefreshToken(token, h.cfg)
 	if err != nil {
+		if errors.Is(err, errs.InvalidToken) {
+			errMsg := schemas.NewErrorResponse(errs.InvalidToken.Error())
+			h.sendError(w, r, http.StatusUnauthorized, errMsg)
+			return
+		}
 		errMsg := schemas.NewErrorResponse("Error refreshing token")
 		h.sendError(w, r, http.StatusInternalServerError, errMsg)
 		return

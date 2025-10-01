@@ -2,6 +2,7 @@ package handler
 
 import (
 	"context"
+	"errors"
 	"net/http"
 	"strconv"
 
@@ -11,6 +12,7 @@ import (
 	"auth_service/internal/http/lib/schemas"
 	"auth_service/internal/http/lib/schemas/request"
 	"auth_service/internal/http/lib/schemas/response"
+	"auth_service/package/utils/errs"
 	"auth_service/package/utils/password"
 )
 
@@ -62,6 +64,11 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 
 	user, err := h.svc.UserGetByID(ctx, id)
 	if err != nil {
+		if errors.Is(err, errs.UserNotFound) {
+			errMsg := schemas.NewErrorResponse("User not found")
+			h.sendError(w, r, http.StatusNotFound, errMsg)
+			return
+		}
 		errMsg := schemas.NewErrorResponse("Error retrieving user")
 		h.sendError(w, r, http.StatusInternalServerError, errMsg)
 		return
@@ -108,6 +115,11 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	user := h.UserUpdateRequestToEntity(&req, id)
 	userToUpdate, err := h.svc.UserUpdateByID(ctx, user)
 	if err != nil {
+		if errors.Is(err, errs.UserNotFound) {
+			errMsg := schemas.NewErrorResponse("User not found")
+			h.sendError(w, r, http.StatusNotFound, errMsg)
+			return
+		}
 		errMsg := schemas.NewErrorResponse("Error updating user")
 		h.sendError(w, r, http.StatusInternalServerError, errMsg)
 		return
@@ -130,6 +142,11 @@ func (h *Handler) UserDeleteByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	if err = h.svc.UserDeleteByID(ctx, id); err != nil {
+		if errors.Is(err, errs.UserNotFound) {
+			errMsg := schemas.NewErrorResponse("User not found")
+			h.sendError(w, r, http.StatusNotFound, errMsg)
+			return
+		}
 		errMsg := schemas.NewErrorResponse("Error deleting user")
 		h.sendError(w, r, http.StatusInternalServerError, errMsg)
 		return
