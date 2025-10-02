@@ -36,6 +36,11 @@ func (h *Handler) RegisterByEmail(w http.ResponseWriter, r *http.Request) {
 
 	tokens, err := h.svc.RegisterByEmail(ctx, req.Email, hashPassword, h.cfg)
 	if err != nil {
+		if errors.Is(err, errs.UniqueUserField) {
+			errMsg := schemas.NewErrorResponse("Email or username already exists")
+			h.sendError(w, r, http.StatusConflict, errMsg)
+			return
+		}
 		errMsg := schemas.NewErrorResponse("Error registering user")
 		h.sendError(w, r, http.StatusInternalServerError, errMsg)
 		return
@@ -59,7 +64,7 @@ func (h *Handler) LoginByEmail(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		if errors.Is(err, errs.InvalidCredentials) || errors.Is(err, errs.UserNotFound) {
 			errMsg := schemas.NewErrorResponse("Invalid email or password")
-			h.sendError(w, r, http.StatusNotFound, errMsg)
+			h.sendError(w, r, http.StatusUnauthorized, errMsg)
 			return
 		}
 		errMsg := schemas.NewErrorResponse("Error logging in user")

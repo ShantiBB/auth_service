@@ -42,6 +42,11 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	newUser := h.UserCreateRequestToEntity(&req, hashPassword)
 	createdUser, err := h.svc.UserCreate(ctx, *newUser)
 	if err != nil {
+		if errors.Is(err, errs.UniqueUserField) {
+			errMsg := schemas.NewErrorResponse("Email or username already exists")
+			h.sendError(w, r, http.StatusConflict, errMsg)
+			return
+		}
 		errMsg := schemas.NewErrorResponse("Error creating user")
 		h.sendError(w, r, http.StatusInternalServerError, errMsg)
 		return
@@ -115,7 +120,12 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	user := h.UserUpdateRequestToEntity(&req, id)
 	userToUpdate, err := h.svc.UserUpdateByID(ctx, user)
 	if err != nil {
-		if errors.Is(err, errs.UserNotFound) {
+		switch {
+		case errors.Is(err, errs.UniqueUserField):
+			errMsg := schemas.NewErrorResponse("Email or username already exists")
+			h.sendError(w, r, http.StatusConflict, errMsg)
+			return
+		case errors.Is(err, errs.UserNotFound):
 			errMsg := schemas.NewErrorResponse("User not found")
 			h.sendError(w, r, http.StatusNotFound, errMsg)
 			return

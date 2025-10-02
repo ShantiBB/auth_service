@@ -5,6 +5,7 @@ import (
 	"errors"
 
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 
 	"auth_service/internal/domain/models"
 	"auth_service/package/utils/errs"
@@ -16,6 +17,10 @@ func (r *Repository) UserCreate(ctx context.Context, u models.UserCreate) (*mode
 		ctx, UserCreate, u.Username, u.Email, u.Password,
 	).Scan(&newUser.ID, &newUser.Role, &newUser.IsActive, &newUser.CreatedAt, &newUser.UpdatedAt)
 	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			return nil, errs.UniqueUserField
+		}
 		return nil, err
 	}
 
@@ -77,6 +82,10 @@ func (r *Repository) UserUpdateByID(ctx context.Context, u *models.User) error {
 		ctx, UserUpdate, u.Username, u.Email, u.ID,
 	)
 	if err != nil {
+		var pgErr *pgconn.PgError
+		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
+			return errs.UniqueUserField
+		}
 		return err
 	}
 
