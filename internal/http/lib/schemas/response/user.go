@@ -2,7 +2,7 @@ package response
 
 import "time"
 
-type UserResponse struct {
+type User struct {
 	ID        int64     `json:"id"`
 	Username  string    `json:"username"`
 	Email     string    `json:"email"`
@@ -12,7 +12,7 @@ type UserResponse struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
-type UserShortResponse struct {
+type UserShort struct {
 	ID       int64  `json:"id"`
 	Username string `json:"username"`
 	Email    string `json:"email"`

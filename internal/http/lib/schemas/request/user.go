@@ -1,20 +1,20 @@
 package request
 
-type UserCreateRequest struct {
+type UserCreate struct {
 	Username string `json:"username" validate:"required"`
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required,min=5"`
 }
 
-type UserUpdateRequest struct {
+type UserUpdate struct {
 	Username string `json:"username"`
 	Email    string `json:"email" validate:"email"`
 }
 
-type UserUpdateRoleRequest struct {
+type UserUpdateRole struct {
 	Role string `json:"role" validate:"required"`
 }
 
-type UserUpdateStatusRequest struct {
+type UserUpdateStatus struct {
 	IsActive bool `json:"is_active" validate:"required"`
 }

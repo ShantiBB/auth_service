@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 
-	"auth_service/internal/http/lib/schemas"
+	"auth_service/internal/http/lib/schemas/response"
 )
 
 func formatValidationErrors(validationErrors validator.ValidationErrors) map[string]string {
@@ -32,13 +32,13 @@ func getErrorMessage(err validator.FieldError) string {
 	}
 }
 
-func CheckErrors(v interface{}) *schemas.ValidateErrorResponse {
+func CheckErrors(v interface{}) *response.ValidateError {
 	validate := validator.New()
 	if err := validate.Struct(v); err != nil {
 		var validateErr validator.ValidationErrors
 		errors.As(err, &validateErr)
 
-		errorsResp := schemas.ValidateErrorResponse{
+		errorsResp := response.ValidateError{
 			Errors: formatValidationErrors(validateErr),
 		}
 		return &errorsResp
