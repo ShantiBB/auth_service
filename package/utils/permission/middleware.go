@@ -15,7 +15,7 @@ type Check func(r *http.Request, claims *Claims) bool
 
 const ClaimsKey contextKey = "claims"
 
-func AuthRequired(jwtSecret string) func(next http.Handler) http.Handler {
+func AuthRequire(jwtSecret string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			token := r.Header.Get("Authorization")
@@ -44,7 +44,7 @@ func GetClaims(ctx context.Context) *Claims {
 	return claims
 }
 
-func Require(checks ...Check) func(next http.Handler) http.Handler {
+func RequireRoles(checks ...Check) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			claims := GetClaims(r.Context())
