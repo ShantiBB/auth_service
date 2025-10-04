@@ -23,10 +23,6 @@ func parseToken(tokenStr string, secret []byte) (*Claims, error) {
 	return claims, nil
 }
 
-func GetClaimsAccessToken(accessSecret, tokenStr string) (*Claims, error) {
-	return parseToken(tokenStr, []byte(accessSecret))
-}
-
 func GetClaimsRefreshToken(refreshSecret, tokenStr string) (*Claims, error) {
 	return parseToken(tokenStr, []byte(refreshSecret))
 }

@@ -27,8 +27,3 @@ func parseJWT(tokenString, secret string) (*Claims, error) {
 
 	return nil, errors.New("invalid token")
 }
-
-func generateJWT(claims *Claims, secret string) (string, error) {
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	return token.SignedString([]byte(secret))
-}
