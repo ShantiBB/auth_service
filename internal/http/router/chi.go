@@ -3,7 +3,9 @@ package router
 import (
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/chi/v5/middleware"
+	httpswagger "github.com/swaggo/http-swagger"
 
+	_ "auth_service/docs"
 	"auth_service/internal/http/handler"
 	"auth_service/package/utils/permission"
 )
@@ -20,6 +22,9 @@ func New(r chi.Router, h *handler.Handler, jwtSecret string) {
 	r.Use(middleware.Logger)
 	r.Use(middleware.Recoverer)
 
-	authRouter("/auth", r, h)
-	userRouter("/users", r, h, jwtSecret)
+	r.Route("/api/v1", func(r chi.Router) {
+		r.Get("/swagger/*", httpswagger.WrapHandler)
+		authRouter("/auth", r, h)
+		userRouter("/users", r, h, jwtSecret)
+	})
 }
