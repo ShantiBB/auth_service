@@ -10,6 +10,17 @@ import (
 	"auth_service/internal/config"
 )
 
+// @title           Swagger Auth API
+// @version         1.0
+// @description     Auth service for microservices.
+
+// @host      localhost:8081
+// @BasePath  /api/v1
+
+// @securityDefinitions.apikey Bearer
+// @in header
+// @name Authorization
+// @description Type "Bearer" followed by a space and JWT token.
 func main() {
 	if err := godotenv.Load(); err != nil {
 		log.Printf(".env is not found: %v", err)

@@ -24,7 +24,7 @@ func New(svc Service, cfg *config.Config) *Handler {
 	}
 }
 
-func (h *Handler) UserCreateRequestToEntity(req *request.UserCreateRequest, hash string) *models.UserCreate {
+func (h *Handler) UserCreateRequestToEntity(req *request.UserCreate, hash string) *models.UserCreate {
 	return &models.UserCreate{
 		Username: req.Username,
 		Email:    req.Email,
@@ -32,7 +32,7 @@ func (h *Handler) UserCreateRequestToEntity(req *request.UserCreateRequest, hash
 	}
 }
 
-func (h *Handler) UserUpdateRequestToEntity(req *request.UserUpdateRequest, id int64) *models.User {
+func (h *Handler) UserUpdateRequestToEntity(req *request.UserUpdate, id int64) *models.User {
 	return &models.User{
 		ID:       id,
 		Username: req.Username,
@@ -40,8 +40,8 @@ func (h *Handler) UserUpdateRequestToEntity(req *request.UserUpdateRequest, id i
 	}
 }
 
-func (h *Handler) UserEntityToResponse(user *models.User) *response.UserResponse {
-	return &response.UserResponse{
+func (h *Handler) UserEntityToResponse(user *models.User) *response.User {
+	return &response.User{
 		ID:        user.ID,
 		Username:  user.Username,
 		Email:     user.Email,

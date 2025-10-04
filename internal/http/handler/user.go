@@ -9,7 +9,6 @@ import (
 	"github.com/go-chi/chi/v5"
 
 	"auth_service/internal/domain/models"
-	"auth_service/internal/http/lib/schemas"
 	"auth_service/internal/http/lib/schemas/request"
 	"auth_service/internal/http/lib/schemas/response"
 	"auth_service/package/utils/errs"
@@ -25,9 +24,22 @@ type UserService interface {
 	UserDeleteByID(ctx context.Context, id int64) error
 }
 
+// UserCreate    godoc
+// @Summary      Create user
+// @Description  Create a new user account from admin provider
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        request  body      request.UserCreate  true  "User data"
+// @Success      201      {object}  response.User
+// @Failure      400      {object}  response.Error
+// @Failure      409      {object}  response.Error
+// @Failure      500      {object}  response.Error
+// @Security     Bearer
+// @Router       /users/  [post]
 func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-	var req request.UserCreateRequest
+	var req request.UserCreate
 
 	if ok := helper.ParseJSON(w, r, &req); !ok {
 		return
@@ -35,7 +47,7 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 
 	hashPassword, err := password.HashPassword(req.Password)
 	if err != nil {
-		errMsg := schemas.NewErrorResponse("Error hashing password")
+		errMsg := response.NewErrorResponse("Error hashing password")
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -44,11 +56,11 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	createdUser, err := h.svc.UserCreate(ctx, *newUser)
 	if err != nil {
 		if errors.Is(err, errs.UniqueUserField) {
-			errMsg := schemas.NewErrorResponse("Email or username already exists")
+			errMsg := response.NewErrorResponse("Email or username already exists")
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		}
-		errMsg := schemas.NewErrorResponse("Error creating user")
+		errMsg := response.NewErrorResponse("Error creating user")
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -57,13 +69,54 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	helper.SendSuccess(w, r, http.StatusCreated, userResponse)
 }
 
+// UserList    godoc
+// @Summary      Get users
+// @Description  Get users from admin or moderator provider
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  response.User
+// @Failure      500  {object}  response.Error
+// @Security     Bearer
+// @Router       /users/ [get]
+func (h *Handler) UserList(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	users, err := h.svc.UserList(ctx)
+	if err != nil {
+		errMsg := response.NewErrorResponse("Error retrieving users")
+		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+		return
+	}
+
+	usersResp := make([]response.User, 0, len(users))
+	for _, user := range users {
+		userResponse := h.UserEntityToResponse(&user)
+		usersResp = append(usersResp, *userResponse)
+	}
+	helper.SendSuccess(w, r, http.StatusOK, usersResp)
+}
+
+// UserGetByID    godoc
+// @Summary      Get user by ID
+// @Description  Get user by ID from admin, moderator or owner provider
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int true  "User ID"
+// @Success      200  {object}  response.User
+// @Failure      400  {object}  response.Error
+// @Failure      404  {object}  response.Error
+// @Failure      500  {object}  response.Error
+// @Security     Bearer
+// @Router       /users/{id} [get]
 func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	paramID := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(paramID, 10, 64)
 	if err != nil {
-		errMsg := schemas.NewErrorResponse("Invalid user ID")
+		errMsg := response.NewErrorResponse("Invalid user ID")
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -71,11 +124,11 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 	user, err := h.svc.UserGetByID(ctx, id)
 	if err != nil {
 		if errors.Is(err, errs.UserNotFound) {
-			errMsg := schemas.NewErrorResponse("User not found")
+			errMsg := response.NewErrorResponse("User not found")
 			helper.SendError(w, r, http.StatusNotFound, errMsg)
 			return
 		}
-		errMsg := schemas.NewErrorResponse("Error retrieving user")
+		errMsg := response.NewErrorResponse("Error retrieving user")
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -84,36 +137,33 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 	helper.SendSuccess(w, r, http.StatusOK, userResponse)
 }
 
-func (h *Handler) UserList(w http.ResponseWriter, r *http.Request) {
-	ctx := r.Context()
-
-	users, err := h.svc.UserList(ctx)
-	if err != nil {
-		errMsg := schemas.NewErrorResponse("Error retrieving users")
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
-		return
-	}
-
-	usersResp := make([]response.UserResponse, 0, len(users))
-	for _, user := range users {
-		userResponse := h.UserEntityToResponse(&user)
-		usersResp = append(usersResp, *userResponse)
-	}
-	helper.SendSuccess(w, r, http.StatusOK, usersResp)
-}
-
+// UserUpdateByID    godoc
+// @Summary      Update user by ID
+// @Description  Update user by ID from admin or owner provider
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        id          path      int true  "User ID"
+// @Param        request     body      request.UserUpdate  true  "User data"
+// @Success      200         {object}  response.User
+// @Failure      400         {object}  response.Error
+// @Failure      404         {object}  response.Error
+// @Failure      409         {object}  response.Error
+// @Failure      500         {object}  response.Error
+// @Security     Bearer
+// @Router       /users/{id} [put]
 func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	paramID := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(paramID, 10, 64)
 	if err != nil {
-		errMsg := schemas.NewErrorResponse("Invalid user ID")
+		errMsg := response.NewErrorResponse("Invalid user ID")
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
 
-	var req request.UserUpdateRequest
+	var req request.UserUpdate
 	if ok := helper.ParseJSON(w, r, &req); !ok {
 		return
 	}
@@ -123,15 +173,15 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		switch {
 		case errors.Is(err, errs.UniqueUserField):
-			errMsg := schemas.NewErrorResponse("Email or username already exists")
+			errMsg := response.NewErrorResponse("Email or username already exists")
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		case errors.Is(err, errs.UserNotFound):
-			errMsg := schemas.NewErrorResponse("User not found")
+			errMsg := response.NewErrorResponse("User not found")
 			helper.SendError(w, r, http.StatusNotFound, errMsg)
 			return
 		}
-		errMsg := schemas.NewErrorResponse("Error updating user")
+		errMsg := response.NewErrorResponse("Error updating user")
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -141,24 +191,37 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	helper.SendSuccess(w, r, http.StatusOK, userResponse)
 }
 
+// UserDeleteByID    godoc
+// @Summary      Delete user by ID
+// @Description  Delete user by ID from admin or owner provider
+// @Tags         users
+// @Accept       json
+// @Produce      json
+// @Param        id   path      int true  "User ID"
+// @Success      204  {object}  nil
+// @Failure      400  {object}  response.Error
+// @Failure      404  {object}  response.Error
+// @Failure      500  {object}  response.Error
+// @Security     Bearer
+// @Router       /users/{id} [delete]
 func (h *Handler) UserDeleteByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
 	paramID := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(paramID, 10, 64)
 	if err != nil {
-		errMsg := schemas.NewErrorResponse("Invalid user ID")
+		errMsg := response.NewErrorResponse("Invalid user ID")
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
 
 	if err = h.svc.UserDeleteByID(ctx, id); err != nil {
 		if errors.Is(err, errs.UserNotFound) {
-			errMsg := schemas.NewErrorResponse("User not found")
+			errMsg := response.NewErrorResponse("User not found")
 			helper.SendError(w, r, http.StatusNotFound, errMsg)
 			return
 		}
-		errMsg := schemas.NewErrorResponse("Error deleting user")
+		errMsg := response.NewErrorResponse("Error deleting user")
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
