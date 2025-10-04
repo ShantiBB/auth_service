@@ -6,11 +6,10 @@ import (
 	"github.com/golang-jwt/jwt/v5"
 
 	"auth_service/internal/config"
-	"auth_service/internal/domain/entity"
 )
 
 func GenerateToken(sub int64, role string, ttl time.Duration, secret []byte) (string, error) {
-	claims := entity.Claims{
+	claims := Claims{
 		Sub:  sub,
 		Role: role,
 		RegisteredClaims: jwt.RegisteredClaims{
@@ -31,9 +30,9 @@ func GenerateRefreshToken(sub int64, role, RefreshSecret string, RefreshTTL time
 	return GenerateToken(sub, role, RefreshTTL, []byte(RefreshSecret))
 }
 
-func GenerateAllTokens(sub int64, role string, cfg *config.Config) (*entity.Token, error) {
+func GenerateAllTokens(sub int64, role string, cfg *config.Config) (*Token, error) {
 	var err error
-	tokens := &entity.Token{}
+	tokens := &Token{}
 	tokens.Access, err = GenerateAccessToken(sub, role, cfg.JWT.AccessSecret, cfg.JWT.AccessTokenTTL)
 	if err != nil {
 		return nil, err

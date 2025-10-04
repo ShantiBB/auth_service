@@ -3,20 +3,19 @@ package jwt
 import (
 	"github.com/golang-jwt/jwt/v5"
 
-	"auth_service/internal/domain/entity"
 	"auth_service/package/utils/errs"
 )
 
-func parseToken(tokenStr string, secret []byte) (*entity.Claims, error) {
+func parseToken(tokenStr string, secret []byte) (*Claims, error) {
 	tokenFunc := func(t *jwt.Token) (interface{}, error) {
 		return secret, nil
 	}
-	token, err := jwt.ParseWithClaims(tokenStr, &entity.Claims{}, tokenFunc)
+	token, err := jwt.ParseWithClaims(tokenStr, &Claims{}, tokenFunc)
 	if err != nil {
 		return nil, errs.InvalidToken
 	}
 
-	claims, ok := token.Claims.(*entity.Claims)
+	claims, ok := token.Claims.(*Claims)
 	if !ok || !token.Valid {
 		return nil, jwt.ErrTokenInvalidClaims
 	}
@@ -24,10 +23,10 @@ func parseToken(tokenStr string, secret []byte) (*entity.Claims, error) {
 	return claims, nil
 }
 
-func GetClaimsAccessToken(accessSecret, tokenStr string) (*entity.Claims, error) {
+func GetClaimsAccessToken(accessSecret, tokenStr string) (*Claims, error) {
 	return parseToken(tokenStr, []byte(accessSecret))
 }
 
-func GetClaimsRefreshToken(refreshSecret, tokenStr string) (*entity.Claims, error) {
+func GetClaimsRefreshToken(refreshSecret, tokenStr string) (*Claims, error) {
 	return parseToken(tokenStr, []byte(refreshSecret))
 }
