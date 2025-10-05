@@ -60,7 +60,7 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse(errs.UserCreateError.Error())
+		errMsg := response.NewErrorResponse(errs.InternalServer.Error())
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}

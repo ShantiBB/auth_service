@@ -6,6 +6,8 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+
+	"auth_service/package/utils/errs"
 )
 
 var checkSuccessResponse = func(t *testing.T, w *httptest.ResponseRecorder) {
@@ -24,11 +26,11 @@ var checkInvalidJSONResponse = func(t *testing.T, w *httptest.ResponseRecorder) 
 var checkConflictResponse = func(t *testing.T, w *httptest.ResponseRecorder) {
 	var response map[string]interface{}
 	json.Unmarshal(w.Body.Bytes(), &response)
-	assert.Contains(t, response["message"], "username or email already exists")
+	assert.Contains(t, response["message"], errs.UniqueUserField.Error())
 }
 
 var checkServerErrorResponse = func(t *testing.T, w *httptest.ResponseRecorder) {
 	var response map[string]interface{}
 	json.Unmarshal(w.Body.Bytes(), &response)
-	assert.Contains(t, response["message"], "error creating user")
+	assert.Contains(t, response["message"], errs.InternalServer.Error())
 }

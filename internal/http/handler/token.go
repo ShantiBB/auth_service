@@ -43,7 +43,7 @@ func (h *Handler) RegisterByEmail(w http.ResponseWriter, r *http.Request) {
 
 	hashPassword, err := password.HashPassword(req.Password)
 	if err != nil {
-		errMsg := response.NewErrorResponse("Error hashing password")
+		errMsg := response.NewErrorResponse(errs.PasswordHashing.Error())
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -51,11 +51,11 @@ func (h *Handler) RegisterByEmail(w http.ResponseWriter, r *http.Request) {
 	tokens, err := h.svc.RegisterByEmail(ctx, req.Email, hashPassword, h.cfg)
 	if err != nil {
 		if errors.Is(err, errs.UniqueUserField) {
-			errMsg := response.NewErrorResponse("Email or username already exists")
+			errMsg := response.NewErrorResponse(errs.UniqueUserField.Error())
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse("Error registering user")
+		errMsg := response.NewErrorResponse(errs.InternalServer.Error())
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -89,11 +89,11 @@ func (h *Handler) LoginByEmail(w http.ResponseWriter, r *http.Request) {
 	tokens, err := h.svc.LoginByEmail(ctx, req.Email, req.Password, h.cfg)
 	if err != nil {
 		if errors.Is(err, errs.InvalidCredentials) || errors.Is(err, errs.UserNotFound) {
-			errMsg := response.NewErrorResponse("Invalid email or password")
+			errMsg := response.NewErrorResponse(errs.InvalidCredentials.Error())
 			helper.SendError(w, r, http.StatusUnauthorized, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse("Error logging in user")
+		errMsg := response.NewErrorResponse(errs.InternalServer.Error())
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -130,7 +130,7 @@ func (h *Handler) RefreshToken(w http.ResponseWriter, r *http.Request) {
 			helper.SendError(w, r, http.StatusUnauthorized, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse("Error refreshing token")
+		errMsg := response.NewErrorResponse(errs.InternalServer.Error())
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
