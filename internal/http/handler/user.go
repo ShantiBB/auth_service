@@ -47,7 +47,7 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 
 	hashPassword, err := password.HashPassword(req.Password)
 	if err != nil {
-		errMsg := response.NewErrorResponse("Error hashing password")
+		errMsg := response.NewErrorResponse(errs.PasswordHashing.Error())
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -56,11 +56,11 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	createdUser, err := h.svc.UserCreate(ctx, *newUser)
 	if err != nil {
 		if errors.Is(err, errs.UniqueUserField) {
-			errMsg := response.NewErrorResponse("Email or username already exists")
+			errMsg := response.NewErrorResponse(errs.UniqueUserField.Error())
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse("Error creating user")
+		errMsg := response.NewErrorResponse(errs.UserCreateError.Error())
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
