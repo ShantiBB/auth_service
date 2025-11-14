@@ -43,7 +43,7 @@ func (h *Handler) RegisterByEmail(w http.ResponseWriter, r *http.Request) {
 
 	hashPassword, err := password.HashPassword(req.Password)
 	if err != nil {
-		errMsg := response.NewErrorResponse(errs.PasswordHashing.Error())
+		errMsg := response.ErrorResp(errs.PasswordHashing)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -51,11 +51,11 @@ func (h *Handler) RegisterByEmail(w http.ResponseWriter, r *http.Request) {
 	tokens, err := h.svc.RegisterByEmail(ctx, req.Email, hashPassword, h.cfg)
 	if err != nil {
 		if errors.Is(err, errs.UniqueUserField) {
-			errMsg := response.NewErrorResponse(errs.UniqueUserField.Error())
+			errMsg := response.ErrorResp(errs.UniqueUserField)
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse(errs.InternalServer.Error())
+		errMsg := response.ErrorResp(errs.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -89,11 +89,11 @@ func (h *Handler) LoginByEmail(w http.ResponseWriter, r *http.Request) {
 	tokens, err := h.svc.LoginByEmail(ctx, req.Email, req.Password, h.cfg)
 	if err != nil {
 		if errors.Is(err, errs.InvalidCredentials) || errors.Is(err, errs.UserNotFound) {
-			errMsg := response.NewErrorResponse(errs.InvalidCredentials.Error())
+			errMsg := response.ErrorResp(errs.InvalidCredentials)
 			helper.SendError(w, r, http.StatusUnauthorized, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse(errs.InternalServer.Error())
+		errMsg := response.ErrorResp(errs.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -126,11 +126,11 @@ func (h *Handler) RefreshToken(w http.ResponseWriter, r *http.Request) {
 	tokens, err := h.svc.RefreshToken(token, h.cfg)
 	if err != nil {
 		if errors.Is(err, errs.InvalidToken) {
-			errMsg := response.NewErrorResponse(errs.InvalidToken.Error())
+			errMsg := response.ErrorResp(errs.InvalidToken)
 			helper.SendError(w, r, http.StatusUnauthorized, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse(errs.InternalServer.Error())
+		errMsg := response.ErrorResp(errs.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}

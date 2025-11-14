@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"errors"
-
 	"github.com/stretchr/testify/mock"
 
 	"auth_service/internal/mocks"
@@ -18,7 +16,7 @@ var mockUserCreateConflict = func(m *mocks.Service) {
 }
 
 var mockUserCreateServerError = func(m *mocks.Service) {
-	m.On("UserCreate", mock.Anything, mock.Anything).Return(nil, errors.New("database error"))
+	m.On("UserCreate", mock.Anything, mock.Anything).Return(nil, errs.InternalServer)
 }
 
 var mockNoSetup = func(m *mocks.Service) {}

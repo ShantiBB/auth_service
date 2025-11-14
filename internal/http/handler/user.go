@@ -33,6 +33,7 @@ type UserService interface {
 // @Param        request  body      request.UserCreate  true  "User data"
 // @Success      201      {object}  response.User
 // @Failure      400      {object}  response.Error
+// @Failure      401      {object}  response.Error
 // @Failure      409      {object}  response.Error
 // @Failure      500      {object}  response.Error
 // @Security     Bearer
@@ -47,7 +48,7 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 
 	hashPassword, err := password.HashPassword(req.Password)
 	if err != nil {
-		errMsg := response.NewErrorResponse(errs.PasswordHashing.Error())
+		errMsg := response.ErrorResp(errs.PasswordHashing)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -56,11 +57,11 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	createdUser, err := h.svc.UserCreate(ctx, *newUser)
 	if err != nil {
 		if errors.Is(err, errs.UniqueUserField) {
-			errMsg := response.NewErrorResponse(errs.UniqueUserField.Error())
+			errMsg := response.ErrorResp(errs.UniqueUserField)
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse(errs.InternalServer.Error())
+		errMsg := response.ErrorResp(errs.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -76,6 +77,7 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 // @Accept       json
 // @Produce      json
 // @Success      200  {object}  response.User
+// @Failure      401  {object}  response.Error
 // @Failure      500  {object}  response.Error
 // @Security     Bearer
 // @Router       /users/ [get]
@@ -84,7 +86,7 @@ func (h *Handler) UserList(w http.ResponseWriter, r *http.Request) {
 
 	users, err := h.svc.UserList(ctx)
 	if err != nil {
-		errMsg := response.NewErrorResponse("Error retrieving users")
+		errMsg := response.ErrorResp(errs.UserRetrieving)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -106,6 +108,7 @@ func (h *Handler) UserList(w http.ResponseWriter, r *http.Request) {
 // @Param        id   path      int true  "User ID"
 // @Success      200  {object}  response.User
 // @Failure      400  {object}  response.Error
+// @Failure      401  {object}  response.Error
 // @Failure      404  {object}  response.Error
 // @Failure      500  {object}  response.Error
 // @Security     Bearer
@@ -116,7 +119,7 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 	paramID := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(paramID, 10, 64)
 	if err != nil {
-		errMsg := response.NewErrorResponse("Invalid user ID")
+		errMsg := response.ErrorResp(errs.InvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -124,11 +127,11 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 	user, err := h.svc.UserGetByID(ctx, id)
 	if err != nil {
 		if errors.Is(err, errs.UserNotFound) {
-			errMsg := response.NewErrorResponse("User not found")
+			errMsg := response.ErrorResp(errs.UserNotFound)
 			helper.SendError(w, r, http.StatusNotFound, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse("Error retrieving user")
+		errMsg := response.ErrorResp(errs.UserRetrieving)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -147,6 +150,7 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 // @Param        request     body      request.UserUpdate  true  "User data"
 // @Success      200         {object}  response.User
 // @Failure      400         {object}  response.Error
+// @Failure      401         {object}  response.Error
 // @Failure      404         {object}  response.Error
 // @Failure      409         {object}  response.Error
 // @Failure      500         {object}  response.Error
@@ -158,7 +162,7 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	paramID := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(paramID, 10, 64)
 	if err != nil {
-		errMsg := response.NewErrorResponse("Invalid user ID")
+		errMsg := response.ErrorResp(errs.InvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -173,15 +177,15 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		switch {
 		case errors.Is(err, errs.UniqueUserField):
-			errMsg := response.NewErrorResponse("Email or username already exists")
+			errMsg := response.ErrorResp(errs.UniqueUserField)
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		case errors.Is(err, errs.UserNotFound):
-			errMsg := response.NewErrorResponse("User not found")
+			errMsg := response.ErrorResp(errs.UserNotFound)
 			helper.SendError(w, r, http.StatusNotFound, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse("Error updating user")
+		errMsg := response.ErrorResp(errs.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -200,6 +204,7 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 // @Param        id   path      int true  "User ID"
 // @Success      204  {object}  nil
 // @Failure      400  {object}  response.Error
+// @Failure      401  {object}  response.Error
 // @Failure      404  {object}  response.Error
 // @Failure      500  {object}  response.Error
 // @Security     Bearer
@@ -210,18 +215,18 @@ func (h *Handler) UserDeleteByID(w http.ResponseWriter, r *http.Request) {
 	paramID := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(paramID, 10, 64)
 	if err != nil {
-		errMsg := response.NewErrorResponse("Invalid user ID")
+		errMsg := response.ErrorResp(errs.InvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
 
 	if err = h.svc.UserDeleteByID(ctx, id); err != nil {
 		if errors.Is(err, errs.UserNotFound) {
-			errMsg := response.NewErrorResponse("User not found")
+			errMsg := response.ErrorResp(errs.UserNotFound)
 			helper.SendError(w, r, http.StatusNotFound, errMsg)
 			return
 		}
-		errMsg := response.NewErrorResponse("Error deleting user")
+		errMsg := response.ErrorResp(errs.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}

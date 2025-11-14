@@ -7,6 +7,7 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
+	"auth_service/package/utils/errs"
 	"auth_service/package/utils/helper"
 )
 
@@ -20,13 +21,13 @@ func AuthRequire(jwtSecret string) func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			token := r.Header.Get("Authorization")
 			if token == "" {
-				helper.SendError(w, r, http.StatusUnauthorized, ErrorResp("unauthorized"))
+				helper.SendError(w, r, http.StatusUnauthorized, errs.ErrorResp(errs.Unauthorized))
 				return
 			}
 
 			claims, err := parseJWT(token, jwtSecret)
 			if err != nil {
-				helper.SendError(w, r, http.StatusForbidden, ErrorResp("forbidden"))
+				helper.SendError(w, r, http.StatusForbidden, errs.ErrorResp(errs.Forbidden))
 				return
 			}
 
@@ -49,7 +50,7 @@ func RequireRoles(checks ...Check) func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 			claims := GetClaims(r.Context())
 			if claims == nil {
-				helper.SendError(w, r, http.StatusUnauthorized, ErrorResp("unauthorized"))
+				helper.SendError(w, r, http.StatusUnauthorized, errs.ErrorResp(errs.Unauthorized))
 				return
 			}
 
@@ -60,7 +61,7 @@ func RequireRoles(checks ...Check) func(next http.Handler) http.Handler {
 				}
 			}
 
-			helper.SendError(w, r, http.StatusForbidden, ErrorResp("forbidden"))
+			helper.SendError(w, r, http.StatusForbidden, errs.ErrorResp(errs.Forbidden))
 		})
 	}
 }
