@@ -2,7 +2,6 @@ package validation
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/go-playground/validator/v10"
 
@@ -12,13 +11,13 @@ import (
 func getErrorMessage(err validator.FieldError) string {
 	switch err.Tag() {
 	case "required":
-		return msgRequired
+		return errs.FieldRequired.Error()
 	case "email":
-		return msgEmail
+		return errs.InvalidEmail.Error()
 	case "min":
-		return fmt.Sprintf(msgMin, err.Param())
+		return errs.InvalidPassword.Error()
 	default:
-		return msgDefault
+		return errs.InternalServer.Error()
 	}
 }
 
