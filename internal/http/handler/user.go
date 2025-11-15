@@ -48,7 +48,7 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 
 	hashPassword, err := password.HashPassword(req.Password)
 	if err != nil {
-		errMsg := response.ErrorResp(errs.PasswordHashing)
+		errMsg := errs.ErrorResp(errs.PasswordHashing)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -57,11 +57,11 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	createdUser, err := h.svc.UserCreate(ctx, *newUser)
 	if err != nil {
 		if errors.Is(err, errs.UniqueUserField) {
-			errMsg := response.ErrorResp(errs.UniqueUserField)
+			errMsg := errs.ErrorResp(errs.UniqueUserField)
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		}
-		errMsg := response.ErrorResp(errs.InternalServer)
+		errMsg := errs.ErrorResp(errs.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -86,7 +86,7 @@ func (h *Handler) UserList(w http.ResponseWriter, r *http.Request) {
 
 	users, err := h.svc.UserList(ctx)
 	if err != nil {
-		errMsg := response.ErrorResp(errs.UserRetrieving)
+		errMsg := errs.ErrorResp(errs.UserRetrieving)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -119,7 +119,7 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 	paramID := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(paramID, 10, 64)
 	if err != nil {
-		errMsg := response.ErrorResp(errs.InvalidID)
+		errMsg := errs.ErrorResp(errs.InvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -127,11 +127,11 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 	user, err := h.svc.UserGetByID(ctx, id)
 	if err != nil {
 		if errors.Is(err, errs.UserNotFound) {
-			errMsg := response.ErrorResp(errs.UserNotFound)
+			errMsg := errs.ErrorResp(errs.UserNotFound)
 			helper.SendError(w, r, http.StatusNotFound, errMsg)
 			return
 		}
-		errMsg := response.ErrorResp(errs.UserRetrieving)
+		errMsg := errs.ErrorResp(errs.UserRetrieving)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -162,7 +162,7 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	paramID := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(paramID, 10, 64)
 	if err != nil {
-		errMsg := response.ErrorResp(errs.InvalidID)
+		errMsg := errs.ErrorResp(errs.InvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -177,15 +177,15 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		switch {
 		case errors.Is(err, errs.UniqueUserField):
-			errMsg := response.ErrorResp(errs.UniqueUserField)
+			errMsg := errs.ErrorResp(errs.UniqueUserField)
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		case errors.Is(err, errs.UserNotFound):
-			errMsg := response.ErrorResp(errs.UserNotFound)
+			errMsg := errs.ErrorResp(errs.UserNotFound)
 			helper.SendError(w, r, http.StatusNotFound, errMsg)
 			return
 		}
-		errMsg := response.ErrorResp(errs.InternalServer)
+		errMsg := errs.ErrorResp(errs.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
@@ -215,18 +215,18 @@ func (h *Handler) UserDeleteByID(w http.ResponseWriter, r *http.Request) {
 	paramID := chi.URLParam(r, "id")
 	id, err := strconv.ParseInt(paramID, 10, 64)
 	if err != nil {
-		errMsg := response.ErrorResp(errs.InvalidID)
+		errMsg := errs.ErrorResp(errs.InvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
 
 	if err = h.svc.UserDeleteByID(ctx, id); err != nil {
 		if errors.Is(err, errs.UserNotFound) {
-			errMsg := response.ErrorResp(errs.UserNotFound)
+			errMsg := errs.ErrorResp(errs.UserNotFound)
 			helper.SendError(w, r, http.StatusNotFound, errMsg)
 			return
 		}
-		errMsg := response.ErrorResp(errs.InternalServer)
+		errMsg := errs.ErrorResp(errs.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
