@@ -31,6 +31,30 @@ var (
 		assert.Contains(t, resp["message"], errs.UniqueUserField.Error())
 	}
 
+	checkRegisterEmailAndPasswordRequired = func(t *testing.T, w *httptest.ResponseRecorder) {
+		var resp struct {
+			Errors map[string]string `json:"errors"`
+		}
+
+		err := json.Unmarshal(w.Body.Bytes(), &resp)
+		assert.NoError(t, err)
+
+		assert.Equal(t, errs.FieldRequired.Error(), resp.Errors["Email"])
+		assert.Equal(t, errs.FieldRequired.Error(), resp.Errors["Password"])
+	}
+
+	checkRegisterInvalidEmailAndPassword = func(t *testing.T, w *httptest.ResponseRecorder) {
+		var resp struct {
+			Errors map[string]string `json:"errors"`
+		}
+
+		err := json.Unmarshal(w.Body.Bytes(), &resp)
+		assert.NoError(t, err)
+
+		assert.Equal(t, errs.InvalidEmail.Error(), resp.Errors["Email"])
+		assert.Equal(t, errs.InvalidPassword.Error(), resp.Errors["Password"])
+	}
+
 	checkRegisterServerErrorResponse = func(t *testing.T, w *httptest.ResponseRecorder) {
 		var resp map[string]interface{}
 		json.Unmarshal(w.Body.Bytes(), &resp)

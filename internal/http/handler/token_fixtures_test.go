@@ -23,3 +23,10 @@ var tokensMock = jwt.Token{
 	Access:  "access-token",
 	Refresh: "refresh-token",
 }
+
+var loginEmptyReq = request.LoginByEmail{}
+
+var loginBadEmailAndPasswordReq = request.LoginByEmail{
+	Email:    "test.com",
+	Password: "123",
+}

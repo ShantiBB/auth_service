@@ -29,11 +29,25 @@ func TestRegisterByEmail(t *testing.T) {
 			checkResponse:  checkTokenResponse,
 		},
 		{
-			name:           "Invalid JSON in request body",
-			requestBody:    "invalid json",
+			name:           "Invalid JSON",
+			requestBody:    "",
 			mockSetup:      mockNoSetup,
 			expectedStatus: http.StatusBadRequest,
 			checkResponse:  checkInvalidJSONResponse,
+		},
+		{
+			name:           "Email and Password required",
+			requestBody:    loginEmptyReq,
+			mockSetup:      mockNoSetup,
+			expectedStatus: http.StatusBadRequest,
+			checkResponse:  checkRegisterEmailAndPasswordRequired,
+		},
+		{
+			name:           "Invalid Email and Password",
+			requestBody:    loginBadEmailAndPasswordReq,
+			mockSetup:      mockNoSetup,
+			expectedStatus: http.StatusBadRequest,
+			checkResponse:  checkRegisterInvalidEmailAndPassword,
 		},
 		{
 			name:           "Email already exists",

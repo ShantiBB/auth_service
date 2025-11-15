@@ -1,8 +1,6 @@
 package handler
 
 import (
-	"errors"
-
 	"github.com/stretchr/testify/mock"
 
 	"auth_service/internal/mocks"
@@ -23,7 +21,7 @@ var (
 
 	mockRegisterServerError = func(m *mocks.Service) {
 		m.On("RegisterByEmail", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
-			Return(nil, errors.New("database error"))
+			Return(nil, errs.InternalServer)
 	}
 )
 
@@ -46,7 +44,7 @@ var (
 
 	mockLoginServerError = func(m *mocks.Service) {
 		m.On("LoginByEmail", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
-			Return(nil, errors.New("database error"))
+			Return(nil, errs.InternalServer)
 	}
 )
 
@@ -64,6 +62,6 @@ var (
 
 	mockRefreshServerError = func(m *mocks.Service) {
 		m.On("RefreshToken", mock.Anything, mock.Anything).
-			Return(nil, errors.New("token service error"))
+			Return(nil, errs.InternalServer)
 	}
 )
