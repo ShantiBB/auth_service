@@ -3,20 +3,35 @@ package handler
 import (
 	"github.com/stretchr/testify/mock"
 
+	"auth_service/internal/domain/models"
 	"auth_service/internal/mocks"
 	"auth_service/package/utils/errs"
 )
 
-var mockUserCreateSuccess = func(m *mocks.Service) {
-	m.On("UserCreate", mock.Anything, mock.Anything).Return(&userMock, nil)
-}
+var (
+	mockUserCreateSuccess = func(m *mocks.Service) {
+		m.On("UserCreate", mock.Anything, mock.Anything).Return(&userMock, nil)
+	}
 
-var mockUserCreateConflict = func(m *mocks.Service) {
-	m.On("UserCreate", mock.Anything, mock.Anything).Return(nil, errs.UniqueUserField)
-}
+	mockUserCreateConflict = func(m *mocks.Service) {
+		m.On("UserCreate", mock.Anything, mock.Anything).Return(nil, errs.UniqueUserField)
+	}
 
-var mockUserCreateServerError = func(m *mocks.Service) {
-	m.On("UserCreate", mock.Anything, mock.Anything).Return(nil, errs.InternalServer)
-}
+	mockUserCreateServerError = func(m *mocks.Service) {
+		m.On("UserCreate", mock.Anything, mock.Anything).Return(nil, errs.InternalServer)
+	}
 
-var mockNoSetup = func(m *mocks.Service) {}
+	mockNoSetup = func(m *mocks.Service) {}
+
+	mockUserListSuccess = func(m *mocks.Service) {
+		m.On("UserList", mock.Anything).Return([]models.User{{
+			ID:        userMock.ID,
+			Email:     userMock.Email,
+			Username:  userMock.Username,
+			Role:      userMock.Role,
+			IsActive:  userMock.IsActive,
+			CreatedAt: userMock.CreatedAt,
+			UpdatedAt: userMock.UpdatedAt,
+		}}, nil)
+	}
+)

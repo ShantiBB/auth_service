@@ -7,17 +7,35 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
+	"auth_service/internal/http/lib/schemas/response"
 	"auth_service/package/utils/errs"
 )
 
 var (
-	checkSuccessResponse = func(t *testing.T, w *httptest.ResponseRecorder) {
-		var response map[string]interface{}
-		err := json.Unmarshal(w.Body.Bytes(), &response)
+	checkSuccessUserCreateResponse = func(t *testing.T, w *httptest.ResponseRecorder) {
+		var resp response.User
+		err := json.Unmarshal(w.Body.Bytes(), &resp)
 		assert.NoError(t, err)
-		assert.Equal(t, float64(1), response["id"])
-		assert.Equal(t, "test@example.com", response["email"])
-		assert.Equal(t, "test-user", response["username"])
+		assert.Equal(t, resp.ID, userMock.ID)
+		assert.Equal(t, resp.Email, userMock.Email)
+		assert.Equal(t, resp.Username, userMock.Username)
+		assert.Equal(t, resp.Role, userMock.Role)
+		assert.Equal(t, resp.IsActive, userMock.IsActive)
+		assert.NotEmpty(t, resp.CreatedAt)
+		assert.NotEmpty(t, resp.UpdatedAt)
+	}
+
+	checkSuccessUserListResponse = func(t *testing.T, w *httptest.ResponseRecorder) {
+		var resp []response.User
+		err := json.Unmarshal(w.Body.Bytes(), &resp)
+		assert.NoError(t, err)
+		assert.Equal(t, resp[0].ID, userMock.ID)
+		assert.Equal(t, resp[0].Email, userMock.Email)
+		assert.Equal(t, resp[0].Username, userMock.Username)
+		assert.Equal(t, resp[0].Role, userMock.Role)
+		assert.Equal(t, resp[0].IsActive, userMock.IsActive)
+		assert.NotEmpty(t, resp[0].CreatedAt)
+		assert.NotEmpty(t, resp[0].UpdatedAt)
 	}
 
 	checkTokenResponse = func(t *testing.T, w *httptest.ResponseRecorder) {

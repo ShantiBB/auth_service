@@ -26,7 +26,7 @@ func TestUserCreate(t *testing.T) {
 			requestBody:    userReq,
 			mockSetup:      mockUserCreateSuccess,
 			expectedStatus: http.StatusCreated,
-			checkResponse:  checkSuccessResponse,
+			checkResponse:  checkSuccessUserCreateResponse,
 		},
 		{
 			name:           "Invalid JSON",
@@ -87,6 +87,40 @@ func TestUserCreate(t *testing.T) {
 			c.checkResponse(t, w)
 
 			mockSvc.AssertExpectations(t)
+		})
+	}
+}
+
+func TestUserList(t *testing.T) {
+	cases := []struct {
+		name           string
+		mockSetup      func(*mocks.Service)
+		expectedStatus int
+		checkResponse  func(*testing.T, *httptest.ResponseRecorder)
+	}{
+		{
+			name:           "Successful retrieving users",
+			mockSetup:      mockUserListSuccess,
+			expectedStatus: http.StatusOK,
+			checkResponse:  checkSuccessUserListResponse,
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			mockSvc := mocks.NewService(t)
+			c.mockSetup(mockSvc)
+
+			var body []byte
+			req := httptest.NewRequest("GET", "/users", bytes.NewBuffer(body))
+			w := httptest.NewRecorder()
+
+			handler := &Handler{svc: mockSvc}
+			handler.UserList(w, req)
+
+			mockSvc.AssertExpectations(t)
+			assert.Equal(t, c.expectedStatus, w.Code)
+			c.checkResponse(t, w)
 		})
 	}
 }
