@@ -20,9 +20,9 @@ var (
 	mockUserCreateServerError = func(m *mocks.Service) {
 		m.On("UserCreate", mock.Anything, mock.Anything).Return(nil, errs.InternalServer)
 	}
+)
 
-	mockNoSetup = func(m *mocks.Service) {}
-
+var (
 	mockUserListSuccess = func(m *mocks.Service) {
 		m.On("UserList", mock.Anything).Return([]models.User{{
 			ID:        userMock.ID,
@@ -33,5 +33,9 @@ var (
 			CreatedAt: userMock.CreatedAt,
 			UpdatedAt: userMock.UpdatedAt,
 		}}, nil)
+	}
+
+	mockUserListServerError = func(m *mocks.Service) {
+		m.On("UserList", mock.Anything).Return(nil, errs.InternalServer)
 	}
 )

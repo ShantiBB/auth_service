@@ -32,21 +32,21 @@ func TestUserCreate(t *testing.T) {
 		{
 			name:           "Invalid JSON",
 			requestBody:    "invalid json",
-			mockSetup:      mockNoSetup,
+			mockSetup:      func(m *mocks.Service) {},
 			expectedStatus: http.StatusBadRequest,
 			respCheckers:   checkMessageError(errs.InvalidJSON),
 		},
 		{
 			name:           "Email and Password required",
 			requestBody:    request.UserCreate{},
-			mockSetup:      mockNoSetup,
+			mockSetup:      func(m *mocks.Service) {},
 			expectedStatus: http.StatusBadRequest,
 			respCheckers:   checkFieldsRequired("Email", "Password"),
 		},
 		{
 			name:           "Invalid Email and Password",
 			requestBody:    loginBadEmailAndPasswordReq,
-			mockSetup:      mockNoSetup,
+			mockSetup:      func(m *mocks.Service) {},
 			expectedStatus: http.StatusBadRequest,
 			respCheckers: checkFieldsInvalid(map[string]error{
 				"Email":    errs.InvalidEmail,
@@ -106,6 +106,12 @@ func TestUserList(t *testing.T) {
 			mockSetup:      mockUserListSuccess,
 			expectedStatus: http.StatusOK,
 			respCheckers:   checkSuccessUserListResponse(),
+		},
+		{
+			name:           "Internal server error",
+			mockSetup:      mockUserListServerError,
+			expectedStatus: http.StatusInternalServerError,
+			respCheckers:   checkMessageError(errs.InternalServer),
 		},
 	}
 
