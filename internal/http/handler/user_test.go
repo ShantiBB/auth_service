@@ -2,11 +2,14 @@ package handler
 
 import (
 	"bytes"
+	"context"
 	"encoding/json"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"testing"
 
+	"github.com/go-chi/chi/v5"
 	"github.com/stretchr/testify/assert"
 
 	"auth_service/internal/http/lib/schemas/request"
@@ -27,7 +30,7 @@ func TestUserCreate(t *testing.T) {
 			requestBody:    userReq,
 			mockSetup:      mockUserCreateSuccess,
 			expectedStatus: http.StatusCreated,
-			respCheckers:   checkSuccessUserCreateResponse(),
+			respCheckers:   checkSuccessUserResponse(),
 		},
 		{
 			name:           "Invalid JSON",
@@ -128,6 +131,66 @@ func TestUserList(t *testing.T) {
 			handler.UserList(w, req)
 
 			mockSvc.AssertExpectations(t)
+			assert.Equal(t, c.expectedStatus, w.Code)
+			c.respCheckers(t, w)
+		})
+	}
+}
+
+func TestUserGetByID(t *testing.T) {
+	cases := []struct {
+		name           string
+		mockSetup      func(*mocks.Service)
+		userID         string
+		expectedStatus int
+		respCheckers   func(*testing.T, *httptest.ResponseRecorder)
+	}{
+		{
+			name:           "Successful retrieving user",
+			mockSetup:      mockUserGetByIDSuccess,
+			userID:         strconv.FormatInt(userMock.ID, 10),
+			expectedStatus: http.StatusOK,
+			respCheckers:   checkSuccessUserResponse(),
+		},
+		{
+			name:           "User not found",
+			mockSetup:      mockUserGetByIDNotFound,
+			userID:         "999",
+			expectedStatus: http.StatusNotFound,
+			respCheckers:   checkMessageError(errs.UserNotFound),
+		},
+		{
+			name:           "Invalid user ID",
+			mockSetup:      func(m *mocks.Service) {},
+			userID:         "abc",
+			expectedStatus: http.StatusBadRequest,
+			respCheckers:   checkMessageError(errs.InvalidID),
+		},
+		{
+			name:           "Internal server error",
+			mockSetup:      mockUserGetByIDServerError,
+			userID:         strconv.FormatInt(userMock.ID, 10),
+			expectedStatus: http.StatusInternalServerError,
+			respCheckers:   checkMessageError(errs.InternalServer),
+		},
+	}
+
+	for _, c := range cases {
+		t.Run(c.name, func(t *testing.T) {
+			mockSvc := mocks.NewService(t)
+			c.mockSetup(mockSvc)
+
+			handler := &Handler{svc: mockSvc}
+
+			req := httptest.NewRequest(http.MethodGet, "/users/"+c.userID, nil)
+			w := httptest.NewRecorder()
+
+			rctx := chi.NewRouteContext()
+			rctx.URLParams.Add("id", c.userID)
+			req = req.WithContext(context.WithValue(req.Context(), chi.RouteCtxKey, rctx))
+
+			handler.UserGetByID(w, req)
+
 			assert.Equal(t, c.expectedStatus, w.Code)
 			c.respCheckers(t, w)
 		})

@@ -39,3 +39,17 @@ var (
 		m.On("UserList", mock.Anything).Return(nil, errs.InternalServer)
 	}
 )
+
+var (
+	mockUserGetByIDSuccess = func(m *mocks.Service) {
+		m.On("UserGetByID", mock.Anything, mock.Anything).Return(&userMock, nil)
+	}
+
+	mockUserGetByIDNotFound = func(m *mocks.Service) {
+		m.On("UserGetByID", mock.Anything, mock.Anything).Return(nil, errs.UserNotFound)
+	}
+
+	mockUserGetByIDServerError = func(m *mocks.Service) {
+		m.On("UserGetByID", mock.Anything, mock.Anything).Return(nil, errs.InternalServer)
+	}
+)

@@ -14,7 +14,7 @@ import (
 type ResponseChecker func(*testing.T, *httptest.ResponseRecorder)
 
 var (
-	checkSuccessUserCreateResponse = func() ResponseChecker {
+	checkSuccessUserResponse = func() ResponseChecker {
 		return func(t *testing.T, w *httptest.ResponseRecorder) {
 			var resp response.User
 			err := json.Unmarshal(w.Body.Bytes(), &resp)
