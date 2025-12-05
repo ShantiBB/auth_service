@@ -12,7 +12,7 @@ import (
 
 func main() {
 	if err := godotenv.Load(); err != nil {
-		slog.Warn("error load env: %v", err)
+		slog.Warn("failed load env", "error", err)
 	}
 
 	configPath := os.Getenv("CONFIG_PATH")

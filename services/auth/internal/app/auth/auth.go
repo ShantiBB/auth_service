@@ -39,7 +39,7 @@ func (app *App) MustLoad() {
 	router.New(r, userHandler, app.Config.JWT.AccessSecret)
 
 	server := fmt.Sprintf("%s:%d", app.Config.Server.Host, app.Config.Server.Port)
-	slog.Info("Starting server on %s\n", server)
+	slog.Info("Starting server", "address", server)
 	if err = http.ListenAndServe(server, r); err != nil {
 		panic(err.Error())
 	}
