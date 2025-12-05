@@ -2,14 +2,15 @@ package auth
 
 import (
 	"fmt"
+	"log/slog"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
 
 	"auth/internal/config"
-	"auth/internal/database/postgres"
 	"auth/internal/http/handler"
 	"auth/internal/http/router"
+	"auth/internal/repository/postgres"
 	"auth/internal/service"
 	"fukuro-reserve/pkg/utils/jwt"
 )
@@ -38,7 +39,7 @@ func (app *App) MustLoad() {
 	router.New(r, userHandler, app.Config.JWT.AccessSecret)
 
 	server := fmt.Sprintf("%s:%d", app.Config.Server.Host, app.Config.Server.Port)
-	fmt.Printf("Starting server on %s\n", server)
+	slog.Info("Starting server on %s\n", server)
 	if err = http.ListenAndServe(server, r); err != nil {
 		panic(err.Error())
 	}

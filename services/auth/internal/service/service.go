@@ -1,7 +1,7 @@
 package service
 
 import (
-	"auth/internal/database/postgres"
+	"auth/internal/repository/postgres"
 	"fukuro-reserve/pkg/utils/jwt"
 )
 
