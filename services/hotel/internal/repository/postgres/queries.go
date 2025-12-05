@@ -26,11 +26,19 @@ const (
 	       owner_id, 
 	       description, 
 	       address,
-		   ST_X(location::geometry) AS longitude,
-       	   ST_Y(location::geometry) AS latitude,
+		   st_x(location::geometry) AS longitude,
+       	   st_y(location::geometry) AS latitude,
 	       rating, 
 	       created_at, 
 	       updated_at
 	FROM hotel 
 	WHERE name = $1`
+
+	hotelGetAll = `
+	SELECT id, name, owner_id, address, rating,
+	       st_x(location::geometry) AS longitude,
+	       st_y(location::geometry) AS latitude
+	FROM hotel
+	ORDER BY name
+	LIMIT $1 OFFSET $2;`
 )

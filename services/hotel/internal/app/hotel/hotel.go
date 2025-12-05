@@ -3,10 +3,11 @@ package hotel
 import (
 	"context"
 	"fmt"
+	"log/slog"
 
 	"hotel/internal/config"
-	"hotel/internal/database/postgres"
 	"hotel/internal/domain/models"
+	"hotel/internal/repository/postgres"
 )
 
 type App struct {
@@ -30,11 +31,21 @@ func (app *App) MustLoad() {
 			Latitude:  3.1,
 		},
 	}
-
+	desc2 := "super hotel 2 description"
+	testHotel2 := models.HotelCreate{
+		Name:        "Mumumu",
+		OwnerID:     1,
+		Description: &desc2,
+		Address:     "Pupunya strict",
+		Location: models.Location{
+			Longitude: 2.8,
+			Latitude:  9.6,
+		},
+	}
 	ctx := context.Background()
 	createdHotel, err := repo.HotelCreate(ctx, &testHotel)
 	if err != nil {
-		fmt.Printf("Error create hotel: err - %s\n", err.Error())
+		slog.Error("Error create hotel: err - %s\n", err.Error())
 	}
 
 	fmt.Println("------Hotel created success------")
@@ -47,6 +58,23 @@ func (app *App) MustLoad() {
 	fmt.Printf("rating: %d\n", createdHotel.Rating)
 	fmt.Printf("created: %v\n", createdHotel.CreatedAt)
 	fmt.Printf("updated: %v\n", createdHotel.UpdatedAt)
+	fmt.Println()
+
+	createdHotel2, err := repo.HotelCreate(ctx, &testHotel2)
+	if err != nil {
+		slog.Error("Error create hotel: err - %s\n", err.Error())
+	}
+
+	fmt.Println("------Hotel 2 created success------")
+	fmt.Printf("id: %s\n", createdHotel2.ID.String())
+	fmt.Printf("name: %s\n", createdHotel2.Name)
+	fmt.Printf("owner_id: %d\n", createdHotel2.OwnerID)
+	fmt.Printf("desc: %s\n", *createdHotel2.Description)
+	fmt.Printf("address: %s\n", createdHotel2.Address)
+	fmt.Printf("location: %v\n", createdHotel2.Location)
+	fmt.Printf("rating: %d\n", createdHotel2.Rating)
+	fmt.Printf("created: %v\n", createdHotel2.CreatedAt)
+	fmt.Printf("updated: %v\n", createdHotel2.UpdatedAt)
 	fmt.Println()
 
 	expHotelByID, err := repo.HotelGetByIDOrName(ctx, createdHotel.ID)
@@ -82,4 +110,20 @@ func (app *App) MustLoad() {
 	fmt.Printf("created: %v\n", expHotelByName.CreatedAt)
 	fmt.Printf("updated: %v\n", expHotelByName.UpdatedAt)
 	fmt.Println()
+
+	hotels, err := repo.HotelGetAll(ctx, 1, 10)
+	if err != nil {
+		fmt.Printf("Error get hotel: err - %s\n", err.Error())
+	}
+
+	for _, h := range hotels {
+		fmt.Println("------Hotel get all success------")
+		fmt.Printf("id: %s\n", h.ID.String())
+		fmt.Printf("name: %s\n", h.Name)
+		fmt.Printf("owner_id: %d\n", h.OwnerID)
+		fmt.Printf("address: %s\n", h.Address)
+		fmt.Printf("location: %v\n", h.Location)
+		fmt.Printf("rating: %d\n", h.Rating)
+		fmt.Println()
+	}
 }

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"log"
+	"log/slog"
 	"os"
 
 	"github.com/joho/godotenv"
@@ -12,7 +12,7 @@ import (
 
 func main() {
 	if err := godotenv.Load(); err != nil {
-		log.Printf(".env is not found: %v", err)
+		slog.Warn("error load env: %v", err)
 	}
 
 	configPath := os.Getenv("CONFIG_PATH")

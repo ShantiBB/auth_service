@@ -73,3 +73,27 @@ func (r *Repository) HotelGetByIDOrName(ctx context.Context, field any) (*models
 
 	return &hotel, nil
 }
+
+func (r *Repository) HotelGetAll(ctx context.Context, page, pageSize int) ([]models.HotelShort, error) {
+	var hotels []models.HotelShort
+
+	offset := (page - 1) * pageSize
+	rows, err := r.db.Query(ctx, hotelGetAll, pageSize, offset)
+	if err != nil {
+		return nil, err
+	}
+
+	var h models.HotelShort
+	for rows.Next() {
+		err = rows.Scan(
+			&h.ID, &h.Name, &h.OwnerID, &h.Address, &h.Rating, &h.Location.Longitude, &h.Location.Latitude,
+		)
+		if err != nil {
+			return nil, err
+		}
+
+		hotels = append(hotels, h)
+	}
+
+	return hotels, nil
+}

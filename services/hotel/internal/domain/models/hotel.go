@@ -20,10 +20,19 @@ type Hotel struct {
 	OwnerID     int64
 	Description *string
 	Address     string
-	Location    Location
 	Rating      *float32
+	Location    Location
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
+}
+
+type HotelShort struct {
+	ID       uuid.UUID
+	Name     string
+	OwnerID  int64
+	Address  string
+	Rating   *float32
+	Location Location
 }
 
 type Location struct {
