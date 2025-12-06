@@ -34,10 +34,10 @@ func (r *Repository) UserGetAll(ctx context.Context, limit, offset uint64) (*mod
 		return nil, err
 	}
 
-	var u models.User
+	var u models.UserShort
 	for rows.Next() {
 		if err = rows.
-			Scan(&u.ID, &u.Username, &u.Email, &u.Role, &u.IsActive, &u.CreatedAt, &u.UpdatedAt); err != nil {
+			Scan(&u.ID, &u.Username, &u.Email, &u.Role, &u.IsActive); err != nil {
 			return nil, err
 		}
 

@@ -17,7 +17,7 @@ const (
     WHERE email = $1`
 
 	UserGetAll = `
-    SELECT id, username, email, role, is_active, created_at, updated_at
+    SELECT id, username, email, role, is_active
     FROM users
     ORDER BY id
     LIMIT $1 OFFSET $2;`

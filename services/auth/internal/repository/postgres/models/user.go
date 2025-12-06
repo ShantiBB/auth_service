@@ -18,8 +18,16 @@ type User struct {
 	UpdatedAt time.Time
 }
 
+type UserShort struct {
+	ID       int64
+	Username *string
+	Email    string
+	Role     string
+	IsActive bool
+}
+
 type UserList struct {
-	Users      []User
+	Users      []UserShort
 	TotalCount uint64
 }
 

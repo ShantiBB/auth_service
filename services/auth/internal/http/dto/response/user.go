@@ -12,8 +12,16 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type UserShort struct {
+	ID       int64   `json:"id"`
+	Username *string `json:"username"`
+	Email    string  `json:"email"`
+	Role     string  `json:"role"`
+	IsActive bool    `json:"is_active"`
+}
+
 type UserList struct {
-	Users           []User        `json:"users"`
+	Users           []UserShort   `json:"users"`
 	CurrentPage     uint64        `json:"current_page"`
 	Limit           uint64        `json:"limit"`
 	Links           UserListLinks `json:"links"`
@@ -26,10 +34,4 @@ type UserListLinks struct {
 	Next  *string `json:"next"`
 	First string  `json:"first"`
 	Last  string  `json:"last"`
-}
-
-type UserShort struct {
-	ID       int64   `json:"id"`
-	Username *string `json:"username"`
-	Email    string  `json:"email"`
 }

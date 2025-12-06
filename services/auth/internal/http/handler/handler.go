@@ -45,3 +45,13 @@ func (h *Handler) UserEntityToResponse(user *models.User) *response.User {
 		UpdatedAt: user.UpdatedAt,
 	}
 }
+
+func (h *Handler) UserShortEntityToResponse(user *models.UserShort) *response.UserShort {
+	return &response.UserShort{
+		ID:       user.ID,
+		Username: user.Username,
+		Email:    user.Email,
+		Role:     user.Role,
+		IsActive: user.IsActive,
+	}
+}
