@@ -1,4 +1,4 @@
-package handler
+package unit
 
 import (
 	"github.com/stretchr/testify/mock"
@@ -9,17 +9,17 @@ import (
 
 // RegisterByEmail mocks
 var (
-	mockRegisterSuccess = func(m *mocks.MockService) {
+	MockRegisterSuccess = func(m *mocks.MockService) {
 		m.On("RegisterByEmail", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
-			Return(&tokensMock, nil)
+			Return(&TokensMock, nil)
 	}
 
-	mockRegisterConflict = func(m *mocks.MockService) {
+	MockRegisterConflict = func(m *mocks.MockService) {
 		m.On("RegisterByEmail", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
 			Return(nil, consts.UniqueEmailField)
 	}
 
-	mockRegisterServerError = func(m *mocks.MockService) {
+	MockRegisterServerError = func(m *mocks.MockService) {
 		m.On("RegisterByEmail", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
 			Return(nil, consts.InternalServer)
 	}
@@ -27,22 +27,22 @@ var (
 
 // LoginByEmail mocks
 var (
-	mockLoginSuccess = func(m *mocks.MockService) {
+	MockLoginSuccess = func(m *mocks.MockService) {
 		m.On("LoginByEmail", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
-			Return(&tokensMock, nil)
+			Return(&TokensMock, nil)
 	}
 
-	mockLoginInvalidCredentials = func(m *mocks.MockService) {
+	MockLoginInvalidCredentials = func(m *mocks.MockService) {
 		m.On("LoginByEmail", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
 			Return(nil, consts.InvalidCredentials)
 	}
 
-	mockLoginUserNotFound = func(m *mocks.MockService) {
+	MockLoginUserNotFound = func(m *mocks.MockService) {
 		m.On("LoginByEmail", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
 			Return(nil, consts.UserNotFound)
 	}
 
-	mockLoginServerError = func(m *mocks.MockService) {
+	MockLoginServerError = func(m *mocks.MockService) {
 		m.On("LoginByEmail", mock.Anything, mock.Anything, mock.Anything, mock.Anything).
 			Return(nil, consts.InternalServer)
 	}
@@ -50,17 +50,17 @@ var (
 
 // RefreshToken mocks
 var (
-	mockRefreshSuccess = func(m *mocks.MockService) {
+	MockRefreshSuccess = func(m *mocks.MockService) {
 		m.On("RefreshToken", mock.Anything, mock.Anything).
-			Return(&tokensMock, nil)
+			Return(&TokensMock, nil)
 	}
 
-	mockRefreshInvalidToken = func(m *mocks.MockService) {
+	MockRefreshInvalidToken = func(m *mocks.MockService) {
 		m.On("RefreshToken", mock.Anything, mock.Anything).
 			Return(nil, consts.InvalidRefreshToken)
 	}
 
-	mockRefreshServerError = func(m *mocks.MockService) {
+	MockRefreshServerError = func(m *mocks.MockService) {
 		m.On("RefreshToken", mock.Anything, mock.Anything).
 			Return(nil, consts.InternalServer)
 	}

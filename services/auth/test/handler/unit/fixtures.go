@@ -1,4 +1,4 @@
-package handler
+package unit
 
 import (
 	"time"
@@ -10,14 +10,14 @@ import (
 
 var (
 	usernameReq = "test"
-	userReq     = request.UserCreate{
+	UserReq     = request.UserCreate{
 		Username: &usernameReq,
 		Email:    "test@example.com",
 		Password: "password123",
 	}
 
 	usernameMock = "test-user"
-	userMock     = models.User{
+	UserMock     = models.User{
 		ID:        1,
 		Email:     "test@example.com",
 		Username:  &usernameMock,
@@ -27,26 +27,26 @@ var (
 		UpdatedAt: time.Now(),
 	}
 
-	registerReq = request.UserCreate{
+	RegisterReq = request.UserCreate{
 		Email:    "test@example.com",
 		Password: "password123",
 	}
 
-	loginReq = request.UserCreate{
+	LoginReq = request.UserCreate{
 		Email:    "test@example.com",
 		Password: "password123",
 	}
 
-	refreshReq = jwt.RefreshToken{
+	RefreshReq = jwt.RefreshToken{
 		RefreshToken: "valid-refresh-tokenCreds",
 	}
 
-	tokensMock = jwt.Token{
+	TokensMock = jwt.Token{
 		Access:  "access-tokenCreds",
 		Refresh: "refresh-tokenCreds",
 	}
 
-	loginBadEmailAndPasswordReq = request.UserCreate{
+	LoginBadEmailAndPasswordReq = request.UserCreate{
 		Email:    "test.com",
 		Password: "123",
 	}

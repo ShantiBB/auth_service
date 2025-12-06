@@ -1,4 +1,4 @@
-package handler
+package unit
 
 import (
 	"github.com/stretchr/testify/mock"
@@ -9,41 +9,41 @@ import (
 )
 
 var (
-	mockUserCreateSuccess = func(m *mocks.MockService) {
-		m.On("UserCreate", mock.Anything, mock.Anything).Return(&userMock, nil)
+	MockUserCreateSuccess = func(m *mocks.MockService) {
+		m.On("UserCreate", mock.Anything, mock.Anything).Return(&UserMock, nil)
 	}
 
-	mockUserCreateConflict = func(m *mocks.MockService) {
+	MockUserCreateConflict = func(m *mocks.MockService) {
 		m.On("UserCreate", mock.Anything, mock.Anything).Return(nil, consts.UniqueEmailField)
 	}
 
-	mockUserCreateServerError = func(m *mocks.MockService) {
+	MockUserCreateServerError = func(m *mocks.MockService) {
 		m.On("UserCreate", mock.Anything, mock.Anything).Return(nil, consts.InternalServer)
 	}
 )
 
 var (
-	mockUserGetAllSuccess = func(m *mocks.MockService) {
+	MockUserGetAllSuccess = func(m *mocks.MockService) {
 		m.On("UserGetAll", mock.Anything, uint64(100), uint64(0)).
-			Return([]models.User{userMock}, nil)
+			Return(&models.UserList{Users: []models.User{UserMock}}, nil)
 	}
 
-	mockUserGetAllServerError = func(m *mocks.MockService) {
+	MockUserGetAllServerError = func(m *mocks.MockService) {
 		m.On("UserGetAll", mock.Anything, mock.Anything, mock.Anything).
 			Return(nil, consts.InternalServer)
 	}
 )
 
 var (
-	mockUserGetByIDSuccess = func(m *mocks.MockService) {
-		m.On("UserGetByID", mock.Anything, mock.Anything).Return(&userMock, nil)
+	MockUserGetByIDSuccess = func(m *mocks.MockService) {
+		m.On("UserGetByID", mock.Anything, mock.Anything).Return(&UserMock, nil)
 	}
 
-	mockUserGetByIDNotFound = func(m *mocks.MockService) {
+	MockUserGetByIDNotFound = func(m *mocks.MockService) {
 		m.On("UserGetByID", mock.Anything, mock.Anything).Return(nil, consts.UserNotFound)
 	}
 
-	mockUserGetByIDServerError = func(m *mocks.MockService) {
+	MockUserGetByIDServerError = func(m *mocks.MockService) {
 		m.On("UserGetByID", mock.Anything, mock.Anything).Return(nil, consts.InternalServer)
 	}
 )

@@ -310,23 +310,23 @@ func (_c *MockService_UserDeleteByID_Call) RunAndReturn(run func(context.Context
 }
 
 // UserGetAll provides a mock function with given fields: ctx, limit, offset
-func (_m *MockService) UserGetAll(ctx context.Context, limit uint64, offset uint64) ([]models.User, error) {
+func (_m *MockService) UserGetAll(ctx context.Context, limit uint64, offset uint64) (*models.UserList, error) {
 	ret := _m.Called(ctx, limit, offset)
 
 	if len(ret) == 0 {
 		panic("no return value specified for UserGetAll")
 	}
 
-	var r0 []models.User
+	var r0 *models.UserList
 	var r1 error
-	if rf, ok := ret.Get(0).(func(context.Context, uint64, uint64) ([]models.User, error)); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, uint64, uint64) (*models.UserList, error)); ok {
 		return rf(ctx, limit, offset)
 	}
-	if rf, ok := ret.Get(0).(func(context.Context, uint64, uint64) []models.User); ok {
+	if rf, ok := ret.Get(0).(func(context.Context, uint64, uint64) *models.UserList); ok {
 		r0 = rf(ctx, limit, offset)
 	} else {
 		if ret.Get(0) != nil {
-			r0 = ret.Get(0).([]models.User)
+			r0 = ret.Get(0).(*models.UserList)
 		}
 	}
 
@@ -359,12 +359,12 @@ func (_c *MockService_UserGetAll_Call) Run(run func(ctx context.Context, limit u
 	return _c
 }
 
-func (_c *MockService_UserGetAll_Call) Return(_a0 []models.User, _a1 error) *MockService_UserGetAll_Call {
+func (_c *MockService_UserGetAll_Call) Return(_a0 *models.UserList, _a1 error) *MockService_UserGetAll_Call {
 	_c.Call.Return(_a0, _a1)
 	return _c
 }
 
-func (_c *MockService_UserGetAll_Call) RunAndReturn(run func(context.Context, uint64, uint64) ([]models.User, error)) *MockService_UserGetAll_Call {
+func (_c *MockService_UserGetAll_Call) RunAndReturn(run func(context.Context, uint64, uint64) (*models.UserList, error)) *MockService_UserGetAll_Call {
 	_c.Call.Return(run)
 	return _c
 }
