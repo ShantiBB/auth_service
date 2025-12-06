@@ -76,8 +76,8 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 // @Tags         users
 // @Accept       json
 // @Produce      json
-// @Param        page    query     uint  false  "Page"   default(1)     minimum(1)
-// @Param        limit   query     uint  false  "Limit"  default(100)   minimum(0)
+// @Param        page    query     uint  false  "Page"   default(1)
+// @Param        limit   query     uint  false  "Limit"  default(100)
 // @Success      200     {object}  response.UserList
 // @Failure      401     {object}  response.ErrorSchema
 // @Failure      500     {object}  response.ErrorSchema
@@ -107,12 +107,12 @@ func (h *Handler) UserGetAll(w http.ResponseWriter, r *http.Request) {
 	}
 
 	totalPageCount := (userList.TotalCount + pagination.Limit - 1) / pagination.Limit
+	pageLinks := helper.BuildPaginationLinks(r, pagination, totalPageCount)
 	usersResp := response.UserList{
 		Users:           users,
 		CurrentPage:     pagination.Page,
 		Limit:           pagination.Limit,
-		HasPrevPage:     pagination.Page > 1,
-		HasNextPage:     pagination.Page < totalPageCount,
+		Links:           pageLinks,
 		TotalPageCount:  totalPageCount,
 		TotalUsersCount: userList.TotalCount,
 	}

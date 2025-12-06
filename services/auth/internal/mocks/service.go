@@ -309,9 +309,9 @@ func (_c *MockService_UserDeleteByID_Call) RunAndReturn(run func(context.Context
 	return _c
 }
 
-// UserGetAll provides a mock function with given fields: ctx, limit, offset
-func (_m *MockService) UserGetAll(ctx context.Context, limit uint64, offset uint64) (*models.UserList, error) {
-	ret := _m.Called(ctx, limit, offset)
+// UserGetAll provides a mock function with given fields: ctx, page, limit
+func (_m *MockService) UserGetAll(ctx context.Context, page uint64, limit uint64) (*models.UserList, error) {
+	ret := _m.Called(ctx, page, limit)
 
 	if len(ret) == 0 {
 		panic("no return value specified for UserGetAll")
@@ -320,10 +320,10 @@ func (_m *MockService) UserGetAll(ctx context.Context, limit uint64, offset uint
 	var r0 *models.UserList
 	var r1 error
 	if rf, ok := ret.Get(0).(func(context.Context, uint64, uint64) (*models.UserList, error)); ok {
-		return rf(ctx, limit, offset)
+		return rf(ctx, page, limit)
 	}
 	if rf, ok := ret.Get(0).(func(context.Context, uint64, uint64) *models.UserList); ok {
-		r0 = rf(ctx, limit, offset)
+		r0 = rf(ctx, page, limit)
 	} else {
 		if ret.Get(0) != nil {
 			r0 = ret.Get(0).(*models.UserList)
@@ -331,7 +331,7 @@ func (_m *MockService) UserGetAll(ctx context.Context, limit uint64, offset uint
 	}
 
 	if rf, ok := ret.Get(1).(func(context.Context, uint64, uint64) error); ok {
-		r1 = rf(ctx, limit, offset)
+		r1 = rf(ctx, page, limit)
 	} else {
 		r1 = ret.Error(1)
 	}
@@ -346,13 +346,13 @@ type MockService_UserGetAll_Call struct {
 
 // UserGetAll is a helper method to define mock.On call
 //   - ctx context.Context
+//   - page uint64
 //   - limit uint64
-//   - offset uint64
-func (_e *MockService_Expecter) UserGetAll(ctx interface{}, limit interface{}, offset interface{}) *MockService_UserGetAll_Call {
-	return &MockService_UserGetAll_Call{Call: _e.mock.On("UserGetAll", ctx, limit, offset)}
+func (_e *MockService_Expecter) UserGetAll(ctx interface{}, page interface{}, limit interface{}) *MockService_UserGetAll_Call {
+	return &MockService_UserGetAll_Call{Call: _e.mock.On("UserGetAll", ctx, page, limit)}
 }
 
-func (_c *MockService_UserGetAll_Call) Run(run func(ctx context.Context, limit uint64, offset uint64)) *MockService_UserGetAll_Call {
+func (_c *MockService_UserGetAll_Call) Run(run func(ctx context.Context, page uint64, limit uint64)) *MockService_UserGetAll_Call {
 	_c.Call.Run(func(args mock.Arguments) {
 		run(args[0].(context.Context), args[1].(uint64), args[2].(uint64))
 	})

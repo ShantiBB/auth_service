@@ -31,33 +31,18 @@ var (
 
 	CheckSuccessUserGetAllResponse = func() ResponseChecker {
 		return func(t *testing.T, w *httptest.ResponseRecorder) {
-			var resp []response.User
+			var resp response.UserList
 			err := json.Unmarshal(w.Body.Bytes(), &resp)
 			assert.NoError(t, err)
-			assert.Equal(t, resp[0].ID, UserMock.ID)
-			assert.Equal(t, resp[0].Email, UserMock.Email)
-			assert.Equal(t, resp[0].Username, UserMock.Username)
-			assert.Equal(t, resp[0].Role, UserMock.Role)
-			assert.Equal(t, resp[0].IsActive, UserMock.IsActive)
-			assert.NotEmpty(t, resp[0].CreatedAt)
-			assert.NotEmpty(t, resp[0].UpdatedAt)
+			assert.Equal(t, resp.Users[0].ID, UserMock.ID)
+			assert.Equal(t, resp.Users[0].Email, UserMock.Email)
+			assert.Equal(t, resp.Users[0].Username, UserMock.Username)
+			assert.Equal(t, resp.Users[0].Role, UserMock.Role)
+			assert.Equal(t, resp.Users[0].IsActive, UserMock.IsActive)
+			assert.NotEmpty(t, resp.Users[0].CreatedAt)
+			assert.NotEmpty(t, resp.Users[0].UpdatedAt)
 		}
 	}
-
-	//checkSuccessUserGetAllResponse = func() ResponseChecker {
-	//	return func(t *testing.T, w *httptest.ResponseRecorder) {
-	//		var resp response.UserList
-	//		err := json.Unmarshal(w.Body.Bytes(), &resp)
-	//		assert.NoError(t, err)
-	//		assert.Equal(t, resp.Users[0].ID, userMock.ID)
-	//		assert.Equal(t, resp.Users[0].Email, userMock.Email)
-	//		assert.Equal(t, resp.Users[0].Username, userMock.Username)
-	//		assert.Equal(t, resp.Users[0].Role, userMock.Role)
-	//		assert.Equal(t, resp.Users[0].IsActive, userMock.IsActive)
-	//		assert.NotEmpty(t, resp.Users[0].CreatedAt)
-	//		assert.NotEmpty(t, resp.Users[0].UpdatedAt)
-	//	}
-	//}
 
 	CheckSuccessTokenResponse = func() ResponseChecker {
 		return func(t *testing.T, w *httptest.ResponseRecorder) {

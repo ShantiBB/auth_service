@@ -9,9 +9,7 @@ import (
 )
 
 var (
-	usernameReq = "test"
-	UserReq     = request.UserCreate{
-		Username: &usernameReq,
+	UserReq = request.UserCreate{
 		Email:    "test@example.com",
 		Password: "password123",
 	}

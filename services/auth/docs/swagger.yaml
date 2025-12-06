@@ -60,12 +60,10 @@ definitions:
     properties:
       current_page:
         type: integer
-      has_next_page:
-        type: boolean
-      has_prev_page:
-        type: boolean
       limit:
         type: integer
+      links:
+        $ref: '#/definitions/response.UserListLinks'
       total_page_count:
         type: integer
       total_users_count:
@@ -74,6 +72,17 @@ definitions:
         items:
           $ref: '#/definitions/response.User'
         type: array
+    type: object
+  response.UserListLinks:
+    properties:
+      first:
+        type: string
+      last:
+        type: string
+      next:
+        type: string
+      prev:
+        type: string
     type: object
 host: localhost:8081
 info:
@@ -188,13 +197,11 @@ paths:
       - default: 1
         description: Page
         in: query
-        minimum: 1
         name: page
         type: integer
       - default: 100
         description: Limit
         in: query
-        minimum: 0
         name: limit
         type: integer
       produces:

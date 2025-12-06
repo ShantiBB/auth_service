@@ -24,8 +24,14 @@ var (
 
 var (
 	MockUserGetAllSuccess = func(m *mocks.MockService) {
-		m.On("UserGetAll", mock.Anything, uint64(100), uint64(0)).
-			Return(&models.UserList{Users: []models.User{UserMock}}, nil)
+		m.On("UserGetAll",
+			mock.Anything, // context
+			mock.Anything, // page
+			mock.Anything, // limit
+		).Return(&models.UserList{
+			Users:      []models.User{UserMock},
+			TotalCount: 1,
+		}, nil)
 	}
 
 	MockUserGetAllServerError = func(m *mocks.MockService) {

@@ -184,7 +184,6 @@ const docTemplate = `{
                 "summary": "Get users",
                 "parameters": [
                     {
-                        "minimum": 1,
                         "type": "integer",
                         "default": 1,
                         "description": "Page",
@@ -192,7 +191,6 @@ const docTemplate = `{
                         "in": "query"
                     },
                     {
-                        "minimum": 0,
                         "type": "integer",
                         "default": 100,
                         "description": "Limit",
@@ -565,14 +563,11 @@ const docTemplate = `{
                 "current_page": {
                     "type": "integer"
                 },
-                "has_next_page": {
-                    "type": "boolean"
-                },
-                "has_prev_page": {
-                    "type": "boolean"
-                },
                 "limit": {
                     "type": "integer"
+                },
+                "links": {
+                    "$ref": "#/definitions/response.UserListLinks"
                 },
                 "total_page_count": {
                     "type": "integer"
@@ -585,6 +580,23 @@ const docTemplate = `{
                     "items": {
                         "$ref": "#/definitions/response.User"
                     }
+                }
+            }
+        },
+        "response.UserListLinks": {
+            "type": "object",
+            "properties": {
+                "first": {
+                    "type": "string"
+                },
+                "last": {
+                    "type": "string"
+                },
+                "next": {
+                    "type": "string"
+                },
+                "prev": {
+                    "type": "string"
                 }
             }
         }

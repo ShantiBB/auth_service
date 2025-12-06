@@ -13,13 +13,19 @@ type User struct {
 }
 
 type UserList struct {
-	Users           []User `json:"users"`
-	CurrentPage     uint64 `json:"current_page"`
-	Limit           uint64 `json:"limit"`
-	HasPrevPage     bool   `json:"has_prev_page"`
-	HasNextPage     bool   `json:"has_next_page"`
-	TotalPageCount  uint64 `json:"total_page_count"`
-	TotalUsersCount uint64 `json:"total_users_count"`
+	Users           []User        `json:"users"`
+	CurrentPage     uint64        `json:"current_page"`
+	Limit           uint64        `json:"limit"`
+	Links           UserListLinks `json:"links"`
+	TotalPageCount  uint64        `json:"total_page_count"`
+	TotalUsersCount uint64        `json:"total_users_count"`
+}
+
+type UserListLinks struct {
+	Prev  *string `json:"prev"`
+	Next  *string `json:"next"`
+	First string  `json:"first"`
+	Last  string  `json:"last"`
 }
 
 type UserShort struct {
