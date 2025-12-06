@@ -10,7 +10,7 @@ type Repository interface {
 }
 
 type Service struct {
-	repo       *postgres.Repository
+	repo       Repository
 	tokenCreds *jwt.TokenCredentials
 }
 

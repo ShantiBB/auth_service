@@ -19,7 +19,7 @@ import (
 type UserService interface {
 	UserCreate(ctx context.Context, user models.UserCreate) (*models.User, error)
 	UserGetByID(ctx context.Context, id int64) (*models.User, error)
-	UserGetAll(ctx context.Context, limit, offset uint64) ([]models.User, error)
+	UserGetAll(ctx context.Context, limit, offset uint64) (*models.UserList, error)
 	UserUpdateByID(ctx context.Context, user *models.User) (*models.User, error)
 	UserDeleteByID(ctx context.Context, id int64) error
 }
@@ -93,18 +93,19 @@ func (h *Handler) UserGetAll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	users, err := h.svc.UserGetAll(ctx, pagination.Limit, pagination.Offset)
+	userList, err := h.svc.UserGetAll(ctx, pagination.Limit, pagination.Offset)
 	if err != nil {
 		errMsg := response.ErrorResp(consts.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
 
-	usersResp := make([]response.User, 0, len(users))
-	for _, user := range users {
+	usersResp := make([]response.User, 0, len(userList.Users))
+	for _, user := range userList.Users {
 		userResponse := h.UserEntityToResponse(&user)
 		usersResp = append(usersResp, *userResponse)
 	}
+
 	helper.SendSuccess(w, r, http.StatusOK, usersResp)
 }
 

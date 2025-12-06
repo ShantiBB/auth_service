@@ -2,8 +2,8 @@ package postgres
 
 const (
 	UserCreate = `
-    INSERT INTO users (username, email, password)
-    VALUES ($1, $2, $3)
+    INSERT INTO users (email, password)
+    VALUES ($1, $2)
     RETURNING id, role, is_active, created_at, updated_at`
 
 	UserGetByID = `

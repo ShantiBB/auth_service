@@ -33,7 +33,7 @@ func (app *App) MustLoad() {
 	}
 
 	userService := service.New(userRepo, &tokenCredentials)
-	userHandler := handler.New(userService, &tokenCredentials)
+	userHandler := handler.New(userService)
 
 	r := chi.NewRouter()
 	router.New(r, userHandler, app.Config.JWT.AccessSecret)

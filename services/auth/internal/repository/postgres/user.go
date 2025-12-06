@@ -13,9 +13,8 @@ import (
 
 func (r *Repository) UserCreate(ctx context.Context, u models.UserCreate) (*models.User, error) {
 	newUser := u.ToUserRead()
-	err := r.db.QueryRow(
-		ctx, UserCreate, u.Username, u.Email, u.Password,
-	).Scan(&newUser.ID, &newUser.Role, &newUser.IsActive, &newUser.CreatedAt, &newUser.UpdatedAt)
+	err := r.db.QueryRow(ctx, UserCreate, u.Email, u.Password).
+		Scan(&newUser.ID, &newUser.Role, &newUser.IsActive, &newUser.CreatedAt, &newUser.UpdatedAt)
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
@@ -27,8 +26,8 @@ func (r *Repository) UserCreate(ctx context.Context, u models.UserCreate) (*mode
 	return &newUser, nil
 }
 
-func (r *Repository) UserGetAll(ctx context.Context, limit, offset uint64) ([]models.User, error) {
-	var users []models.User
+func (r *Repository) UserGetAll(ctx context.Context, limit, offset uint64) (*models.UserList, error) {
+	var userList models.UserList
 
 	rows, err := r.db.Query(ctx, UserGetAll, limit, offset)
 	if err != nil {
@@ -37,15 +36,19 @@ func (r *Repository) UserGetAll(ctx context.Context, limit, offset uint64) ([]mo
 
 	var u models.User
 	for rows.Next() {
-		err = rows.Scan(&u.ID, &u.Username, &u.Email, &u.Role, &u.IsActive, &u.CreatedAt, &u.UpdatedAt)
-		if err != nil {
+		if err = rows.
+			Scan(&u.ID, &u.Username, &u.Email, &u.Role, &u.IsActive, &u.CreatedAt, &u.UpdatedAt); err != nil {
 			return nil, err
 		}
 
-		users = append(users, u)
+		userList.Users = append(userList.Users, u)
 	}
 
-	return users, nil
+	if err = r.db.QueryRow(ctx, UserGetCountRows).Scan(&userList.TotalCount); err != nil {
+		return nil, err
+	}
+
+	return &userList, nil
 }
 
 func (r *Repository) UserGetByID(ctx context.Context, id int64) (*models.User, error) {
@@ -109,13 +112,4 @@ func (r *Repository) UserDeleteByID(ctx context.Context, id int64) error {
 	}
 
 	return nil
-}
-
-func (r *Repository) UserGetCountRows(ctx context.Context) (int, error) {
-	var count int
-	if err := r.db.QueryRow(ctx, UserGetCountRows).Scan(&count); err != nil {
-		return 0, err
-	}
-
-	return count, nil
 }

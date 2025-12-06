@@ -4,7 +4,6 @@ import (
 	"auth/internal/http/dto/request"
 	"auth/internal/http/dto/response"
 	"auth/internal/repository/postgres/models"
-	"fukuro-reserve/pkg/utils/jwt"
 )
 
 type Service interface {
@@ -13,20 +12,15 @@ type Service interface {
 }
 
 type Handler struct {
-	svc        Service
-	tokenCreds *jwt.TokenCredentials
+	svc Service
 }
 
-func New(svc Service, token *jwt.TokenCredentials) *Handler {
-	return &Handler{
-		svc:        svc,
-		tokenCreds: token,
-	}
+func New(svc Service) *Handler {
+	return &Handler{svc: svc}
 }
 
 func (h *Handler) UserCreateRequestToEntity(req *request.UserCreate, hash string) *models.UserCreate {
 	return &models.UserCreate{
-		Username: req.Username,
 		Email:    req.Email,
 		Password: hash,
 	}

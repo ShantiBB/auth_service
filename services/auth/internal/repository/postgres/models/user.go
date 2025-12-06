@@ -18,6 +18,11 @@ type User struct {
 	UpdatedAt time.Time
 }
 
+type UserList struct {
+	Users      []User
+	TotalCount int
+}
+
 type UserUpdatePassword struct {
 	ID          int64
 	Password    string

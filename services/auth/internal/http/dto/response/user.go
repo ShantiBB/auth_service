@@ -12,6 +12,15 @@ type User struct {
 	UpdatedAt time.Time `json:"updated_at"`
 }
 
+type UserList struct {
+	Users       []User `json:"users"`
+	Limit       int    `json:"limit"`
+	CurrentPage int    `json:"current_page"`
+	HasNextPage bool   `json:"has_next_page"`
+	HasPrevPage bool   `json:"has_prev_page"`
+	TotalCount  int    `json:"total_count"`
+}
+
 type UserShort struct {
 	ID       int64   `json:"id"`
 	Username *string `json:"username"`

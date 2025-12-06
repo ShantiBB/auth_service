@@ -9,8 +9,9 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	request2 "auth/internal/http/dto/request"
+	"auth/internal/http/dto/request"
 	"auth/internal/mocks"
+	"auth/test/handler/unit"
 	"fukuro-reserve/pkg/utils/consts"
 	"fukuro-reserve/pkg/utils/jwt"
 )
@@ -21,52 +22,52 @@ func TestRegisterByEmail(t *testing.T) {
 		requestBody    interface{}
 		mockSetup      func(*mocks.MockService)
 		expectedStatus int
-		respCheckers   ResponseChecker
+		respCheckers   unit.ResponseChecker
 	}{
 		{
 			name:           "Successful registration",
-			requestBody:    registerReq,
-			mockSetup:      mockRegisterSuccess,
+			requestBody:    unit.RegisterReq,
+			mockSetup:      unit.MockRegisterSuccess,
 			expectedStatus: http.StatusCreated,
-			respCheckers:   checkSuccessTokenResponse(),
+			respCheckers:   unit.CheckSuccessTokenResponse(),
 		},
 		{
 			name:           "Invalid JSON",
 			requestBody:    "",
 			mockSetup:      func(m *mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers:   checkMessageError(consts.InvalidJSON),
+			respCheckers:   unit.CheckMessageError(consts.InvalidJSON),
 		},
 		{
 			name:           "Email and Password required",
-			requestBody:    request2.UserCreate{},
+			requestBody:    request.UserCreate{},
 			mockSetup:      func(m *mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers:   checkFieldsRequired("Email", "Password"),
+			respCheckers:   unit.CheckFieldsRequired("Email", "Password"),
 		},
 		{
 			name:           "Invalid Email and Password",
-			requestBody:    loginBadEmailAndPasswordReq,
+			requestBody:    unit.LoginBadEmailAndPasswordReq,
 			mockSetup:      func(m *mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers: checkFieldsInvalid(map[string]error{
+			respCheckers: unit.CheckFieldsInvalid(map[string]error{
 				"Email":    consts.InvalidEmail,
 				"Password": consts.InvalidPassword,
 			}),
 		},
 		{
 			name:           "Email already exists",
-			requestBody:    registerReq,
-			mockSetup:      mockRegisterConflict,
+			requestBody:    unit.RegisterReq,
+			mockSetup:      unit.MockRegisterConflict,
 			expectedStatus: http.StatusConflict,
-			respCheckers:   checkMessageError(consts.UniqueEmailField),
+			respCheckers:   unit.CheckMessageError(consts.UniqueEmailField),
 		},
 		{
 			name:           "Internal server error during registration",
-			requestBody:    registerReq,
-			mockSetup:      mockRegisterServerError,
+			requestBody:    unit.RegisterReq,
+			mockSetup:      unit.MockRegisterServerError,
 			expectedStatus: http.StatusInternalServerError,
-			respCheckers:   checkMessageError(consts.InternalServer),
+			respCheckers:   unit.CheckMessageError(consts.InternalServer),
 		},
 	}
 
@@ -106,52 +107,52 @@ func TestLoginByEmail(t *testing.T) {
 	}{
 		{
 			name:           "Successful login",
-			requestBody:    loginReq,
-			mockSetup:      mockLoginSuccess,
+			requestBody:    unit.LoginReq,
+			mockSetup:      unit.MockLoginSuccess,
 			expectedStatus: http.StatusOK,
-			respCheckers:   checkSuccessTokenResponse(),
+			respCheckers:   unit.CheckSuccessTokenResponse(),
 		},
 		{
 			name:           "Invalid JSON",
 			requestBody:    "",
 			mockSetup:      func(m *mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers:   checkMessageError(consts.InvalidJSON),
+			respCheckers:   unit.CheckMessageError(consts.InvalidJSON),
 		},
 		{
 			name:           "Email and Password required",
-			requestBody:    request2.UserCreate{},
+			requestBody:    request.UserCreate{},
 			mockSetup:      func(m *mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers:   checkFieldsRequired("Email", "Password"),
+			respCheckers:   unit.CheckFieldsRequired("Email", "Password"),
 		},
 		{
 			name:           "Invalid Email",
-			requestBody:    loginBadEmailAndPasswordReq,
+			requestBody:    unit.LoginBadEmailAndPasswordReq,
 			mockSetup:      func(m *mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers:   checkFieldsInvalid(map[string]error{"Email": consts.InvalidEmail}),
+			respCheckers:   unit.CheckFieldsInvalid(map[string]error{"Email": consts.InvalidEmail}),
 		},
 		{
 			name:           "Invalid credentials",
-			requestBody:    loginReq,
-			mockSetup:      mockLoginInvalidCredentials,
+			requestBody:    unit.LoginReq,
+			mockSetup:      unit.MockLoginInvalidCredentials,
 			expectedStatus: http.StatusUnauthorized,
-			respCheckers:   checkMessageError(consts.InvalidCredentials),
+			respCheckers:   unit.CheckMessageError(consts.InvalidCredentials),
 		},
 		{
 			name:           "User not found",
-			requestBody:    loginReq,
-			mockSetup:      mockLoginUserNotFound,
+			requestBody:    unit.LoginReq,
+			mockSetup:      unit.MockLoginUserNotFound,
 			expectedStatus: http.StatusUnauthorized,
-			respCheckers:   checkMessageError(consts.InvalidCredentials),
+			respCheckers:   unit.CheckMessageError(consts.InvalidCredentials),
 		},
 		{
 			name:           "Internal server error",
-			requestBody:    loginReq,
-			mockSetup:      mockLoginServerError,
+			requestBody:    unit.LoginReq,
+			mockSetup:      unit.MockLoginServerError,
 			expectedStatus: http.StatusInternalServerError,
-			respCheckers:   checkMessageError(consts.InternalServer),
+			respCheckers:   unit.CheckMessageError(consts.InternalServer),
 		},
 	}
 
@@ -191,38 +192,38 @@ func TestRefreshToken(t *testing.T) {
 	}{
 		{
 			name:           "Successful tokenCreds refresh",
-			requestBody:    refreshReq,
-			mockSetup:      mockRefreshSuccess,
+			requestBody:    unit.RefreshReq,
+			mockSetup:      unit.MockRefreshSuccess,
 			expectedStatus: http.StatusOK,
-			respCheckers:   checkSuccessTokenResponse(),
+			respCheckers:   unit.CheckSuccessTokenResponse(),
 		},
 		{
 			name:           "Invalid JSON",
 			requestBody:    "",
 			mockSetup:      func(m *mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers:   checkMessageError(consts.InvalidJSON),
+			respCheckers:   unit.CheckMessageError(consts.InvalidJSON),
 		},
 		{
 			name:           "Refresh tokenCreds required",
 			requestBody:    jwt.RefreshToken{},
 			mockSetup:      func(m *mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers:   checkFieldsRequired("RefreshToken"),
+			respCheckers:   unit.CheckFieldsRequired("RefreshToken"),
 		},
 		{
 			name:           "Invalid refresh tokenCreds",
-			requestBody:    refreshReq,
-			mockSetup:      mockRefreshInvalidToken,
+			requestBody:    unit.RefreshReq,
+			mockSetup:      unit.MockRefreshInvalidToken,
 			expectedStatus: http.StatusUnauthorized,
-			respCheckers:   checkMessageError(consts.InvalidRefreshToken),
+			respCheckers:   unit.CheckMessageError(consts.InvalidRefreshToken),
 		},
 		{
 			name:           "Internal server error during tokenCreds refresh",
-			requestBody:    refreshReq,
-			mockSetup:      mockRefreshServerError,
+			requestBody:    unit.RefreshReq,
+			mockSetup:      unit.MockRefreshServerError,
 			expectedStatus: http.StatusInternalServerError,
-			respCheckers:   checkMessageError(consts.InternalServer),
+			respCheckers:   unit.CheckMessageError(consts.InternalServer),
 		},
 	}
 

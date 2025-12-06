@@ -1,18 +1,17 @@
 package request
 
 type UserCreate struct {
-	Username *string `json:"username"`
-	Email    string  `json:"email" validate:"required,email"`
-	Password string  `json:"password" validate:"required,min=8"`
+	Email    string `json:"email" validate:"required,email" example:"user@example.com"`
+	Password string `json:"password" validate:"required,min=8" example:"strongpass123!#"`
 }
 
 type UserUpdate struct {
-	Username *string `json:"username"`
-	Email    string  `json:"email" validate:"email"`
+	Username *string `json:"username" example:"username"`
+	Email    string  `json:"email" validate:"email" example:"user@example.com"`
 }
 
 type UserUpdateRole struct {
-	Role string `json:"role" validate:"required"`
+	Role string `json:"role" validate:"required" example:"user"`
 }
 
 type UserUpdateStatus struct {

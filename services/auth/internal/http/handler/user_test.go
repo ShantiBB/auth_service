@@ -14,6 +14,7 @@ import (
 
 	"auth/internal/http/dto/request"
 	"auth/internal/mocks"
+	"auth/test/handler/unit"
 	"fukuro-reserve/pkg/utils/consts"
 )
 
@@ -27,48 +28,48 @@ func TestUserCreate(t *testing.T) {
 	}{
 		{
 			name:           "Successful user creation",
-			requestBody:    userReq,
-			mockSetup:      mockUserCreateSuccess,
+			requestBody:    unit.UserReq,
+			mockSetup:      unit.MockUserCreateSuccess,
 			expectedStatus: http.StatusCreated,
-			respCheckers:   checkSuccessUserResponse(),
+			respCheckers:   unit.CheckSuccessUserResponse(),
 		},
 		{
 			name:           "Invalid JSON",
 			requestBody:    "invalid json",
 			mockSetup:      func(*mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers:   checkMessageError(consts.InvalidJSON),
+			respCheckers:   unit.CheckMessageError(consts.InvalidJSON),
 		},
 		{
 			name:           "Email and Password required",
 			requestBody:    request.UserCreate{},
 			mockSetup:      func(m *mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers:   checkFieldsRequired("Email", "Password"),
+			respCheckers:   unit.CheckFieldsRequired("Email", "Password"),
 		},
 		{
 			name:           "Invalid Email and Password",
-			requestBody:    loginBadEmailAndPasswordReq,
+			requestBody:    unit.LoginBadEmailAndPasswordReq,
 			mockSetup:      func(m *mocks.MockService) {},
 			expectedStatus: http.StatusBadRequest,
-			respCheckers: checkFieldsInvalid(map[string]error{
+			respCheckers: unit.CheckFieldsInvalid(map[string]error{
 				"Email":    consts.InvalidEmail,
 				"Password": consts.InvalidPassword,
 			}),
 		},
 		{
 			name:           "Email or username already exists",
-			requestBody:    userReq,
-			mockSetup:      mockUserCreateConflict,
+			requestBody:    unit.UserReq,
+			mockSetup:      unit.MockUserCreateConflict,
 			expectedStatus: http.StatusConflict,
-			respCheckers:   checkMessageError(consts.UniqueEmailField),
+			respCheckers:   unit.CheckMessageError(consts.UniqueEmailField),
 		},
 		{
 			name:           "Internal server error",
-			requestBody:    userReq,
-			mockSetup:      mockUserCreateServerError,
+			requestBody:    unit.UserReq,
+			mockSetup:      unit.MockUserCreateServerError,
 			expectedStatus: http.StatusInternalServerError,
-			respCheckers:   checkMessageError(consts.InternalServer),
+			respCheckers:   unit.CheckMessageError(consts.InternalServer),
 		},
 	}
 
@@ -106,15 +107,15 @@ func TestUserGetAll(t *testing.T) {
 	}{
 		{
 			name:           "Successful retrieving users",
-			mockSetup:      mockUserGetAllSuccess,
+			mockSetup:      unit.MockUserGetAllSuccess,
 			expectedStatus: http.StatusOK,
-			respCheckers:   checkSuccessUserGetAllResponse(),
+			respCheckers:   unit.CheckSuccessUserGetAllResponse(),
 		},
 		{
 			name:           "Internal server error",
-			mockSetup:      mockUserGetAllServerError,
+			mockSetup:      unit.MockUserGetAllServerError,
 			expectedStatus: http.StatusInternalServerError,
-			respCheckers:   checkMessageError(consts.InternalServer),
+			respCheckers:   unit.CheckMessageError(consts.InternalServer),
 		},
 	}
 
@@ -147,31 +148,31 @@ func TestUserGetByID(t *testing.T) {
 	}{
 		{
 			name:           "Successful retrieving user",
-			mockSetup:      mockUserGetByIDSuccess,
-			userID:         strconv.FormatInt(userMock.ID, 10),
+			mockSetup:      unit.MockUserGetByIDSuccess,
+			userID:         strconv.FormatInt(unit.UserMock.ID, 10),
 			expectedStatus: http.StatusOK,
-			respCheckers:   checkSuccessUserResponse(),
+			respCheckers:   unit.CheckSuccessUserResponse(),
 		},
 		{
 			name:           "User not found",
-			mockSetup:      mockUserGetByIDNotFound,
+			mockSetup:      unit.MockUserGetByIDNotFound,
 			userID:         "999",
 			expectedStatus: http.StatusNotFound,
-			respCheckers:   checkMessageError(consts.UserNotFound),
+			respCheckers:   unit.CheckMessageError(consts.UserNotFound),
 		},
 		{
 			name:           "Invalid user ID",
 			mockSetup:      func(m *mocks.MockService) {},
 			userID:         "abc",
 			expectedStatus: http.StatusBadRequest,
-			respCheckers:   checkMessageError(consts.InvalidID),
+			respCheckers:   unit.CheckMessageError(consts.InvalidID),
 		},
 		{
 			name:           "Internal server error",
-			mockSetup:      mockUserGetByIDServerError,
-			userID:         strconv.FormatInt(userMock.ID, 10),
+			mockSetup:      unit.MockUserGetByIDServerError,
+			userID:         strconv.FormatInt(unit.UserMock.ID, 10),
 			expectedStatus: http.StatusInternalServerError,
-			respCheckers:   checkMessageError(consts.InternalServer),
+			respCheckers:   unit.CheckMessageError(consts.InternalServer),
 		},
 	}
 

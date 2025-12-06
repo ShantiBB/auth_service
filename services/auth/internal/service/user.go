@@ -10,7 +10,7 @@ type UserRepository interface {
 	UserCreate(ctx context.Context, user models.UserCreate) (*models.User, error)
 	UserGetByID(ctx context.Context, id int64) (*models.User, error)
 	UserGetCredentialsByEmail(ctx context.Context, email string) (*models.UserCredentials, error)
-	UserGetAll(ctx context.Context, limit, offset uint64) ([]models.User, error)
+	UserGetAll(ctx context.Context, limit, offset uint64) (*models.UserList, error)
 	UserUpdateByID(ctx context.Context, user *models.User) error
 	UserDeleteByID(ctx context.Context, id int64) error
 }
@@ -24,13 +24,13 @@ func (s *Service) UserCreate(ctx context.Context, user models.UserCreate) (*mode
 	return newUser, nil
 }
 
-func (s *Service) UserGetAll(ctx context.Context, limit, offset uint64) ([]models.User, error) {
-	users, err := s.repo.UserGetAll(ctx, limit, offset)
+func (s *Service) UserGetAll(ctx context.Context, limit, offset uint64) (*models.UserList, error) {
+	userList, err := s.repo.UserGetAll(ctx, limit, offset)
 	if err != nil {
 		return nil, err
 	}
 
-	return users, nil
+	return userList, nil
 }
 
 func (s *Service) UserGetByID(ctx context.Context, id int64) (*models.User, error) {
