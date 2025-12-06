@@ -3,14 +3,14 @@ package service
 import (
 	"context"
 
-	"auth/internal/repository/models"
+	"auth/internal/repository/postgres/models"
 )
 
 type UserRepository interface {
 	UserCreate(ctx context.Context, user models.UserCreate) (*models.User, error)
 	UserGetByID(ctx context.Context, id int64) (*models.User, error)
 	UserGetCredentialsByEmail(ctx context.Context, email string) (*models.UserCredentials, error)
-	UserList(ctx context.Context) ([]models.User, error)
+	UserGetAll(ctx context.Context, limit, offset uint64) ([]models.User, error)
 	UserUpdateByID(ctx context.Context, user *models.User) error
 	UserDeleteByID(ctx context.Context, id int64) error
 }
@@ -24,8 +24,8 @@ func (s *Service) UserCreate(ctx context.Context, user models.UserCreate) (*mode
 	return newUser, nil
 }
 
-func (s *Service) UserList(ctx context.Context) ([]models.User, error) {
-	users, err := s.repo.UserList(ctx)
+func (s *Service) UserGetAll(ctx context.Context, limit, offset uint64) ([]models.User, error) {
+	users, err := s.repo.UserGetAll(ctx, limit, offset)
 	if err != nil {
 		return nil, err
 	}

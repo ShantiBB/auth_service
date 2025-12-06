@@ -11,7 +11,7 @@ import (
 	"auth/internal/http/dto/request"
 	"auth/internal/http/dto/response"
 	"auth/internal/http/lib/helper"
-	"auth/internal/repository/models"
+	"auth/internal/repository/postgres/models"
 	"fukuro-reserve/pkg/utils/errs"
 	"fukuro-reserve/pkg/utils/password"
 )
@@ -19,7 +19,7 @@ import (
 type UserService interface {
 	UserCreate(ctx context.Context, user models.UserCreate) (*models.User, error)
 	UserGetByID(ctx context.Context, id int64) (*models.User, error)
-	UserList(ctx context.Context) ([]models.User, error)
+	UserGetAll(ctx context.Context, limit, offset uint64) ([]models.User, error)
 	UserUpdateByID(ctx context.Context, user *models.User) (*models.User, error)
 	UserDeleteByID(ctx context.Context, id int64) error
 }
@@ -32,10 +32,10 @@ type UserService interface {
 // @Produce      json
 // @Param        request  body      request.UserCreate  true  "User data"
 // @Success      201      {object}  response.User
-// @Failure      400      {object}  response.Error
-// @Failure      401      {object}  response.Error
-// @Failure      409      {object}  response.Error
-// @Failure      500      {object}  response.Error
+// @Failure      400      {object}  response.ErrorSchema
+// @Failure      401      {object}  response.ErrorSchema
+// @Failure      409      {object}  response.ErrorSchema
+// @Failure      500      {object}  response.ErrorSchema
 // @Security     Bearer
 // @Router       /users/  [post]
 func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
@@ -70,21 +70,30 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	helper.SendSuccess(w, r, http.StatusCreated, userResponse)
 }
 
-// UserList    godoc
+// UserGetAll    godoc
 // @Summary      Get users
 // @Description  Get users from admin or moderator provider
 // @Tags         users
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  response.User
-// @Failure      401  {object}  response.Error
-// @Failure      500  {object}  response.Error
+// @Param        limit   query     uint  false  "Limit"   default(20)  minimum(1)  maximum(100)
+// @Param        offset  query     uint  false  "Offset"  default(0)   minimum(0)
+// @Success      200     {object}  response.User
+// @Failure      401     {object}  response.ErrorSchema
+// @Failure      500     {object}  response.ErrorSchema
 // @Security     Bearer
 // @Router       /users/ [get]
-func (h *Handler) UserList(w http.ResponseWriter, r *http.Request) {
+func (h *Handler) UserGetAll(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	users, err := h.svc.UserList(ctx)
+	pagination, err := helper.ParsePaginationQuery(r)
+	if err != nil {
+		errMsg := response.ErrorResp(errs.InvalidQueryParam)
+		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+		return
+	}
+
+	users, err := h.svc.UserGetAll(ctx, pagination.Limit, pagination.Offset)
 	if err != nil {
 		errMsg := response.ErrorResp(errs.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
@@ -107,10 +116,10 @@ func (h *Handler) UserList(w http.ResponseWriter, r *http.Request) {
 // @Produce      json
 // @Param        id   path      int true  "User ID"
 // @Success      200  {object}  response.User
-// @Failure      400  {object}  response.Error
-// @Failure      401  {object}  response.Error
-// @Failure      404  {object}  response.Error
-// @Failure      500  {object}  response.Error
+// @Failure      400  {object}  response.ErrorSchema
+// @Failure      401  {object}  response.ErrorSchema
+// @Failure      404  {object}  response.ErrorSchema
+// @Failure      500  {object}  response.ErrorSchema
 // @Security     Bearer
 // @Router       /users/{id} [get]
 func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
@@ -149,11 +158,11 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 // @Param        id          path      int true  "User ID"
 // @Param        request     body      request.UserUpdate  true  "User data"
 // @Success      200         {object}  response.User
-// @Failure      400         {object}  response.Error
-// @Failure      401         {object}  response.Error
-// @Failure      404         {object}  response.Error
-// @Failure      409         {object}  response.Error
-// @Failure      500         {object}  response.Error
+// @Failure      400         {object}  response.ErrorSchema
+// @Failure      401         {object}  response.ErrorSchema
+// @Failure      404         {object}  response.ErrorSchema
+// @Failure      409         {object}  response.ErrorSchema
+// @Failure      500         {object}  response.ErrorSchema
 // @Security     Bearer
 // @Router       /users/{id} [put]
 func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
@@ -203,10 +212,10 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 // @Produce      json
 // @Param        id   path      int true  "User ID"
 // @Success      204  {object}  nil
-// @Failure      400  {object}  response.Error
-// @Failure      401  {object}  response.Error
-// @Failure      404  {object}  response.Error
-// @Failure      500  {object}  response.Error
+// @Failure      400  {object}  response.ErrorSchema
+// @Failure      401  {object}  response.ErrorSchema
+// @Failure      404  {object}  response.ErrorSchema
+// @Failure      500  {object}  response.ErrorSchema
 // @Security     Bearer
 // @Router       /users/{id} [delete]
 func (h *Handler) UserDeleteByID(w http.ResponseWriter, r *http.Request) {
