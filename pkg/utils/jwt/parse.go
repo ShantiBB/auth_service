@@ -3,7 +3,7 @@ package jwt
 import (
 	"github.com/golang-jwt/jwt/v5"
 
-	"fukuro-reserve/pkg/utils/errs"
+	"fukuro-reserve/pkg/utils/consts"
 )
 
 func ParseToken(tokenStr string, secret []byte) (*Claims, error) {
@@ -12,7 +12,7 @@ func ParseToken(tokenStr string, secret []byte) (*Claims, error) {
 	}
 	token, err := jwt.ParseWithClaims(tokenStr, &Claims{}, tokenFunc)
 	if err != nil {
-		return nil, errs.InvalidRefreshToken
+		return nil, consts.InvalidRefreshToken
 	}
 
 	claims, ok := token.Claims.(*Claims)

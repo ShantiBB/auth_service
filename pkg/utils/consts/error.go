@@ -1,4 +1,4 @@
-package errs
+package consts
 
 import "errors"
 
@@ -6,7 +6,7 @@ var (
 	InvalidQueryParam   = errors.New("invalid query parameter")
 	InternalServer      = errors.New("internal server error")
 	UserNotFound        = errors.New("user not found")
-	UniqueEmailField    = errors.New("email already exists")
+	UniqueEmailField    = errors.New("username or email already exists")
 	Unauthorized        = errors.New("unauthorized")
 	Forbidden           = errors.New("forbidden")
 	FieldRequired       = errors.New("field is required")
