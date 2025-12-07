@@ -8,8 +8,8 @@ swag-gen-auth:
 gen-migrate: #name=<migration_name>
 	migrate create -ext sql -dir ./services/auth/migrations -seq $(name)
 
-add-migrate: #name=<migration_name>
-	migrate create -ext sql -dir ./services/auth/migrations -seq $(name)
+add-migrate: # service=<service_name> name=<migration_name>
+	migrate create -ext sql -dir ./services/$(service)/migrations -seq $(name)
 
 test-unit-auth-handler:
 	go test ./services/auth/internal/http/handler/
