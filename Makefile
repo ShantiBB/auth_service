@@ -5,6 +5,12 @@ mock-gen-auth:
 swag-gen-auth:
 	swag init -g services/auth/cmd/app/main.go --output services/auth/docs
 
+gen-migrate: #name=<migration_name>
+	migrate create -ext sql -dir ./services/auth/migrations -seq $(name)
+
+add-migrate: #name=<migration_name>
+	migrate create -ext sql -dir ./services/auth/migrations -seq $(name)
+
 test-unit-auth-handler:
 	go test ./services/auth/internal/http/handler/
 
