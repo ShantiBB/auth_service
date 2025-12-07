@@ -18,7 +18,7 @@ func (r *Repository) UserCreate(ctx context.Context, u models.UserCreate) (*mode
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
-			return nil, consts.UniqueEmailField
+			return nil, consts.UniqueUserField
 		}
 		return nil, err
 	}
@@ -87,7 +87,7 @@ func (r *Repository) UserUpdateByID(ctx context.Context, u *models.User) error {
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
-			return consts.UniqueEmailField
+			return consts.UniqueUserField
 		}
 		return err
 	}

@@ -55,8 +55,8 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	newUser := h.UserCreateRequestToEntity(&req, hashPassword)
 	createdUser, err := h.svc.UserCreate(ctx, *newUser)
 	if err != nil {
-		if errors.Is(err, consts.UniqueEmailField) {
-			errMsg := response.ErrorResp(consts.UniqueEmailField)
+		if errors.Is(err, consts.UniqueUserField) {
+			errMsg := response.ErrorResp(consts.UniqueUserField)
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		}
@@ -190,8 +190,8 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	userToUpdate, err := h.svc.UserUpdateByID(ctx, user)
 	if err != nil {
 		switch {
-		case errors.Is(err, consts.UniqueEmailField):
-			errMsg := response.ErrorResp(consts.UniqueEmailField)
+		case errors.Is(err, consts.UniqueUserField):
+			errMsg := response.ErrorResp(consts.UniqueUserField)
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		case errors.Is(err, consts.UserNotFound):

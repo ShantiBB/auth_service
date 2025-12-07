@@ -2,20 +2,28 @@ package consts
 
 import "errors"
 
+// auth
 var (
-	InvalidQueryParam   = errors.New("invalid query parameter")
-	InternalServer      = errors.New("internal server error")
 	UserNotFound        = errors.New("user not found")
-	ErrInvalidRole      = errors.New("invalid role status")
-	UniqueEmailField    = errors.New("username or email already exists")
-	Unauthorized        = errors.New("unauthorized")
-	Forbidden           = errors.New("forbidden")
-	FieldRequired       = errors.New("field is required")
-	InvalidID           = errors.New("invalid user ID")
 	InvalidEmail        = errors.New("invalid email format")
+	UniqueUserField     = errors.New("username or email already exists")
+	ErrInvalidRole      = errors.New("invalid role status")
+	PasswordHashing     = errors.New("error hashing password")
 	InvalidPassword     = errors.New("minimum length 8 characters")
 	InvalidCredentials  = errors.New("invalid credentials")
 	InvalidRefreshToken = errors.New("invalid token")
-	InvalidJSON         = errors.New("invalid JSON body")
-	PasswordHashing     = errors.New("error hashing password")
+	Unauthorized        = errors.New("unauthorized")
+)
+
+var (
+	HotelNotFound    = errors.New("hotel not found")
+	UniqueHotelField = errors.New("hotel name already exists")
+)
+var (
+	InvalidID         = errors.New("invalid user ID")
+	InvalidQueryParam = errors.New("invalid query parameter")
+	FieldRequired     = errors.New("field is required")
+	InternalServer    = errors.New("internal server error")
+	Forbidden         = errors.New("forbidden")
+	InvalidJSON       = errors.New("invalid JSON body")
 )

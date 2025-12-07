@@ -62,7 +62,7 @@ func TestUserCreate(t *testing.T) {
 			requestBody:    unit.UserReq,
 			mockSetup:      unit.MockUserCreateConflict,
 			expectedStatus: http.StatusConflict,
-			respCheckers:   unit.CheckMessageError(consts.UniqueEmailField),
+			respCheckers:   unit.CheckMessageError(consts.UniqueUserField),
 		},
 		{
 			name:           "Internal server error",

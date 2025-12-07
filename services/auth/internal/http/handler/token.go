@@ -49,8 +49,8 @@ func (h *Handler) RegisterByEmail(w http.ResponseWriter, r *http.Request) {
 
 	tokens, err := h.svc.RegisterByEmail(ctx, req.Email, hashPassword)
 	if err != nil {
-		if errors.Is(err, consts.UniqueEmailField) {
-			errMsg := response.ErrorResp(consts.UniqueEmailField)
+		if errors.Is(err, consts.UniqueUserField) {
+			errMsg := response.ErrorResp(consts.UniqueUserField)
 			helper.SendError(w, r, http.StatusConflict, errMsg)
 			return
 		}
