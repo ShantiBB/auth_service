@@ -5,6 +5,7 @@ fukuro-reserve — это микросервисная система брони
 - Repository - PostgreSQL 17
 - Documentation - swag
 - Mock generation - mockery
+- Migrator lib - golang-migrate
 
 ### Расширение
 - Добавить сервис для обработки бронирования.
