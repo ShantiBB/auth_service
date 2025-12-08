@@ -14,7 +14,6 @@ import (
 //	@version		1.0
 //	@description	Auth service for microservices.
 
-//	@host		localhost:8081
 //	@BasePath	/api/v1
 
 // @securityDefinitions.apikey	Bearer
