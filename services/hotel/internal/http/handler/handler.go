@@ -63,3 +63,18 @@ func (h *Handler) HotelResponseToEntity(req models.Hotel) response.Hotel {
 		UpdatedAt:   req.UpdatedAt,
 	}
 }
+
+func (h *Handler) HotelShortResponseToEntity(req models.HotelShort) response.HotelShort {
+	location := response.Location{
+		Latitude:  req.Location.Latitude,
+		Longitude: req.Location.Longitude,
+	}
+	return response.HotelShort{
+		ID:       req.ID,
+		Name:     req.Name,
+		OwnerID:  req.OwnerID,
+		Address:  req.Address,
+		Rating:   req.Rating,
+		Location: location,
+	}
+}

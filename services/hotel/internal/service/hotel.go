@@ -9,7 +9,7 @@ import (
 type HotelRepository interface {
 	HotelCreate(ctx context.Context, h models.HotelCreate) (models.Hotel, error)
 	HotelGetByIDOrName(ctx context.Context, field any) (models.Hotel, error)
-	HotelGetAll(ctx context.Context, limit, offset uint64) ([]models.HotelShort, error)
+	HotelGetAll(ctx context.Context, limit, offset uint64) (models.HotelList, error)
 	HotelUpdateByID(ctx context.Context, id int64, h models.HotelUpdate) error
 	HotelDeleteByID(ctx context.Context, id int64) error
 }
@@ -32,14 +32,14 @@ func (s *Service) HotelGetByIDOrName(ctx context.Context, field any) (models.Hot
 	return h, nil
 }
 
-func (s *Service) HotelGetAll(ctx context.Context, page, limit uint64) ([]models.HotelShort, error) {
+func (s *Service) HotelGetAll(ctx context.Context, page, limit uint64) (models.HotelList, error) {
 	offset := (page - 1) * limit
-	hotels, err := s.repo.HotelGetAll(ctx, limit, offset)
+	hotelList, err := s.repo.HotelGetAll(ctx, limit, offset)
 	if err != nil {
-		return nil, err
+		return models.HotelList{}, err
 	}
 
-	return hotels, nil
+	return hotelList, nil
 }
 
 func (s *Service) HotelUpdateByID(ctx context.Context, id int64, h models.HotelUpdate) error {

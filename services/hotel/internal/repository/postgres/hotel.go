@@ -75,12 +75,12 @@ func (r *Repository) HotelGetByIDOrName(ctx context.Context, field any) (models.
 	return hotel, nil
 }
 
-func (r *Repository) HotelGetAll(ctx context.Context, limit, offset uint64) ([]models.HotelShort, error) {
-	var hotels []models.HotelShort
+func (r *Repository) HotelGetAll(ctx context.Context, limit, offset uint64) (models.HotelList, error) {
+	var hotelList models.HotelList
 
 	rows, err := r.db.Query(ctx, hotelGetAll, limit, offset)
 	if err != nil {
-		return nil, err
+		return models.HotelList{}, err
 	}
 
 	var h models.HotelShort
@@ -89,13 +89,17 @@ func (r *Repository) HotelGetAll(ctx context.Context, limit, offset uint64) ([]m
 			&h.ID, &h.Name, &h.OwnerID, &h.Address, &h.Rating, &h.Location.Longitude, &h.Location.Latitude,
 		)
 		if err != nil {
-			return nil, err
+			return models.HotelList{}, err
 		}
 
-		hotels = append(hotels, h)
+		hotelList.Hotels = append(hotelList.Hotels, h)
 	}
 
-	return hotels, nil
+	if err = r.db.QueryRow(ctx, HotelGetCountRows).Scan(&hotelList.TotalCount); err != nil {
+		return models.HotelList{}, err
+	}
+
+	return hotelList, nil
 }
 
 func (r *Repository) HotelUpdateByID(ctx context.Context, id int64, h models.HotelUpdate) error {

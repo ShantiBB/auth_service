@@ -47,6 +47,11 @@ type Hotel struct {
 	UpdatedAt   time.Time
 }
 
+type HotelList struct {
+	Hotels     []HotelShort
+	TotalCount uint64
+}
+
 func (h *HotelCreate) ToRead() Hotel {
 	return Hotel{
 		Name:        h.Name,

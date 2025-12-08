@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+
+	"fukuro-reserve/pkg/utils/helper"
 )
 
 type Location struct {
@@ -45,4 +47,13 @@ type Hotel struct {
 	Location    Location  `json:"location"`
 	CreatedAt   time.Time `json:"created_at"`
 	UpdatedAt   time.Time `json:"updated_at"`
+}
+
+type HotelList struct {
+	Hotels          []HotelShort           `json:"hotels"`
+	CurrentPage     uint64                 `json:"current_page"`
+	Limit           uint64                 `json:"limit"`
+	Links           helper.PaginationLinks `json:"links"`
+	TotalPageCount  uint64                 `json:"total_page_count"`
+	TotalUsersCount uint64                 `json:"total_users_count"`
 }

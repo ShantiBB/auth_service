@@ -51,4 +51,6 @@ const (
 	hotelDeleteByID = `
 	DELETE FROM hotel 
 	WHERE id = $1;`
+
+	HotelGetCountRows = `SELECT COUNT(*) FROM hotel;`
 )
