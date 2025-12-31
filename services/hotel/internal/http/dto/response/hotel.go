@@ -22,10 +22,11 @@ type HotelCreate struct {
 }
 
 type HotelUpdate struct {
-	Name        string   `json:"name"`
-	Description *string  `json:"description"`
-	Address     string   `json:"address"`
-	Location    Location `json:"location"`
+	ID          uuid.UUID `json:"id"`
+	Name        string    `json:"name"`
+	Description *string   `json:"description"`
+	Address     string    `json:"address"`
+	Location    Location  `json:"location"`
 }
 
 type HotelShort struct {
@@ -50,10 +51,10 @@ type Hotel struct {
 }
 
 type HotelList struct {
-	Hotels          []HotelShort           `json:"hotels"`
-	CurrentPage     uint64                 `json:"current_page"`
-	Limit           uint64                 `json:"limit"`
-	Links           helper.PaginationLinks `json:"links"`
-	TotalPageCount  uint64                 `json:"total_page_count"`
-	TotalUsersCount uint64                 `json:"total_users_count"`
+	Hotels           []HotelShort           `json:"hotels"`
+	CurrentPage      uint64                 `json:"current_page"`
+	Limit            uint64                 `json:"limit"`
+	Links            helper.PaginationLinks `json:"links"`
+	TotalPageCount   uint64                 `json:"total_page_count"`
+	TotalHotelsCount uint64                 `json:"total_users_count"`
 }

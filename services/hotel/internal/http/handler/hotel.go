@@ -19,8 +19,8 @@ type HotelService interface {
 	HotelCreate(ctx context.Context, h models.HotelCreate) (models.Hotel, error)
 	HotelGetByIDOrName(ctx context.Context, field any) (models.Hotel, error)
 	HotelGetAll(ctx context.Context, limit, offset uint64) (models.HotelList, error)
-	HotelUpdateByID(ctx context.Context, id int64, h models.HotelUpdate) error
-	HotelDeleteByID(ctx context.Context, id int64) error
+	HotelUpdateByID(ctx context.Context, id uuid.UUID, h models.HotelUpdate) error
+	HotelDeleteByID(ctx context.Context, id uuid.UUID) error
 }
 
 // HotelCreate   godoc
@@ -58,8 +58,8 @@ func (h *Handler) HotelCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userResponse := h.HotelResponseToEntity(createdHotel)
-	helper.SendSuccess(w, r, http.StatusCreated, userResponse)
+	hotelResponse := h.HotelEntityToResponse(createdHotel)
+	helper.SendSuccess(w, r, http.StatusCreated, hotelResponse)
 }
 
 // HotelGetAll    godoc
@@ -95,19 +95,19 @@ func (h *Handler) HotelGetAll(w http.ResponseWriter, r *http.Request) {
 
 	hotels := make([]response.HotelShort, 0, len(hotelList.Hotels))
 	for _, hotel := range hotelList.Hotels {
-		hotelResponse := h.HotelShortResponseToEntity(hotel)
+		hotelResponse := h.HotelShortEntityToShortResponse(hotel)
 		hotels = append(hotels, hotelResponse)
 	}
 
 	totalPageCount := (hotelList.TotalCount + pagination.Limit - 1) / pagination.Limit
 	pageLinks := helper.BuildPaginationLinks(r, pagination, totalPageCount)
 	hotelListResp := response.HotelList{
-		Hotels:          hotels,
-		CurrentPage:     pagination.Page,
-		Limit:           pagination.Limit,
-		Links:           pageLinks,
-		TotalPageCount:  totalPageCount,
-		TotalUsersCount: hotelList.TotalCount,
+		Hotels:           hotels,
+		CurrentPage:      pagination.Page,
+		Limit:            pagination.Limit,
+		Links:            pageLinks,
+		TotalPageCount:   totalPageCount,
+		TotalHotelsCount: hotelList.TotalCount,
 	}
 
 	helper.SendSuccess(w, r, http.StatusOK, hotelListResp)
@@ -139,7 +139,7 @@ func (h *Handler) HotelGetByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	user, err := h.svc.HotelGetByIDOrName(ctx, id)
+	hotel, err := h.svc.HotelGetByIDOrName(ctx, id)
 	if err != nil {
 		if errors.Is(err, consts.HotelNotFound) {
 			errMsg := response.ErrorResp(consts.HotelNotFound)
@@ -151,6 +151,96 @@ func (h *Handler) HotelGetByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	userResponse := h.HotelResponseToEntity(user)
-	helper.SendSuccess(w, r, http.StatusOK, userResponse)
+	hotelResponse := h.HotelEntityToResponse(hotel)
+	helper.SendSuccess(w, r, http.StatusOK, hotelResponse)
+}
+
+// HotelUpdateByID    godoc
+//
+//	@Summary		Update hotel by ID
+//	@Description	Update hotel by ID from admin, moderator or owner provider
+//	@Tags			hotels
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		string	true	"Hotel ID"
+//
+// @Param           request  body   request.HotelUpdate  true  "Hotel data"
+//
+//	@Success		200	{object}	response.HotelUpdate
+//	@Failure		400	{object}	response.ErrorSchema
+//	@Failure		401	{object}	response.ErrorSchema
+//	@Failure		404	{object}	response.ErrorSchema
+//	@Failure		500	{object}	response.ErrorSchema
+//	@Security		Bearer
+//	@Router			/hotels/{id} [put]
+func (h *Handler) HotelUpdateByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	paramID := chi.URLParam(r, "id")
+	id, err := uuid.Parse(paramID)
+	if err != nil {
+		errMsg := response.ErrorResp(consts.InvalidID)
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
+		return
+	}
+
+	var req request.HotelUpdate
+	if err = helper.ParseJSON(w, r, &req, nil); err != nil {
+		return
+	}
+
+	hotelUpdate := h.HotelUpdateRequestToEntity(req)
+	if err = h.svc.HotelUpdateByID(ctx, id, hotelUpdate); err != nil {
+		if errors.Is(err, consts.HotelNotFound) {
+			errMsg := response.ErrorResp(consts.HotelNotFound)
+			helper.SendError(w, r, http.StatusNotFound, errMsg)
+			return
+		}
+		errMsg := response.ErrorResp(consts.InternalServer)
+		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+		return
+	}
+
+	hotelResponse := h.HotelUpdateEntityToResponse(id, hotelUpdate)
+	helper.SendSuccess(w, r, http.StatusOK, hotelResponse)
+}
+
+// HotelDeleteByID    godoc
+//
+//	@Summary		Delete hotel by ID
+//	@Description	Delete hotel by ID from admin or owner provider
+//	@Tags			hotels
+//	@Accept			json
+//	@Produce		json
+//	@Param			id	path		string	true	"Hotel ID"
+//	@Success		204	{object}	nil
+//	@Failure		400	{object}	response.ErrorSchema
+//	@Failure		401	{object}	response.ErrorSchema
+//	@Failure		404	{object}	response.ErrorSchema
+//	@Failure		500	{object}	response.ErrorSchema
+//	@Security		Bearer
+//	@Router			/hotels/{id} [delete]
+func (h *Handler) HotelDeleteByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	paramID := chi.URLParam(r, "id")
+	id, err := uuid.Parse(paramID)
+	if err != nil {
+		errMsg := response.ErrorResp(consts.InvalidID)
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
+		return
+	}
+
+	if err = h.svc.HotelDeleteByID(ctx, id); err != nil {
+		if errors.Is(err, consts.HotelNotFound) {
+			errMsg := response.ErrorResp(consts.HotelNotFound)
+			helper.SendError(w, r, http.StatusNotFound, errMsg)
+			return
+		}
+		errMsg := response.ErrorResp(consts.InternalServer)
+		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+		return
+	}
+
+	helper.SendSuccess(w, r, http.StatusNoContent, nil)
 }

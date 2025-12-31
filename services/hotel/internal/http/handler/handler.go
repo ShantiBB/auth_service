@@ -1,6 +1,8 @@
 package handler
 
 import (
+	"github.com/google/uuid"
+
 	"hotel/internal/http/dto/request"
 	"hotel/internal/http/dto/response"
 	"hotel/internal/repository/postgres/models"
@@ -32,21 +34,20 @@ func (h *Handler) HotelCreateRequestToEntity(req request.HotelCreate) models.Hot
 	}
 }
 
-func (h *Handler) HotelRequestToEntity(req models.Hotel) response.Hotel {
-	location := response.Location{
+func (h *Handler) HotelUpdateRequestToEntity(req request.HotelUpdate) models.HotelUpdate {
+	location := models.Location{
 		Latitude:  req.Location.Latitude,
 		Longitude: req.Location.Longitude,
 	}
-	return response.Hotel{
+	return models.HotelUpdate{
 		Name:        req.Name,
-		OwnerID:     req.OwnerID,
 		Description: req.Description,
 		Address:     req.Address,
 		Location:    location,
 	}
 }
 
-func (h *Handler) HotelResponseToEntity(req models.Hotel) response.Hotel {
+func (h *Handler) HotelEntityToResponse(req models.Hotel) response.Hotel {
 	location := response.Location{
 		Latitude:  req.Location.Latitude,
 		Longitude: req.Location.Longitude,
@@ -64,7 +65,7 @@ func (h *Handler) HotelResponseToEntity(req models.Hotel) response.Hotel {
 	}
 }
 
-func (h *Handler) HotelShortResponseToEntity(req models.HotelShort) response.HotelShort {
+func (h *Handler) HotelShortEntityToShortResponse(req models.HotelShort) response.HotelShort {
 	location := response.Location{
 		Latitude:  req.Location.Latitude,
 		Longitude: req.Location.Longitude,
@@ -75,6 +76,19 @@ func (h *Handler) HotelShortResponseToEntity(req models.HotelShort) response.Hot
 		OwnerID:  req.OwnerID,
 		Address:  req.Address,
 		Rating:   req.Rating,
+		Location: location,
+	}
+}
+
+func (h *Handler) HotelUpdateEntityToResponse(id uuid.UUID, req models.HotelUpdate) response.HotelUpdate {
+	location := response.Location{
+		Latitude:  req.Location.Latitude,
+		Longitude: req.Location.Longitude,
+	}
+	return response.HotelUpdate{
+		ID:       id,
+		Name:     req.Name,
+		Address:  req.Address,
 		Location: location,
 	}
 }

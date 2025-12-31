@@ -19,6 +19,13 @@ type HotelCreate struct {
 	Location    Location `json:"location"`
 }
 
+type HotelUpdate struct {
+	Name        string   `json:"name" validate:"required"`
+	Description *string  `json:"description"`
+	Address     string   `json:"address"`
+	Location    Location `json:"location"`
+}
+
 type Hotel struct {
 	ID          uuid.UUID `json:"id"`
 	Name        string    `json:"name"`

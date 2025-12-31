@@ -102,7 +102,7 @@ func (r *Repository) HotelGetAll(ctx context.Context, limit, offset uint64) (mod
 	return hotelList, nil
 }
 
-func (r *Repository) HotelUpdateByID(ctx context.Context, id int64, h models.HotelUpdate) error {
+func (r *Repository) HotelUpdateByID(ctx context.Context, id uuid.UUID, h models.HotelUpdate) error {
 	row, err := r.db.Exec(
 		ctx, hotelUpdateByID,
 		h.Name,
@@ -126,7 +126,7 @@ func (r *Repository) HotelUpdateByID(ctx context.Context, id int64, h models.Hot
 	return nil
 }
 
-func (r *Repository) HotelDeleteByID(ctx context.Context, id int64) error {
+func (r *Repository) HotelDeleteByID(ctx context.Context, id uuid.UUID) error {
 	row, err := r.db.Exec(ctx, hotelDeleteByID, id)
 	if err != nil {
 		return err
