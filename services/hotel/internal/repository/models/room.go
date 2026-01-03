@@ -11,7 +11,6 @@ type RoomCreate struct {
 	HotelID     uuid.UUID
 	RoomNumber  string
 	Type        RoomType
-	Status      RoomStatus
 	Price       decimal.Decimal
 	Capacity    int
 	AreaSqm     *float64
@@ -43,7 +42,6 @@ func (r *RoomCreate) ToRead() Room {
 		HotelID:     r.HotelID,
 		RoomNumber:  r.RoomNumber,
 		Type:        r.Type,
-		Status:      r.Status,
 		Price:       r.Price,
 		Capacity:    r.Capacity,
 		AreaSqm:     r.AreaSqm,
