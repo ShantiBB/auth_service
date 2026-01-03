@@ -4,13 +4,14 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"hotel/internal/repository/models"
+	"hotel/internal/repository/postgres/query"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 
 	"fukuro-reserve/pkg/utils/consts"
-	"hotel/internal/repository/postgres/models"
 )
 
 func (r *Repository) HotelCreate(ctx context.Context, h models.HotelCreate) (models.Hotel, error) {
@@ -29,7 +30,7 @@ func (r *Repository) HotelCreate(ctx context.Context, h models.HotelCreate) (mod
 		&newHotel.UpdatedAt,
 	}
 
-	if err := r.db.QueryRow(ctx, hotelCreateQuery, insertArgs...).Scan(scanArgs...); err != nil {
+	if err := r.db.QueryRow(ctx, query.hotelCreateQuery, insertArgs...).Scan(scanArgs...); err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
 			return models.Hotel{}, errors.New("username or email already exists")
@@ -58,9 +59,9 @@ func (r *Repository) HotelGetByIDOrName(ctx context.Context, field any) (models.
 	var query string
 	switch v := field.(type) {
 	case uuid.UUID:
-		query = hotelGetByID
+		query = query.hotelGetByID
 	case string:
-		query = hotelGetByName
+		query = query.hotelGetByName
 	default:
 		return models.Hotel{}, fmt.Errorf("unsupported type %T", v)
 	}
@@ -78,7 +79,7 @@ func (r *Repository) HotelGetByIDOrName(ctx context.Context, field any) (models.
 func (r *Repository) HotelGetAll(ctx context.Context, limit, offset uint64) (models.HotelList, error) {
 	var hotelList models.HotelList
 
-	rows, err := r.db.Query(ctx, hotelGetAll, limit, offset)
+	rows, err := r.db.Query(ctx, query.hotelGetAll, limit, offset)
 	if err != nil {
 		return models.HotelList{}, err
 	}
@@ -95,7 +96,7 @@ func (r *Repository) HotelGetAll(ctx context.Context, limit, offset uint64) (mod
 		hotelList.Hotels = append(hotelList.Hotels, h)
 	}
 
-	if err = r.db.QueryRow(ctx, HotelGetCountRows).Scan(&hotelList.TotalCount); err != nil {
+	if err = r.db.QueryRow(ctx, query.HotelGetCountRows).Scan(&hotelList.TotalCount); err != nil {
 		return models.HotelList{}, err
 	}
 
@@ -104,7 +105,7 @@ func (r *Repository) HotelGetAll(ctx context.Context, limit, offset uint64) (mod
 
 func (r *Repository) HotelUpdateByID(ctx context.Context, id uuid.UUID, h models.HotelUpdate) error {
 	row, err := r.db.Exec(
-		ctx, hotelUpdateByID,
+		ctx, query.hotelUpdateByID,
 		h.Name,
 		h.Description,
 		h.Address,
@@ -127,7 +128,7 @@ func (r *Repository) HotelUpdateByID(ctx context.Context, id uuid.UUID, h models
 }
 
 func (r *Repository) HotelDeleteByID(ctx context.Context, id uuid.UUID) error {
-	row, err := r.db.Exec(ctx, hotelDeleteByID, id)
+	row, err := r.db.Exec(ctx, query.hotelDeleteByID, id)
 	if err != nil {
 		return err
 	}

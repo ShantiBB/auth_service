@@ -1,11 +1,12 @@
 package handler
 
 import (
+	"hotel/internal/repository/models"
+
 	"github.com/google/uuid"
 
 	"hotel/internal/http/dto/request"
 	"hotel/internal/http/dto/response"
-	"hotel/internal/repository/postgres/models"
 )
 
 type Service interface {

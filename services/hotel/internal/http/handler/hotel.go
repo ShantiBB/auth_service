@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"hotel/internal/repository/models"
 	"net/http"
 
 	"github.com/go-chi/chi/v5"
@@ -12,7 +13,6 @@ import (
 	"fukuro-reserve/pkg/utils/helper"
 	"hotel/internal/http/dto/request"
 	"hotel/internal/http/dto/response"
-	"hotel/internal/repository/postgres/models"
 )
 
 type HotelService interface {

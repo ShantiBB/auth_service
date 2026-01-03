@@ -2,10 +2,9 @@ package service
 
 import (
 	"context"
+	"hotel/internal/repository/models"
 
 	"github.com/google/uuid"
-
-	"hotel/internal/repository/postgres/models"
 )
 
 type HotelRepository interface {
