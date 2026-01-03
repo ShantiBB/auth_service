@@ -3,6 +3,7 @@ package handler
 import (
 	"context"
 	"errors"
+	"hotel/internal/http/mapper"
 	"hotel/internal/repository/models"
 	"net/http"
 
@@ -45,7 +46,7 @@ func (h *Handler) HotelCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	newHotel := h.HotelCreateRequestToEntity(req)
+	newHotel := mapper.HotelCreateRequestToEntity(req)
 	createdHotel, err := h.svc.HotelCreate(ctx, newHotel)
 	if err != nil {
 		if errors.Is(err, consts.UniqueHotelField) {
@@ -58,7 +59,7 @@ func (h *Handler) HotelCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	hotelResponse := h.HotelEntityToResponse(createdHotel)
+	hotelResponse := mapper.HotelEntityToResponse(createdHotel)
 	helper.SendSuccess(w, r, http.StatusCreated, hotelResponse)
 }
 
@@ -70,7 +71,7 @@ func (h *Handler) HotelCreate(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			page	query		uint64	false	"Page"	default(1)
-//	@Param			limit	query		uint64	false	"Limit"	default(100)
+//	@Param			limit	query		uint64	false	"Limit"	default(20)
 //	@Success		200		{object}	response.HotelList
 //	@Failure		401		{object}	response.ErrorSchema
 //	@Failure		500		{object}	response.ErrorSchema
@@ -95,7 +96,7 @@ func (h *Handler) HotelGetAll(w http.ResponseWriter, r *http.Request) {
 
 	hotels := make([]response.HotelShort, 0, len(hotelList.Hotels))
 	for _, hotel := range hotelList.Hotels {
-		hotelResponse := h.HotelShortEntityToShortResponse(hotel)
+		hotelResponse := mapper.HotelShortEntityToShortResponse(hotel)
 		hotels = append(hotels, hotelResponse)
 	}
 
@@ -151,7 +152,7 @@ func (h *Handler) HotelGetByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	hotelResponse := h.HotelEntityToResponse(hotel)
+	hotelResponse := mapper.HotelEntityToResponse(hotel)
 	helper.SendSuccess(w, r, http.StatusOK, hotelResponse)
 }
 
@@ -189,7 +190,7 @@ func (h *Handler) HotelUpdateByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	hotelUpdate := h.HotelUpdateRequestToEntity(req)
+	hotelUpdate := mapper.HotelUpdateRequestToEntity(req)
 	if err = h.svc.HotelUpdateByID(ctx, id, hotelUpdate); err != nil {
 		if errors.Is(err, consts.HotelNotFound) {
 			errMsg := response.ErrorResp(consts.HotelNotFound)
@@ -201,7 +202,7 @@ func (h *Handler) HotelUpdateByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	hotelResponse := h.HotelUpdateEntityToResponse(id, hotelUpdate)
+	hotelResponse := mapper.HotelUpdateEntityToResponse(id, hotelUpdate)
 	helper.SendSuccess(w, r, http.StatusOK, hotelResponse)
 }
 

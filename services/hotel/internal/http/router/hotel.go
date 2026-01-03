@@ -13,5 +13,7 @@ func hotelRouter(pattern string, r chi.Router, h *handler.Handler) {
 		r.Get("/{id}", h.HotelGetByID)
 		r.Put("/{id}", h.HotelUpdateByID)
 		r.Delete("/{id}", h.HotelDeleteByID)
+
+		roomRouter("/{hotel_id}/rooms", r, h)
 	})
 }
