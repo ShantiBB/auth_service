@@ -27,6 +27,7 @@ if [ -z "$SERVICE" ] || [ -z "$ACTION" ]; then
   exit 1
 fi
 
+CONFIG_PATH="./services/$SERVICE/config/local.yaml"
 USER=$(yq e '.postgres.user' "$CONFIG_PATH")
 PASSWORD=$(yq e '.postgres.password' "$CONFIG_PATH")
 HOST=$(yq e '.postgres.host' "$CONFIG_PATH")
