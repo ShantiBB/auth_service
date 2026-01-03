@@ -13,14 +13,6 @@ type Location struct {
 	Longitude float64 `json:"longitude"`
 }
 
-type HotelCreate struct {
-	Name        string   `json:"name"`
-	OwnerID     int64    `json:"owner_id"`
-	Description *string  `json:"description"`
-	Address     string   `json:"address"`
-	Location    Location `json:"location"`
-}
-
 type HotelUpdate struct {
 	ID          uuid.UUID `json:"id"`
 	Name        string    `json:"name"`
