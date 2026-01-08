@@ -17,6 +17,12 @@ CREATE TABLE hotel (
     UNIQUE(country_code, city_slug, slug)
 );
 
+ALTER TABLE hotel
+    ADD COLUMN longitude double precision
+        GENERATED ALWAYS AS (ST_X(location::geometry)) STORED,
+    ADD COLUMN latitude double precision
+        GENERATED ALWAYS AS (ST_Y(location::geometry)) STORED;
+
 CREATE INDEX hotels_location_idx ON hotel USING GIST (location);
 CREATE INDEX hotels_owner_idx ON hotel (owner_id);
 

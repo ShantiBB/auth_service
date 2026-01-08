@@ -10,7 +10,7 @@ const (
 						   description, 
 						   address, 
 						   location)
-		VALUES ($1, $2, $3, $4, $5, $6, $7, ST_SetSRID(ST_MakePoint($8, $9), 4326))
+		VALUES ($1, $2, $3, $4, $5, $6, $7, ST_SetSRID(ST_MakePoint($8, $9), 4326)::geography)
 		RETURNING id, created_at, updated_at`
 
 	HotelGetBySlug = `
@@ -19,8 +19,8 @@ const (
 			   owner_id, 
 			   description, 
 			   address,
-			   ST_X(location::geometry) AS longitude,
-			   ST_Y(location::geometry) AS latitude,
+			   longitude,
+			   latitude,
 			   rating, 
 			   created_at, 
 			   updated_at
@@ -34,8 +34,8 @@ const (
 			   owner_id, 
 			   address, 
 			   rating,
-			   st_x(location::geometry) AS longitude,
-			   st_y(location::geometry) AS latitude
+			   longitude,
+			   latitude
 		FROM hotel
 		WHERE country_code = $1 AND city_slug = $2
 		ORDER BY
@@ -50,7 +50,7 @@ const (
 		  slug = CASE WHEN title IS DISTINCT FROM $1::text THEN $2 ELSE slug END,
 		  description = $3,
 		  address = $4,
-		  location = ST_SetSRID(ST_MakePoint($5, $6), 4326),
+		  location = ST_SetSRID(ST_MakePoint($8, $9), 4326)::geography,
 		  updated_at = now()
 		WHERE country_code = $7 AND city_slug = $8 AND slug = $9
 		RETURNING id, slug;`
@@ -59,7 +59,7 @@ const (
 		DELETE FROM hotel 
 		WHERE country_code = $1 AND city_slug = $2 AND slug = $3;`
 
-	HotelGetCountRows = `SELECT COUNT(*) FROM hotel;`
+	HotelGetCountRows = `SELECT COUNT(id) FROM hotel;`
 
 	HotelUpdateRating = `
 		UPDATE hotel 
