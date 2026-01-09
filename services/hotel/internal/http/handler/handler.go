@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"fukuro-reserve/pkg/utils/consts"
-
 	"github.com/go-playground/validator/v10"
+
+	"fukuro-reserve/pkg/utils/consts"
 )
 
 type Service interface {
@@ -24,6 +24,6 @@ func (h *Handler) customValidationError(err validator.FieldError) string {
 	case "required":
 		return consts.FieldRequired.Error()
 	default:
-		return consts.InternalServer.Error()
+		return err.Error()
 	}
 }
