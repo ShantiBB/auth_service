@@ -17,6 +17,8 @@ func CustomValidationError(err validator.FieldError) string {
 	switch err.Tag() {
 	case "required":
 		return consts.FieldRequired
+	case "slug_format":
+		return consts.FieldSlug
 	case "min":
 		return fmt.Sprintf(consts.FieldMin, param)
 	case "max":
@@ -29,8 +31,6 @@ func CustomValidationError(err validator.FieldError) string {
 		return fmt.Sprintf(consts.FieldLt, param, value)
 	case "lte":
 		return fmt.Sprintf(consts.FieldLte, param, value)
-	case "email":
-		return consts.FieldEmail
 	case "uuid":
 		return consts.FieldUUID
 	case "datetime":

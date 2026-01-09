@@ -25,10 +25,10 @@ const (
 	FieldGte             = "field must be ≥ %s, got %v"
 	FieldLt              = "field must be < %s, got %v"
 	FieldLte             = "field must be ≤ %s, got %v"
-	FieldEmail           = "field must be a valid email"
 	FieldUUID            = "field must be a valid UUID"
 	FieldDatetime        = "field must be in the format %s"
 	FieldEnum            = "field must be one of: %s"
+	FieldSlug            = "must contain only lowercase letters, numbers and hyphens (e.g., 'my-hotel-slug')"
 )
 
 var (
