@@ -1,6 +1,6 @@
 CREATE TYPE user_role AS ENUM ('user', 'admin', 'moderator');
 
-CREATE TABLE users (
+CREATE TABLE IF NOT EXISTS users (
     id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     username VARCHAR(100) UNIQUE,
     email VARCHAR(100) UNIQUE NOT NULL,
