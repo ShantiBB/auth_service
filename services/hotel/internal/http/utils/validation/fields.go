@@ -41,6 +41,9 @@ func formatValidationErrors(
 
 func CheckErrors(v any, customErr func(validator.FieldError) string) *ValidateError {
 	validate := validator.New()
+	if err := validate.RegisterValidation("room_status", roomStatusValidator); err != nil {
+		panic("failed to register validation: " + err.Error())
+	}
 
 	validate.RegisterTagNameFunc(func(fld reflect.StructField) string {
 		name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]

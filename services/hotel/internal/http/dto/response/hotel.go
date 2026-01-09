@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"fukuro-reserve/pkg/utils/helper"
+	"hotel/internal/http/utils/helper"
 )
 
 type Location struct {

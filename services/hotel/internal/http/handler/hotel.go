@@ -5,13 +5,13 @@ import (
 	"errors"
 	"net/http"
 
-	"hotel/internal/http/mapper"
-	"hotel/internal/repository/models"
-
-	"fukuro-reserve/pkg/utils/consts"
-	"fukuro-reserve/pkg/utils/helper"
 	"hotel/internal/http/dto/request"
 	"hotel/internal/http/dto/response"
+	"hotel/internal/http/mapper"
+	"hotel/internal/http/utils/helper"
+	"hotel/internal/http/utils/validation"
+	"hotel/internal/repository/models"
+	"hotel/pkg/utils/consts"
 
 	"github.com/go-chi/chi/v5"
 )
@@ -45,7 +45,7 @@ func (h *Handler) HotelCreate(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	var req request.HotelCreate
 
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
@@ -189,7 +189,7 @@ func (h *Handler) HotelUpdateBySlug(w http.ResponseWriter, r *http.Request) {
 	slug := chi.URLParam(r, "hotelSlug")
 
 	var req request.HotelUpdate
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
@@ -234,7 +234,7 @@ func (h *Handler) HotelTitleUpdateBySlug(w http.ResponseWriter, r *http.Request)
 	slug := chi.URLParam(r, "hotelSlug")
 
 	var req request.HotelTitleUpdate
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 

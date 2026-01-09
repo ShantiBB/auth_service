@@ -3,17 +3,18 @@ package handler
 import (
 	"context"
 	"errors"
-	"hotel/internal/http/mapper"
-	"hotel/internal/repository/models"
 	"net/http"
+
+	"hotel/internal/http/dto/request"
+	"hotel/internal/http/dto/response"
+	"hotel/internal/http/mapper"
+	"hotel/internal/http/utils/helper"
+	"hotel/internal/http/utils/validation"
+	"hotel/internal/repository/models"
+	"hotel/pkg/utils/consts"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/google/uuid"
-
-	"fukuro-reserve/pkg/utils/consts"
-	"fukuro-reserve/pkg/utils/helper"
-	"hotel/internal/http/dto/request"
-	"hotel/internal/http/dto/response"
 )
 
 type RoomService interface {
@@ -21,6 +22,7 @@ type RoomService interface {
 	RoomGetByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) (models.Room, error)
 	RoomGetAll(ctx context.Context, hotel models.HotelRef, limit, offset uint64) (models.RoomList, error)
 	RoomUpdateByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomUpdate) error
+	RoomStatusUpdateByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomStatusUpdate) error
 	RoomDeleteByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) error
 }
 
@@ -51,7 +53,7 @@ func (h *Handler) RoomCreate(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req request.RoomCreate
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
@@ -220,7 +222,7 @@ func (h *Handler) RoomUpdateByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req request.RoomUpdate
-	if err = helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err = helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
@@ -237,6 +239,63 @@ func (h *Handler) RoomUpdateByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	roomResponse := mapper.RoomUpdateEntityToResponse(roomUpdate)
+	helper.SendSuccess(w, r, http.StatusOK, roomResponse)
+}
+
+// RoomStatusUpdateByID    godoc
+//
+//	@Summary		Update room status by ID
+//	@Description	Update room status by ID from admin or owner provider
+//	@Tags			rooms
+//	@Accept			json
+//	@Produce		json
+//	@Param		    country_code    path		string	true	"Country Code"
+//	@Param		    city_slug       path		string	true	"City Slug"
+//	@Param		    hotel_slug      path		string	true	"Hotel slug"
+//	@Param			id	path		string	true	"Room ID"
+//	@Param          request  body   request.RoomStatusUpdate  true  "Room data"
+//	@Success		200	{object}	response.RoomStatusUpdate
+//	@Failure		400	{object}	response.ErrorSchema
+//	@Failure		401	{object}	response.ErrorSchema
+//	@Failure		404	{object}	response.ErrorSchema
+//	@Failure		500	{object}	response.ErrorSchema
+//	@Security		Bearer
+//	@Router			/{country_code}/{city_slug}/hotels/{hotel_slug}/rooms/{id}/update_status [put]
+func (h *Handler) RoomStatusUpdateByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+
+	hotelRef := models.HotelRef{
+		CountryCode: chi.URLParam(r, "countryCode"),
+		CitySlug:    chi.URLParam(r, "citySlug"),
+		HotelSlug:   chi.URLParam(r, "hotelSlug"),
+	}
+
+	paramID := chi.URLParam(r, "id")
+	id, err := uuid.Parse(paramID)
+	if err != nil {
+		errMsg := response.ErrorResp(consts.InvalidID)
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
+		return
+	}
+
+	var req request.RoomStatusUpdate
+	if err = helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
+		return
+	}
+
+	roomUpdate := mapper.RoomStatusUpdateRequestToEntity(req)
+	if err = h.svc.RoomStatusUpdateByID(ctx, hotelRef, id, roomUpdate); err != nil {
+		if errors.Is(err, consts.RoomNotFound) {
+			errMsg := response.ErrorResp(consts.RoomNotFound)
+			helper.SendError(w, r, http.StatusNotFound, errMsg)
+			return
+		}
+		errMsg := response.ErrorResp(consts.InternalServer)
+		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+		return
+	}
+
+	roomResponse := mapper.RoomStatusUpdateEntityToResponse(roomUpdate)
 	helper.SendSuccess(w, r, http.StatusOK, roomResponse)
 }
 

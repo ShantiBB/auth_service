@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+
 	"hotel/internal/repository/models"
 
 	"github.com/gosimple/slug"

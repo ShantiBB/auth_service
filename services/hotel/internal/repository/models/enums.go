@@ -16,3 +16,19 @@ const (
 	RoomStatusMaintenance RoomStatus = "maintenance"
 	RoomStatusCleaning    RoomStatus = "cleaning"
 )
+
+var RoomTypeValues = []RoomType{
+	RoomTypeSingle,
+	RoomTypeDouble,
+	RoomTypeSuite,
+	RoomTypeDeluxe,
+	RoomTypeFamily,
+	RoomTypePresidential,
+}
+
+var RoomStatusValues = []RoomStatus{
+	RoomStatusAvailable,
+	RoomStatusOccupied,
+	RoomStatusMaintenance,
+	RoomStatusCleaning,
+}

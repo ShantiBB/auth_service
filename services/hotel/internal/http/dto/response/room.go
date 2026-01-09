@@ -1,9 +1,10 @@
 package response
 
 import (
-	"fukuro-reserve/pkg/utils/helper"
-	"hotel/internal/repository/models"
 	"time"
+
+	"hotel/internal/http/utils/helper"
+	"hotel/internal/repository/models"
 
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
@@ -51,6 +52,11 @@ type RoomUpdate struct {
 	Amenities   []string        `json:"amenities"`
 	Images      []string        `json:"images"`
 }
+
+type RoomStatusUpdate struct {
+	Status string `json:"status"`
+}
+
 type RoomList struct {
 	Rooms           []RoomShort            `json:"rooms"`
 	CurrentPage     uint64                 `json:"current_page"`

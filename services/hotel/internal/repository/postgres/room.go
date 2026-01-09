@@ -3,14 +3,14 @@ package postgres
 import (
 	"context"
 	"errors"
+
 	"hotel/internal/repository/models"
 	"hotel/internal/repository/postgres/query"
+	"hotel/pkg/utils/consts"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
-
-	"fukuro-reserve/pkg/utils/consts"
 )
 
 func (r *Repository) RoomCreate(
@@ -173,6 +173,30 @@ func (r *Repository) RoomUpdateByID(
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
 			return consts.UniqueRoomField
 		}
+		return err
+	}
+	if rowAffected := row.RowsAffected(); rowAffected == 0 {
+		return consts.RoomNotFound
+	}
+
+	return nil
+}
+
+func (r *Repository) RoomStatusUpdateByID(
+	ctx context.Context,
+	hotel models.HotelRef,
+	roomID uuid.UUID,
+	room models.RoomStatusUpdate,
+) error {
+	row, err := r.db.Exec(
+		ctx, query.RoomStatusUpdateByID,
+		hotel.CountryCode,
+		hotel.CitySlug,
+		hotel.HotelSlug,
+		roomID,
+		room.Status,
+	)
+	if err != nil {
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {

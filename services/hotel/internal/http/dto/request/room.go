@@ -31,3 +31,7 @@ type RoomUpdate struct {
 	Amenities   []string         `json:"amenities"`
 	Images      []string         `json:"images"`
 }
+
+type RoomStatusUpdate struct {
+	Status string `json:"status" validate:"required"`
+}

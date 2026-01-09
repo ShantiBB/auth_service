@@ -8,33 +8,33 @@ import (
 
 func HotelCreateRequestToEntity(req request.HotelCreate) models.HotelCreate {
 	location := models.Location{
-		Latitude:  req.Location.Latitude,
-		Longitude: req.Location.Longitude,
+		Latitude:  *req.Location.Latitude,
+		Longitude: *req.Location.Longitude,
 	}
 	return models.HotelCreate{
-		Title:       req.Title,
-		OwnerID:     req.OwnerID,
+		Title:       *req.Title,
+		OwnerID:     *req.OwnerID,
 		Description: req.Description,
-		Address:     req.Address,
+		Address:     *req.Address,
 		Location:    location,
 	}
 }
 
 func HotelUpdateRequestToEntity(req request.HotelUpdate) models.HotelUpdate {
 	location := models.Location{
-		Latitude:  req.Location.Latitude,
-		Longitude: req.Location.Longitude,
+		Latitude:  *req.Location.Latitude,
+		Longitude: *req.Location.Longitude,
 	}
 	return models.HotelUpdate{
 		Description: req.Description,
-		Address:     req.Address,
+		Address:     *req.Address,
 		Location:    location,
 	}
 }
 
 func HotelTitleUpdateRequestToEntity(req request.HotelTitleUpdate) models.HotelTitleUpdate {
 	return models.HotelTitleUpdate{
-		Title: req.Title,
+		Title: *req.Title,
 	}
 }
 

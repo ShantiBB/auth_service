@@ -36,6 +36,12 @@ func RoomUpdateRequestToEntity(req request.RoomUpdate) models.RoomUpdate {
 	}
 }
 
+func RoomStatusUpdateRequestToEntity(req request.RoomStatusUpdate) models.RoomStatusUpdate {
+	return models.RoomStatusUpdate{
+		Status: req.Status,
+	}
+}
+
 func RoomEntityToResponse(req models.Room) response.Room {
 	return response.Room{
 		ID:          req.ID,
@@ -82,5 +88,11 @@ func RoomUpdateEntityToResponse(req models.RoomUpdate) response.RoomUpdate {
 		Floor:       req.Floor,
 		Amenities:   req.Amenities,
 		Images:      req.Images,
+	}
+}
+
+func RoomStatusUpdateEntityToResponse(req models.RoomStatusUpdate) response.RoomStatusUpdate {
+	return response.RoomStatusUpdate{
+		Status: req.Status,
 	}
 }
