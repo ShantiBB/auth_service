@@ -1,7 +1,7 @@
 CREATE TYPE room_type AS ENUM ('single', 'double', 'suite', 'deluxe', 'family', 'presidential');
 CREATE TYPE room_status AS ENUM ('available', 'occupied', 'maintenance', 'cleaning');
 
-CREATE TABLE room (
+CREATE TABLE IF NOT EXISTS room (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     hotel_id UUID NOT NULL REFERENCES hotel(id) ON DELETE CASCADE,
     room_number VARCHAR(10) NOT NULL,

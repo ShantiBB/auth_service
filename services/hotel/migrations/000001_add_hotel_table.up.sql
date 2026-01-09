@@ -1,6 +1,6 @@
 CREATE EXTENSION IF NOT EXISTS postgis;
 
-CREATE TABLE hotel (
+CREATE TABLE IF NOT EXISTS hotel (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     country_code CHAR(2) NOT NULL CHECK (country_code ~ '^[a-z]{2}$'),
     city_slug VARCHAR(100) NOT NULL CHECK (city_slug ~ '^[a-z0-9]+(-[a-z0-9]+)*$'),
@@ -23,8 +23,8 @@ ALTER TABLE hotel
     ADD COLUMN latitude double precision
         GENERATED ALWAYS AS (ST_Y(location::geometry)) STORED;
 
-CREATE INDEX hotels_location_idx ON hotel USING GIST (location);
-CREATE INDEX hotels_owner_idx ON hotel (owner_id);
+CREATE INDEX IF NOT EXISTS hotels_location_idx ON hotel USING GIST (location);
+CREATE INDEX IF NOT EXISTS hotels_owner_idx ON hotel (owner_id);
 
 CREATE OR REPLACE FUNCTION update_updated_at_column()
     RETURNS TRIGGER AS $$
