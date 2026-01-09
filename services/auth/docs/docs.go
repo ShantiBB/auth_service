@@ -479,7 +479,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
-                "description": "Update user by ID from admin or owner provider",
+                "description": "Update user role by ID from admin or owner provider",
                 "consumes": [
                     "application/json"
                 ],
@@ -489,7 +489,7 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
-                "summary": "Update user by ID",
+                "summary": "Update user role by ID",
                 "parameters": [
                     {
                         "type": "integer",
@@ -549,7 +549,7 @@ const docTemplate = `{
                         "Bearer": []
                     }
                 ],
-                "description": "Update user by ID from admin or owner provider",
+                "description": "Update user active status by ID from admin or owner provider",
                 "consumes": [
                     "application/json"
                 ],
@@ -559,7 +559,7 @@ const docTemplate = `{
                 "tags": [
                     "users"
                 ],
-                "summary": "Update user by ID",
+                "summary": "Update user active status by ID",
                 "parameters": [
                     {
                         "type": "integer",

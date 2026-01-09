@@ -431,7 +431,7 @@ paths:
     put:
       consumes:
       - application/json
-      description: Update user by ID from admin or owner provider
+      description: Update user role by ID from admin or owner provider
       parameters:
       - description: User ID
         in: path
@@ -469,14 +469,14 @@ paths:
             $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
       security:
       - Bearer: []
-      summary: Update user by ID
+      summary: Update user role by ID
       tags:
       - users
   /users/{id}/status:
     put:
       consumes:
       - application/json
-      description: Update user by ID from admin or owner provider
+      description: Update user active status by ID from admin or owner provider
       parameters:
       - description: User ID
         in: path
@@ -514,7 +514,7 @@ paths:
             $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
       security:
       - Bearer: []
-      summary: Update user by ID
+      summary: Update user active status by ID
       tags:
       - users
 securityDefinitions:
