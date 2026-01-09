@@ -33,7 +33,7 @@ type RoomService interface {
 // @Accept       json
 // @Produce      json
 // @Param		 country_code    path		string	true	"Country Code"
-// @Param		 city_slug    	 path		string	true	"City Slug"
+// @Param		 city_slug    	 path		string	true	"City HotelSlug"
 // @Param		 hotel_slug      path		string	true	"Hotel slug"
 // @Param        request         body       request.RoomCreate  true  "Room data"
 // @Success      201             {object}   response.Room
@@ -46,11 +46,16 @@ type RoomService interface {
 func (h *Handler) RoomCreate(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	hotelRef := models.HotelRef{
+	pathParams := request.HotelPathParams{
 		CountryCode: chi.URLParam(r, "countryCode"),
 		CitySlug:    chi.URLParam(r, "citySlug"),
 		HotelSlug:   chi.URLParam(r, "hotelSlug"),
 	}
+	if errMsg := validation.CheckErrors(pathParams, validation.CustomValidationError); errMsg != nil {
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
+		return
+	}
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
 
 	var req request.RoomCreate
 	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
@@ -82,7 +87,7 @@ func (h *Handler) RoomCreate(w http.ResponseWriter, r *http.Request) {
 // @Accept		 json
 // @Produce		 json
 // @Param		 country_code       path		string	true	"Country Code"
-// @Param		 city_slug    	    path		string	true	"City Slug"
+// @Param		 city_slug    	    path		string	true	"City HotelSlug"
 // @Param		 hotel_slug         path		string	true	"Hotel slug"
 // @Param	     page	            query		uint64	false	"Page"	default(1)
 // @Param	     limit	            query		uint64	false	"Limit"	default(20)
@@ -94,11 +99,16 @@ func (h *Handler) RoomCreate(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) RoomGetAll(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	hotelRef := models.HotelRef{
+	pathParams := request.HotelPathParams{
 		CountryCode: chi.URLParam(r, "countryCode"),
 		CitySlug:    chi.URLParam(r, "citySlug"),
 		HotelSlug:   chi.URLParam(r, "hotelSlug"),
 	}
+	if errMsg := validation.CheckErrors(pathParams, validation.CustomValidationError); errMsg != nil {
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
+		return
+	}
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
 
 	pagination, err := helper.ParsePaginationQuery(r)
 	if err != nil {
@@ -142,7 +152,7 @@ func (h *Handler) RoomGetAll(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    country_code   path		string	true	"Country Code"
-//	@Param		    city_slug      path		string	true	"City Slug"
+//	@Param		    city_slug      path		string	true	"City HotelSlug"
 //	@Param		    hotel_slug     path		string	true	"Hotel slug"
 //	@Param			id	           path		string	true	"Room ID"
 //	@Success		200	           {object}	response.Room
@@ -155,11 +165,16 @@ func (h *Handler) RoomGetAll(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) RoomGetByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	hotelRef := models.HotelRef{
+	pathParams := request.HotelPathParams{
 		CountryCode: chi.URLParam(r, "countryCode"),
 		CitySlug:    chi.URLParam(r, "citySlug"),
 		HotelSlug:   chi.URLParam(r, "hotelSlug"),
 	}
+	if errMsg := validation.CheckErrors(pathParams, validation.CustomValidationError); errMsg != nil {
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
+		return
+	}
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
 
 	paramID := chi.URLParam(r, "id")
 	id, err := uuid.Parse(paramID)
@@ -193,7 +208,7 @@ func (h *Handler) RoomGetByID(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    country_code    path		string	true	"Country Code"
-//	@Param		    city_slug       path		string	true	"City Slug"
+//	@Param		    city_slug       path		string	true	"City HotelSlug"
 //	@Param		    hotel_slug      path		string	true	"Hotel slug"
 //	@Param			id	path		string	true	"Room ID"
 //	@Param          request  body   request.RoomUpdate  true  "Room data"
@@ -207,11 +222,16 @@ func (h *Handler) RoomGetByID(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) RoomUpdateByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	hotelRef := models.HotelRef{
+	pathParams := request.HotelPathParams{
 		CountryCode: chi.URLParam(r, "countryCode"),
 		CitySlug:    chi.URLParam(r, "citySlug"),
 		HotelSlug:   chi.URLParam(r, "hotelSlug"),
 	}
+	if errMsg := validation.CheckErrors(pathParams, validation.CustomValidationError); errMsg != nil {
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
+		return
+	}
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
 
 	paramID := chi.URLParam(r, "id")
 	id, err := uuid.Parse(paramID)
@@ -250,7 +270,7 @@ func (h *Handler) RoomUpdateByID(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    country_code    path		string	true	"Country Code"
-//	@Param		    city_slug       path		string	true	"City Slug"
+//	@Param		    city_slug       path		string	true	"City HotelSlug"
 //	@Param		    hotel_slug      path		string	true	"Hotel slug"
 //	@Param			id	path		string	true	"Room ID"
 //	@Param          request  body   request.RoomStatusUpdate  true  "Room data"
@@ -264,11 +284,16 @@ func (h *Handler) RoomUpdateByID(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) RoomStatusUpdateByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	hotelRef := models.HotelRef{
+	pathParams := request.HotelPathParams{
 		CountryCode: chi.URLParam(r, "countryCode"),
 		CitySlug:    chi.URLParam(r, "citySlug"),
 		HotelSlug:   chi.URLParam(r, "hotelSlug"),
 	}
+	if errMsg := validation.CheckErrors(pathParams, validation.CustomValidationError); errMsg != nil {
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
+		return
+	}
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
 
 	paramID := chi.URLParam(r, "id")
 	id, err := uuid.Parse(paramID)
@@ -307,7 +332,7 @@ func (h *Handler) RoomStatusUpdateByID(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    country_code    path		string	true	"Country Code"
-//	@Param		    city_slug       path		string	true	"City Slug"
+//	@Param		    city_slug       path		string	true	"City HotelSlug"
 //	@Param		    hotel_slug      path		string	true	"Hotel slug"
 //	@Param			id	path		string	true	"Room ID"
 //	@Success		204	{object}	nil
@@ -320,11 +345,16 @@ func (h *Handler) RoomStatusUpdateByID(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) RoomDeleteByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	hotelRef := models.HotelRef{
+	pathParams := request.HotelPathParams{
 		CountryCode: chi.URLParam(r, "countryCode"),
 		CitySlug:    chi.URLParam(r, "citySlug"),
 		HotelSlug:   chi.URLParam(r, "hotelSlug"),
 	}
+	if errMsg := validation.CheckErrors(pathParams, validation.CustomValidationError); errMsg != nil {
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
+		return
+	}
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
 
 	paramID := chi.URLParam(r, "id")
 	id, err := uuid.Parse(paramID)

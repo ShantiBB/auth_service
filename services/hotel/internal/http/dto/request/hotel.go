@@ -26,5 +26,5 @@ type HotelTitleUpdate struct {
 type HotelPathParams struct {
 	CountryCode string `validate:"required,len=2,lowercase,alpha"`
 	CitySlug    string `validate:"required,min=1,max=100,slug_format"`
-	Slug        string `validate:"omitempty,min=1,max=100,slug_format"`
+	HotelSlug   string `validate:"omitempty,min=1,max=100,slug_format"`
 }

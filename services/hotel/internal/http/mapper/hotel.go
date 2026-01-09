@@ -107,3 +107,11 @@ func HotelTitleUpdateEntityToResponse(req models.HotelTitleUpdate) response.Hote
 		Slug:  req.Slug,
 	}
 }
+
+func HotelPathParamsToEntity(req request.HotelPathParams) models.HotelRef {
+	return models.HotelRef{
+		CountryCode: req.CountryCode,
+		CitySlug:    req.CitySlug,
+		HotelSlug:   req.HotelSlug,
+	}
+}

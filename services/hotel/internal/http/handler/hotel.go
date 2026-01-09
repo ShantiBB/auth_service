@@ -17,12 +17,12 @@ import (
 )
 
 type HotelService interface {
-	HotelCreate(ctx context.Context, countryCode, citySlug string, h models.HotelCreate) (models.Hotel, error)
-	HotelGetBySlug(ctx context.Context, countryCode, citySlug, slug string) (models.Hotel, error)
-	HotelGetAll(ctx context.Context, countryCode, citySlug, sortField string, page, limit uint64) (models.HotelList, error)
-	HotelUpdateBySlug(ctx context.Context, countryCode, citySlug, hotelSlug string, h models.HotelUpdate) error
-	HotelTitleUpdateBySlug(ctx context.Context, countryCode, citySlug, hotelSlug string, h models.HotelTitleUpdate) (models.HotelTitleUpdate, error)
-	HotelDeleteBySlug(ctx context.Context, countryCode, citySlug, hotelSlug string) error
+	HotelCreate(ctx context.Context, hotel models.HotelRef, h models.HotelCreate) (models.Hotel, error)
+	HotelGetBySlug(ctx context.Context, hotel models.HotelRef) (models.Hotel, error)
+	HotelGetAll(ctx context.Context, hotel models.HotelRef, sortField string, page, limit uint64) (models.HotelList, error)
+	HotelUpdateBySlug(ctx context.Context, hotel models.HotelRef, h models.HotelUpdate) error
+	HotelTitleUpdateBySlug(ctx context.Context, hotel models.HotelRef, h models.HotelTitleUpdate) (models.HotelTitleUpdate, error)
+	HotelDeleteBySlug(ctx context.Context, hotel models.HotelRef) error
 }
 
 // HotelCreate   godoc
@@ -32,7 +32,7 @@ type HotelService interface {
 // @Accept       json
 // @Produce      json
 // @Param		 country_code	path		string	true	"Country Code"
-// @Param	  	 city_slug    	path		string	true	"City Slug"
+// @Param	  	 city_slug    	path		string	true	"City HotelSlug"
 // @Param        request        body        request.HotelCreate  true  "Hotel data"
 // @Success      201            {object}    response.Hotel
 // @Failure      400            {object}    response.ErrorSchema
@@ -58,9 +58,9 @@ func (h *Handler) HotelCreate(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
 	newHotel := mapper.HotelCreateRequestToEntity(req)
-
-	createdHotel, err := h.svc.HotelCreate(ctx, pathParams.CountryCode, pathParams.CitySlug, newHotel)
+	createdHotel, err := h.svc.HotelCreate(ctx, hotelRef, newHotel)
 	if err != nil {
 		if errors.Is(err, consts.UniqueHotelField) {
 			errMsg := response.ErrorResp(consts.UniqueHotelField)
@@ -84,7 +84,7 @@ func (h *Handler) HotelCreate(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			country_code	path		string	true	"Country Code"
-//	@Param			city_slug    	path		string	true	"City Slug"
+//	@Param			city_slug    	path		string	true	"City HotelSlug"
 //	@Param			page	        query		uint64	false	"Page"	default(1)
 //	@Param			limit	        query		uint64	false	"Limit"	default(20)
 //	@Success		200		        {object}	response.HotelList
@@ -105,6 +105,7 @@ func (h *Handler) HotelGetAll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
 	pagination, err := helper.ParsePaginationQuery(r)
 	if err != nil {
 		errMsg := response.ErrorResp(consts.InvalidQueryParam)
@@ -112,14 +113,7 @@ func (h *Handler) HotelGetAll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	hotelList, err := h.svc.HotelGetAll(
-		ctx,
-		pathParams.CountryCode,
-		pathParams.CitySlug,
-		sortField,
-		pagination.Page,
-		pagination.Limit,
-	)
+	hotelList, err := h.svc.HotelGetAll(ctx, hotelRef, sortField, pagination.Page, pagination.Limit)
 	if err != nil {
 		errMsg := response.ErrorResp(consts.InternalServer)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
@@ -154,7 +148,7 @@ func (h *Handler) HotelGetAll(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			country_code	path		         string	true	"Country Code"
-//	@Param			city_slug    	path		         string	true	"City Slug"
+//	@Param			city_slug    	path		         string	true	"City HotelSlug"
 //	@Param			hotel_slug      path		         string	true	"Hotel slug"
 //	@Success		200	{object}	response.Hotel
 //	@Failure		400	{object}	response.ErrorSchema
@@ -169,14 +163,15 @@ func (h *Handler) HotelGetBySlug(w http.ResponseWriter, r *http.Request) {
 	pathParams := request.HotelPathParams{
 		CountryCode: chi.URLParam(r, "countryCode"),
 		CitySlug:    chi.URLParam(r, "citySlug"),
-		Slug:        chi.URLParam(r, "hotelSlug"),
+		HotelSlug:   chi.URLParam(r, "hotelSlug"),
 	}
 	if errMsg := validation.CheckErrors(pathParams, validation.CustomValidationError); errMsg != nil {
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
 
-	hotel, err := h.svc.HotelGetBySlug(ctx, pathParams.CountryCode, pathParams.CitySlug, pathParams.Slug)
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
+	hotel, err := h.svc.HotelGetBySlug(ctx, hotelRef)
 	if err != nil {
 		if errors.Is(err, consts.HotelNotFound) {
 			errMsg := response.ErrorResp(consts.HotelNotFound)
@@ -200,7 +195,7 @@ func (h *Handler) HotelGetBySlug(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			country_code	path		string	true	"Country Code"
-//	@Param			city_slug    	path		string	true	"City Slug"
+//	@Param			city_slug    	path		string	true	"City HotelSlug"
 //	@Param			hotel_slug	    path		string	true	"Hotel slug"
 //	@Param          request         body        request.HotelUpdate  true  "Hotel data"
 //	@Success		200	{object}	            response.HotelUpdate
@@ -216,7 +211,7 @@ func (h *Handler) HotelUpdateBySlug(w http.ResponseWriter, r *http.Request) {
 	pathParams := request.HotelPathParams{
 		CountryCode: chi.URLParam(r, "countryCode"),
 		CitySlug:    chi.URLParam(r, "citySlug"),
-		Slug:        chi.URLParam(r, "hotelSlug"),
+		HotelSlug:   chi.URLParam(r, "hotelSlug"),
 	}
 	if errMsg := validation.CheckErrors(pathParams, validation.CustomValidationError); errMsg != nil {
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
@@ -227,9 +222,9 @@ func (h *Handler) HotelUpdateBySlug(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
 	hotelUpdate := mapper.HotelUpdateRequestToEntity(req)
-	err := h.svc.HotelUpdateBySlug(ctx, pathParams.CountryCode, pathParams.CitySlug, pathParams.Slug, hotelUpdate)
-	if err != nil {
+	if err := h.svc.HotelUpdateBySlug(ctx, hotelRef, hotelUpdate); err != nil {
 		if errors.Is(err, consts.HotelNotFound) {
 			errMsg := response.ErrorResp(consts.HotelNotFound)
 			helper.SendError(w, r, http.StatusNotFound, errMsg)
@@ -252,7 +247,7 @@ func (h *Handler) HotelUpdateBySlug(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param			country_code	path		string	true	"Country Code"
-//	@Param			city_slug    	path		string	true	"City Slug"
+//	@Param			city_slug    	path		string	true	"City HotelSlug"
 //	@Param			hotel_slug	    path		string	true	"Hotel slug"
 //	@Param          request         body        request.HotelTitleUpdate  true  "Hotel data"
 //	@Success		200	{object}	            response.HotelTitleUpdate
@@ -268,7 +263,7 @@ func (h *Handler) HotelTitleUpdateBySlug(w http.ResponseWriter, r *http.Request)
 	pathParams := request.HotelPathParams{
 		CountryCode: chi.URLParam(r, "countryCode"),
 		CitySlug:    chi.URLParam(r, "citySlug"),
-		Slug:        chi.URLParam(r, "hotelSlug"),
+		HotelSlug:   chi.URLParam(r, "hotelSlug"),
 	}
 	if errMsg := validation.CheckErrors(pathParams, validation.CustomValidationError); errMsg != nil {
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
@@ -280,14 +275,9 @@ func (h *Handler) HotelTitleUpdateBySlug(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
 	hotel := mapper.HotelTitleUpdateRequestToEntity(req)
-	hotelUpdated, err := h.svc.HotelTitleUpdateBySlug(
-		ctx,
-		pathParams.CountryCode,
-		pathParams.CitySlug,
-		pathParams.Slug,
-		hotel,
-	)
+	hotelUpdated, err := h.svc.HotelTitleUpdateBySlug(ctx, hotelRef, hotel)
 	if err != nil {
 		if errors.Is(err, consts.HotelNotFound) {
 			errMsg := response.ErrorResp(consts.HotelNotFound)
@@ -311,7 +301,7 @@ func (h *Handler) HotelTitleUpdateBySlug(w http.ResponseWriter, r *http.Request)
 //	@Accept			json
 //	@Produce		json
 //	@Param			country_code	path		string	true	"Country Code"
-//	@Param			city_slug    	path		string	true	"City Slug"
+//	@Param			city_slug    	path		string	true	"City HotelSlug"
 //	@Param			hotel_slug      path		string	true	"Hotel slug"
 //	@Success		204	{object}	nil
 //	@Failure		400	{object}	response.ErrorSchema
@@ -326,14 +316,15 @@ func (h *Handler) HotelDeleteBySlug(w http.ResponseWriter, r *http.Request) {
 	pathParams := request.HotelPathParams{
 		CountryCode: chi.URLParam(r, "countryCode"),
 		CitySlug:    chi.URLParam(r, "citySlug"),
-		Slug:        chi.URLParam(r, "hotelSlug"),
+		HotelSlug:   chi.URLParam(r, "hotelSlug"),
 	}
 	if errMsg := validation.CheckErrors(pathParams, validation.CustomValidationError); errMsg != nil {
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
 
-	if err := h.svc.HotelDeleteBySlug(ctx, pathParams.CountryCode, pathParams.CitySlug, pathParams.Slug); err != nil {
+	hotelRef := mapper.HotelPathParamsToEntity(pathParams)
+	if err := h.svc.HotelDeleteBySlug(ctx, hotelRef); err != nil {
 		if errors.Is(err, consts.HotelNotFound) {
 			errMsg := response.ErrorResp(consts.HotelNotFound)
 			helper.SendError(w, r, http.StatusNotFound, errMsg)

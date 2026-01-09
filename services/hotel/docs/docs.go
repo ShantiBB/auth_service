@@ -43,7 +43,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -113,7 +113,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -190,7 +190,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -263,7 +263,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -345,7 +345,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -417,7 +417,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -494,7 +494,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -578,7 +578,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -658,7 +658,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -747,7 +747,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -826,7 +826,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
@@ -917,7 +917,7 @@ const docTemplate = `{
                     },
                     {
                         "type": "string",
-                        "description": "City Slug",
+                        "description": "City HotelSlug",
                         "name": "city_slug",
                         "in": "path",
                         "required": true
