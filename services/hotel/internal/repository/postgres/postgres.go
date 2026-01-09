@@ -31,8 +31,8 @@ func NewRepository(config *config.Config) (*Repository, error) {
 		return nil, err
 	}
 
-	cfg.MaxConns = 30
-	cfg.MinConns = 10
+	cfg.MaxConns = 20
+	cfg.MinConns = 5
 
 	cfg.MaxConnIdleTime = 5 * time.Minute
 	cfg.MaxConnLifetime = 30 * time.Minute
