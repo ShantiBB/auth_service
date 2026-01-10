@@ -42,3 +42,17 @@ type Booking struct {
 	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
+
+func (b *BookingCreate) ToRead() Booking {
+	return Booking{
+		UserID:      b.UserID,
+		HotelID:     b.HotelID,
+		CheckIn:     b.CheckIn,
+		CheckOut:    b.CheckOut,
+		GuestName:   b.GuestName,
+		GuestEmail:  b.GuestEmail,
+		GuestPhone:  b.GuestPhone,
+		Currency:    b.Currency,
+		TotalAmount: b.TotalAmount,
+	}
+}
