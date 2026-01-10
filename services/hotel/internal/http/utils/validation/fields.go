@@ -11,8 +11,7 @@ import (
 )
 
 type ErrorSchema struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
+	Errors map[string]string `json:"errors"`
 }
 
 type ValidateError struct {
@@ -20,7 +19,7 @@ type ValidateError struct {
 }
 
 func ErrorResp(err error) *ErrorSchema {
-	return &ErrorSchema{Type: "error", Message: err.Error()}
+	return &ErrorSchema{Errors: map[string]string{"message": err.Error()}}
 }
 
 func formatValidationErrors(

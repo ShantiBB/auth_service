@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"auth/internal/http/dto/request"
-	"auth/internal/repository/postgres/models"
+	"auth/internal/repository/models"
 	"auth/pkg/utils/jwt"
 )
 

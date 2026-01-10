@@ -57,7 +57,7 @@ var (
 			err := json.Unmarshal(w.Body.Bytes(), &resp)
 			assert.NoError(t, err)
 
-			assert.Equal(t, expectedErr.Error(), resp.Message)
+			assert.Equal(t, expectedErr.Error(), resp.Errors["message"])
 		}
 	}
 
