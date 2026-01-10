@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+
 	"hotel/internal/repository/models"
 
 	"github.com/gosimple/slug"
@@ -32,13 +33,12 @@ type HotelRepository interface {
 
 func (s *Service) HotelCreate(
 	ctx context.Context,
-	countryCode string,
-	citySlug string,
+	hotel models.HotelRef,
 	h models.HotelCreate,
 ) (models.Hotel, error) {
 	hotelRef := models.HotelRef{
-		CountryCode: countryCode,
-		CitySlug:    citySlug,
+		CountryCode: hotel.CountryCode,
+		CitySlug:    hotel.CitySlug,
 	}
 	h.Slug = slug.Make(h.Title)
 
@@ -52,15 +52,14 @@ func (s *Service) HotelCreate(
 
 func (s *Service) HotelGetAll(
 	ctx context.Context,
-	countryCode string,
-	citySlug string,
+	hotel models.HotelRef,
 	sortField string,
 	page uint64,
 	limit uint64,
 ) (models.HotelList, error) {
 	hotelRef := models.HotelRef{
-		CountryCode: countryCode,
-		CitySlug:    citySlug,
+		CountryCode: hotel.CountryCode,
+		CitySlug:    hotel.CitySlug,
 	}
 	offset := (page - 1) * limit
 
@@ -72,16 +71,11 @@ func (s *Service) HotelGetAll(
 	return hotelList, nil
 }
 
-func (s *Service) HotelGetBySlug(
-	ctx context.Context,
-	countryCode string,
-	citySlug string,
-	hotelSlug string,
-) (models.Hotel, error) {
+func (s *Service) HotelGetBySlug(ctx context.Context, hotel models.HotelRef) (models.Hotel, error) {
 	hotelRef := models.HotelRef{
-		CountryCode: countryCode,
-		CitySlug:    citySlug,
-		HotelSlug:   hotelSlug,
+		CountryCode: hotel.CountryCode,
+		CitySlug:    hotel.CitySlug,
+		HotelSlug:   hotel.HotelSlug,
 	}
 
 	h, err := s.repo.HotelGetBySlug(ctx, hotelRef)
@@ -92,17 +86,11 @@ func (s *Service) HotelGetBySlug(
 	return h, nil
 }
 
-func (s *Service) HotelUpdateBySlug(
-	ctx context.Context,
-	countryCode string,
-	citySlug string,
-	hotelSlug string,
-	h models.HotelUpdate,
-) error {
+func (s *Service) HotelUpdateBySlug(ctx context.Context, hotel models.HotelRef, h models.HotelUpdate) error {
 	hotelRef := models.HotelRef{
-		CountryCode: countryCode,
-		CitySlug:    citySlug,
-		HotelSlug:   hotelSlug,
+		CountryCode: hotel.CountryCode,
+		CitySlug:    hotel.CitySlug,
+		HotelSlug:   hotel.HotelSlug,
 	}
 
 	if err := s.repo.HotelUpdateBySlug(ctx, hotelRef, h); err != nil {
@@ -114,15 +102,13 @@ func (s *Service) HotelUpdateBySlug(
 
 func (s *Service) HotelTitleUpdateBySlug(
 	ctx context.Context,
-	countryCode string,
-	citySlug string,
-	hotelSlug string,
+	hotel models.HotelRef,
 	h models.HotelTitleUpdate,
 ) (models.HotelTitleUpdate, error) {
 	hotelRef := models.HotelRef{
-		CountryCode: countryCode,
-		CitySlug:    citySlug,
-		HotelSlug:   hotelSlug,
+		CountryCode: hotel.CountryCode,
+		CitySlug:    hotel.CitySlug,
+		HotelSlug:   hotel.HotelSlug,
 	}
 	h.Slug = slug.Make(h.Title)
 
@@ -133,11 +119,11 @@ func (s *Service) HotelTitleUpdateBySlug(
 	return h, nil
 }
 
-func (s *Service) HotelDeleteBySlug(ctx context.Context, countryCode, citySlug, hotelSlug string) error {
+func (s *Service) HotelDeleteBySlug(ctx context.Context, hotel models.HotelRef) error {
 	hotelRef := models.HotelRef{
-		CountryCode: countryCode,
-		CitySlug:    citySlug,
-		HotelSlug:   hotelSlug,
+		CountryCode: hotel.CountryCode,
+		CitySlug:    hotel.CitySlug,
+		HotelSlug:   hotel.HotelSlug,
 	}
 
 	if err := s.repo.HotelDeleteBySlug(ctx, hotelRef); err != nil {

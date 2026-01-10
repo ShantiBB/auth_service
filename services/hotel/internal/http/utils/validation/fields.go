@@ -6,11 +6,12 @@ import (
 	"strings"
 
 	"github.com/go-playground/validator/v10"
+
+	"hotel/pkg/utils/consts"
 )
 
 type ErrorSchema struct {
-	Type    string `json:"type"`
-	Message string `json:"message"`
+	Errors map[string]string `json:"errors"`
 }
 
 type ValidateError struct {
@@ -18,7 +19,7 @@ type ValidateError struct {
 }
 
 func ErrorResp(err error) *ErrorSchema {
-	return &ErrorSchema{Type: "error", Message: err.Error()}
+	return &ErrorSchema{Errors: map[string]string{"message": err.Error()}}
 }
 
 func formatValidationErrors(
@@ -41,6 +42,21 @@ func formatValidationErrors(
 
 func CheckErrors(v any, customErr func(validator.FieldError) string) *ValidateError {
 	validate := validator.New()
+	if err := validate.RegisterValidation("slug_format", slugFormatValidator); err != nil {
+		panic(consts.ValidationUnregister + err.Error())
+	}
+	if err := validate.RegisterValidation("room_status", roomStatusValidator); err != nil {
+		panic(consts.ValidationUnregister + err.Error())
+	}
+	if err := validate.RegisterValidation("room_type", roomTypeValidator); err != nil {
+		panic(consts.ValidationUnregister + err.Error())
+	}
+	if err := validate.RegisterValidation("decimal_gt", decimalGtValidator); err != nil {
+		panic(consts.ValidationUnregister + err.Error())
+	}
+	if err := validate.RegisterValidation("decimal_lt", decimalLtValidator); err != nil {
+		panic(consts.ValidationUnregister + err.Error())
+	}
 
 	validate.RegisterTagNameFunc(func(fld reflect.StructField) string {
 		name := strings.SplitN(fld.Tag.Get("json"), ",", 2)[0]

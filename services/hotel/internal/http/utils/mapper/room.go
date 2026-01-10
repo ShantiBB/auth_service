@@ -8,14 +8,14 @@ import (
 
 func RoomCreateRequestToEntity(req request.RoomCreate) models.RoomCreate {
 	return models.RoomCreate{
-		Title:       req.Title,
+		Title:       *req.Title,
 		Description: req.Description,
-		RoomNumber:  req.RoomNumber,
-		Type:        req.Type,
+		RoomNumber:  *req.RoomNumber,
+		Type:        *req.Type,
 		Price:       *req.Price,
-		Capacity:    req.Capacity,
-		AreaSqm:     req.AreaSqm,
-		Floor:       req.Floor,
+		Capacity:    *req.Capacity,
+		AreaSqm:     *req.AreaSqm,
+		Floor:       *req.Floor,
 		Amenities:   req.Amenities,
 		Images:      req.Images,
 	}
@@ -23,16 +23,22 @@ func RoomCreateRequestToEntity(req request.RoomCreate) models.RoomCreate {
 
 func RoomUpdateRequestToEntity(req request.RoomUpdate) models.RoomUpdate {
 	return models.RoomUpdate{
-		Title:       req.Title,
+		Title:       *req.Title,
 		Description: req.Description,
-		RoomNumber:  req.RoomNumber,
-		Type:        req.Type,
+		RoomNumber:  *req.RoomNumber,
+		Type:        *req.Type,
 		Price:       *req.Price,
-		Capacity:    req.Capacity,
-		AreaSqm:     req.AreaSqm,
-		Floor:       req.Floor,
+		Capacity:    *req.Capacity,
+		AreaSqm:     *req.AreaSqm,
+		Floor:       *req.Floor,
 		Amenities:   req.Amenities,
 		Images:      req.Images,
+	}
+}
+
+func RoomStatusUpdateRequestToEntity(req request.RoomStatusUpdate) models.RoomStatusUpdate {
+	return models.RoomStatusUpdate{
+		Status: *req.Status,
 	}
 }
 
@@ -82,5 +88,11 @@ func RoomUpdateEntityToResponse(req models.RoomUpdate) response.RoomUpdate {
 		Floor:       req.Floor,
 		Amenities:   req.Amenities,
 		Images:      req.Images,
+	}
+}
+
+func RoomStatusUpdateEntityToResponse(req models.RoomStatusUpdate) response.RoomStatusUpdate {
+	return response.RoomStatusUpdate{
+		Status: req.Status,
 	}
 }

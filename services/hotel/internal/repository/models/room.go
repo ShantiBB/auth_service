@@ -33,6 +33,10 @@ type RoomUpdate struct {
 	Images      []string
 }
 
+type RoomStatusUpdate struct {
+	Status string
+}
+
 type Room struct {
 	ID          uuid.UUID
 	Title       string

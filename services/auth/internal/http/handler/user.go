@@ -2,15 +2,16 @@ package handler
 
 import (
 	"context"
-	"errors"
 	"net/http"
 
 	"auth/internal/http/dto/request"
 	"auth/internal/http/dto/response"
-	"auth/internal/http/lib/password"
-	"auth/internal/repository/postgres/models"
-	"fukuro-reserve/pkg/utils/consts"
-	"fukuro-reserve/pkg/utils/helper"
+	"auth/internal/http/utils/helper"
+	"auth/internal/http/utils/pagination"
+	"auth/internal/http/utils/validation"
+	"auth/internal/repository/models"
+	"auth/pkg/utils/consts"
+	"auth/pkg/utils/password"
 )
 
 type UserService interface {
@@ -42,7 +43,7 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	var req request.UserCreate
 
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
@@ -55,14 +56,10 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 
 	newUser := h.UserCreateRequestToEntity(&req, hashPassword)
 	createdUser, err := h.svc.UserCreate(ctx, *newUser)
-	if err != nil {
-		if errors.Is(err, consts.UniqueUserField) {
-			errMsg := response.ErrorResp(consts.UniqueUserField)
-			helper.SendError(w, r, http.StatusConflict, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	errHandler := &helper.ErrorHandler{
+		Conflict: consts.UniqueUserField,
+	}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
@@ -87,17 +84,16 @@ func (h *Handler) UserCreate(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) UserGetAll(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 
-	pagination, err := helper.ParsePaginationQuery(r)
+	paginationParams, err := pagination.ParsePaginationQuery(r)
 	if err != nil {
 		errMsg := response.ErrorResp(consts.InvalidQueryParam)
 		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
 		return
 	}
 
-	userList, err := h.svc.UserGetAll(ctx, pagination.Page, pagination.Limit)
-	if err != nil {
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	userList, err := h.svc.UserGetAll(ctx, paginationParams.Page, paginationParams.Limit)
+	errHandler := &helper.ErrorHandler{}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
@@ -107,12 +103,12 @@ func (h *Handler) UserGetAll(w http.ResponseWriter, r *http.Request) {
 		users = append(users, *userResponse)
 	}
 
-	totalPageCount := (userList.TotalCount + pagination.Limit - 1) / pagination.Limit
-	pageLinks := helper.BuildPaginationLinks(r, pagination, totalPageCount)
+	totalPageCount := (userList.TotalCount + paginationParams.Limit - 1) / paginationParams.Limit
+	pageLinks := pagination.BuildPaginationLinks(r, paginationParams, totalPageCount)
 	usersResp := response.UserList{
 		Users:           users,
-		CurrentPage:     pagination.Page,
-		Limit:           pagination.Limit,
+		CurrentPage:     paginationParams.Page,
+		Limit:           paginationParams.Limit,
 		Links:           pageLinks,
 		TotalPageCount:  totalPageCount,
 		TotalUsersCount: userList.TotalCount,
@@ -145,14 +141,10 @@ func (h *Handler) UserGetByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	user, err := h.svc.UserGetByID(ctx, id)
-	if err != nil {
-		if errors.Is(err, consts.UserNotFound) {
-			errMsg := response.ErrorResp(consts.UserNotFound)
-			helper.SendError(w, r, http.StatusNotFound, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	errHandler := &helper.ErrorHandler{
+		NotFound: consts.UserNotFound,
+	}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
@@ -186,25 +178,17 @@ func (h *Handler) UserUpdateByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req request.UserUpdate
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
 	user := h.UserUpdateRequestToEntity(&req, id)
 	userToUpdate, err := h.svc.UserUpdateByID(ctx, user)
-	if err != nil {
-		switch {
-		case errors.Is(err, consts.UniqueUserField):
-			errMsg := response.ErrorResp(consts.UniqueUserField)
-			helper.SendError(w, r, http.StatusConflict, errMsg)
-			return
-		case errors.Is(err, consts.UserNotFound):
-			errMsg := response.ErrorResp(consts.UserNotFound)
-			helper.SendError(w, r, http.StatusNotFound, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	errHandler := &helper.ErrorHandler{
+		NotFound: consts.UserNotFound,
+		Conflict: consts.UniqueUserField,
+	}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
@@ -237,23 +221,16 @@ func (h *Handler) UserUpdateRoleStatus(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req request.UserRoleStatus
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
-	if err := h.svc.UserUpdateRoleStatus(ctx, id, req.Role); err != nil {
-		switch {
-		case errors.Is(err, consts.UserNotFound):
-			errMsg := response.ErrorResp(consts.UserNotFound)
-			helper.SendError(w, r, http.StatusNotFound, errMsg)
-			return
-		case errors.Is(err, consts.ErrInvalidRole):
-			errMsg := response.ErrorResp(consts.ErrInvalidRole)
-			helper.SendError(w, r, http.StatusBadRequest, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	err := h.svc.UserUpdateRoleStatus(ctx, id, req.Role)
+	errHandler := &helper.ErrorHandler{
+		NotFound: consts.UserNotFound,
+		Conflict: consts.ErrInvalidRole,
+	}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
@@ -289,19 +266,15 @@ func (h *Handler) UserUpdateActiveStatus(w http.ResponseWriter, r *http.Request)
 	}
 
 	var req request.UserActiveStatus
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
-	if err := h.svc.UserUpdateActiveStatus(ctx, id, *req.IsActive); err != nil {
-		switch {
-		case errors.Is(err, consts.UserNotFound):
-			errMsg := response.ErrorResp(consts.UserNotFound)
-			helper.SendError(w, r, http.StatusNotFound, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	err := h.svc.UserUpdateActiveStatus(ctx, id, *req.IsActive)
+	errHandler := &helper.ErrorHandler{
+		NotFound: consts.UserNotFound,
+	}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
@@ -335,14 +308,11 @@ func (h *Handler) UserDeleteByID(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	if err := h.svc.UserDeleteByID(ctx, id); err != nil {
-		if errors.Is(err, consts.UserNotFound) {
-			errMsg := response.ErrorResp(consts.UserNotFound)
-			helper.SendError(w, r, http.StatusNotFound, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	err := h.svc.UserDeleteByID(ctx, id)
+	errHandler := &helper.ErrorHandler{
+		NotFound: consts.UserNotFound,
+	}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 

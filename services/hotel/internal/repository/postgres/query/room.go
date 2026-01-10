@@ -70,6 +70,12 @@ const (
 		FROM hotel h
 		WHERE h.id = r.hotel_id AND h.country_code = $1 AND h.city_slug = $2 AND h.slug = $3 AND r.id = $4;`
 
+	RoomStatusUpdateByID = `
+		UPDATE room r
+		SET status = $5
+		FROM hotel h
+		WHERE h.id = r.hotel_id AND h.country_code = $1 AND h.city_slug = $2 AND h.slug = $3 AND r.id = $4;`
+
 	RoomDeleteByID = `
 		DELETE FROM room r
 		USING hotel h

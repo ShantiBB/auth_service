@@ -4,8 +4,8 @@ import (
 	"github.com/stretchr/testify/mock"
 
 	"auth/internal/mocks"
-	"auth/internal/repository/postgres/models"
-	"fukuro-reserve/pkg/utils/consts"
+	"auth/internal/repository/models"
+	"auth/pkg/utils/consts"
 )
 
 var (

@@ -2,18 +2,19 @@ package handler
 
 import (
 	"context"
-	"errors"
-	"hotel/internal/http/mapper"
-	"hotel/internal/repository/models"
 	"net/http"
 
-	"github.com/go-chi/chi/v5"
-	"github.com/google/uuid"
-
-	"fukuro-reserve/pkg/utils/consts"
-	"fukuro-reserve/pkg/utils/helper"
 	"hotel/internal/http/dto/request"
 	"hotel/internal/http/dto/response"
+	"hotel/internal/http/middleware"
+	"hotel/internal/http/utils/helper"
+	"hotel/internal/http/utils/mapper"
+	"hotel/internal/http/utils/pagination"
+	"hotel/internal/http/utils/validation"
+	"hotel/internal/repository/models"
+	"hotel/pkg/utils/consts"
+
+	"github.com/google/uuid"
 )
 
 type RoomService interface {
@@ -21,6 +22,7 @@ type RoomService interface {
 	RoomGetByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) (models.Room, error)
 	RoomGetAll(ctx context.Context, hotel models.HotelRef, limit, offset uint64) (models.RoomList, error)
 	RoomUpdateByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomUpdate) error
+	RoomStatusUpdateByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomStatusUpdate) error
 	RoomDeleteByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) error
 }
 
@@ -31,7 +33,7 @@ type RoomService interface {
 // @Accept       json
 // @Produce      json
 // @Param		 country_code    path		string	true	"Country Code"
-// @Param		 city_slug    	 path		string	true	"City Slug"
+// @Param		 city_slug    	 path		string	true	"City HotelSlug"
 // @Param		 hotel_slug      path		string	true	"Hotel slug"
 // @Param        request         body       request.RoomCreate  true  "Room data"
 // @Success      201             {object}   response.Room
@@ -43,28 +45,18 @@ type RoomService interface {
 // @Router       /{country_code}/{city_slug}/hotels/{hotel_slug}/rooms/  [post]
 func (h *Handler) RoomCreate(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
-
-	hotelRef := models.HotelRef{
-		CountryCode: chi.URLParam(r, "countryCode"),
-		CitySlug:    chi.URLParam(r, "citySlug"),
-		HotelSlug:   chi.URLParam(r, "hotelSlug"),
-	}
+	hotelRef := middleware.GetHotelRef(ctx)
 
 	var req request.RoomCreate
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
-	newRoom := mapper.RoomCreateRequestToEntity(req)
-	createdRoom, err := h.svc.RoomCreate(ctx, hotelRef, newRoom)
-	if err != nil {
-		if errors.Is(err, consts.UniqueRoomField) {
-			errMsg := response.ErrorResp(consts.UniqueRoomField)
-			helper.SendError(w, r, http.StatusConflict, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	createdRoom, err := h.svc.RoomCreate(ctx, hotelRef, mapper.RoomCreateRequestToEntity(req))
+	errHandler := &helper.ErrorHandler{
+		ConflictError: consts.UniqueRoomField,
+	}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
@@ -80,7 +72,7 @@ func (h *Handler) RoomCreate(w http.ResponseWriter, r *http.Request) {
 // @Accept		 json
 // @Produce		 json
 // @Param		 country_code       path		string	true	"Country Code"
-// @Param		 city_slug    	    path		string	true	"City Slug"
+// @Param		 city_slug    	    path		string	true	"City HotelSlug"
 // @Param		 hotel_slug         path		string	true	"Hotel slug"
 // @Param	     page	            query		uint64	false	"Page"	default(1)
 // @Param	     limit	            query		uint64	false	"Limit"	default(20)
@@ -91,39 +83,32 @@ func (h *Handler) RoomCreate(w http.ResponseWriter, r *http.Request) {
 // @Router		 /{country_code}/{city_slug}/hotels/{hotel_slug}/rooms/ [get]
 func (h *Handler) RoomGetAll(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+	hotelRef := middleware.GetHotelRef(ctx)
 
-	hotelRef := models.HotelRef{
-		CountryCode: chi.URLParam(r, "countryCode"),
-		CitySlug:    chi.URLParam(r, "citySlug"),
-		HotelSlug:   chi.URLParam(r, "hotelSlug"),
-	}
-
-	pagination, err := helper.ParsePaginationQuery(r)
+	paginationParams, err := pagination.ParsePaginationQuery(r)
 	if err != nil {
 		errMsg := response.ErrorResp(consts.InvalidQueryParam)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
 
-	roomList, err := h.svc.RoomGetAll(ctx, hotelRef, pagination.Page, pagination.Limit)
-	if err != nil {
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	roomList, err := h.svc.RoomGetAll(ctx, hotelRef, paginationParams.Page, paginationParams.Limit)
+	errHandler := &helper.ErrorHandler{}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
 	rooms := make([]response.RoomShort, 0, len(roomList.Rooms))
 	for _, room := range roomList.Rooms {
-		roomResponse := mapper.RoomShortEntityToShortResponse(room)
-		rooms = append(rooms, roomResponse)
+		rooms = append(rooms, mapper.RoomShortEntityToShortResponse(room))
 	}
 
-	totalPageCount := (roomList.TotalCount + pagination.Limit - 1) / pagination.Limit
-	pageLinks := helper.BuildPaginationLinks(r, pagination, totalPageCount)
+	totalPageCount := (roomList.TotalCount + paginationParams.Limit - 1) / paginationParams.Limit
+	pageLinks := pagination.BuildPaginationLinks(r, paginationParams, totalPageCount)
 	roomListResp := response.RoomList{
 		Rooms:           rooms,
-		CurrentPage:     pagination.Page,
-		Limit:           pagination.Limit,
+		CurrentPage:     paginationParams.Page,
+		Limit:           paginationParams.Limit,
 		Links:           pageLinks,
 		TotalPageCount:  totalPageCount,
 		TotalRoomsCount: roomList.TotalCount,
@@ -140,7 +125,7 @@ func (h *Handler) RoomGetAll(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    country_code   path		string	true	"Country Code"
-//	@Param		    city_slug      path		string	true	"City Slug"
+//	@Param		    city_slug      path		string	true	"City HotelSlug"
 //	@Param		    hotel_slug     path		string	true	"Hotel slug"
 //	@Param			id	           path		string	true	"Room ID"
 //	@Success		200	           {object}	response.Room
@@ -152,15 +137,9 @@ func (h *Handler) RoomGetAll(w http.ResponseWriter, r *http.Request) {
 //	@Router			/{country_code}/{city_slug}/hotels/{hotel_slug}/rooms/{id} [get]
 func (h *Handler) RoomGetByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+	hotelRef := middleware.GetHotelRef(ctx)
 
-	hotelRef := models.HotelRef{
-		CountryCode: chi.URLParam(r, "countryCode"),
-		CitySlug:    chi.URLParam(r, "citySlug"),
-		HotelSlug:   chi.URLParam(r, "hotelSlug"),
-	}
-
-	paramID := chi.URLParam(r, "id")
-	id, err := uuid.Parse(paramID)
+	id, err := helper.ParseUUIDParam(r, "id")
 	if err != nil {
 		errMsg := response.ErrorResp(consts.InvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
@@ -168,14 +147,8 @@ func (h *Handler) RoomGetByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	room, err := h.svc.RoomGetByID(ctx, hotelRef, id)
-	if err != nil {
-		if errors.Is(err, consts.RoomNotFound) {
-			errMsg := response.ErrorResp(consts.RoomNotFound)
-			helper.SendError(w, r, http.StatusNotFound, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	errHandler := &helper.ErrorHandler{NotFoundError: consts.RoomNotFound}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
@@ -191,7 +164,7 @@ func (h *Handler) RoomGetByID(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    country_code    path		string	true	"Country Code"
-//	@Param		    city_slug       path		string	true	"City Slug"
+//	@Param		    city_slug       path		string	true	"City HotelSlug"
 //	@Param		    hotel_slug      path		string	true	"Hotel slug"
 //	@Param			id	path		string	true	"Room ID"
 //	@Param          request  body   request.RoomUpdate  true  "Room data"
@@ -204,15 +177,9 @@ func (h *Handler) RoomGetByID(w http.ResponseWriter, r *http.Request) {
 //	@Router			/{country_code}/{city_slug}/hotels/{hotel_slug}/rooms/{id} [put]
 func (h *Handler) RoomUpdateByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+	hotelRef := middleware.GetHotelRef(ctx)
 
-	hotelRef := models.HotelRef{
-		CountryCode: chi.URLParam(r, "countryCode"),
-		CitySlug:    chi.URLParam(r, "citySlug"),
-		HotelSlug:   chi.URLParam(r, "hotelSlug"),
-	}
-
-	paramID := chi.URLParam(r, "id")
-	id, err := uuid.Parse(paramID)
+	id, err := helper.ParseUUIDParam(r, "id")
 	if err != nil {
 		errMsg := response.ErrorResp(consts.InvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
@@ -220,23 +187,64 @@ func (h *Handler) RoomUpdateByID(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var req request.RoomUpdate
-	if err = helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err = helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
 	roomUpdate := mapper.RoomUpdateRequestToEntity(req)
-	if err = h.svc.RoomUpdateByID(ctx, hotelRef, id, roomUpdate); err != nil {
-		if errors.Is(err, consts.RoomNotFound) {
-			errMsg := response.ErrorResp(consts.RoomNotFound)
-			helper.SendError(w, r, http.StatusNotFound, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	err = h.svc.RoomUpdateByID(ctx, hotelRef, id, roomUpdate)
+	errHandler := &helper.ErrorHandler{NotFoundError: consts.RoomNotFound}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
 	roomResponse := mapper.RoomUpdateEntityToResponse(roomUpdate)
+	helper.SendSuccess(w, r, http.StatusOK, roomResponse)
+}
+
+// RoomStatusUpdateByID    godoc
+//
+//	@Summary		Update room status by ID
+//	@Description	Update room status by ID from admin or owner provider
+//	@Tags			rooms
+//	@Accept			json
+//	@Produce		json
+//	@Param		    country_code    path		string	true	"Country Code"
+//	@Param		    city_slug       path		string	true	"City HotelSlug"
+//	@Param		    hotel_slug      path		string	true	"Hotel slug"
+//	@Param			id	path		string	true	"Room ID"
+//	@Param          request  body   request.RoomStatusUpdate  true  "Room data"
+//	@Success		200	{object}	response.RoomStatusUpdate
+//	@Failure		400	{object}	response.ErrorSchema
+//	@Failure		401	{object}	response.ErrorSchema
+//	@Failure		404	{object}	response.ErrorSchema
+//	@Failure		500	{object}	response.ErrorSchema
+//	@Security		Bearer
+//	@Router			/{country_code}/{city_slug}/hotels/{hotel_slug}/rooms/{id}/update_status [put]
+func (h *Handler) RoomStatusUpdateByID(w http.ResponseWriter, r *http.Request) {
+	ctx := r.Context()
+	hotelRef := middleware.GetHotelRef(ctx)
+
+	id, err := helper.ParseUUIDParam(r, "id")
+	if err != nil {
+		errMsg := response.ErrorResp(consts.InvalidID)
+		helper.SendError(w, r, http.StatusBadRequest, errMsg)
+		return
+	}
+
+	var req request.RoomStatusUpdate
+	if err = helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
+		return
+	}
+
+	roomUpdate := mapper.RoomStatusUpdateRequestToEntity(req)
+	err = h.svc.RoomStatusUpdateByID(ctx, hotelRef, id, roomUpdate)
+	errHandler := &helper.ErrorHandler{NotFoundError: consts.RoomNotFound}
+	if err = errHandler.Handle(w, r, err); err != nil {
+		return
+	}
+
+	roomResponse := mapper.RoomStatusUpdateEntityToResponse(roomUpdate)
 	helper.SendSuccess(w, r, http.StatusOK, roomResponse)
 }
 
@@ -248,7 +256,7 @@ func (h *Handler) RoomUpdateByID(w http.ResponseWriter, r *http.Request) {
 //	@Accept			json
 //	@Produce		json
 //	@Param		    country_code    path		string	true	"Country Code"
-//	@Param		    city_slug       path		string	true	"City Slug"
+//	@Param		    city_slug       path		string	true	"City HotelSlug"
 //	@Param		    hotel_slug      path		string	true	"Hotel slug"
 //	@Param			id	path		string	true	"Room ID"
 //	@Success		204	{object}	nil
@@ -260,29 +268,18 @@ func (h *Handler) RoomUpdateByID(w http.ResponseWriter, r *http.Request) {
 //	@Router			/{country_code}/{city_slug}/hotels/{hotel_slug}/rooms/{id} [delete]
 func (h *Handler) RoomDeleteByID(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
+	hotelRef := middleware.GetHotelRef(ctx)
 
-	hotelRef := models.HotelRef{
-		CountryCode: chi.URLParam(r, "countryCode"),
-		CitySlug:    chi.URLParam(r, "citySlug"),
-		HotelSlug:   chi.URLParam(r, "hotelSlug"),
-	}
-
-	paramID := chi.URLParam(r, "id")
-	id, err := uuid.Parse(paramID)
+	id, err := helper.ParseUUIDParam(r, "id")
 	if err != nil {
 		errMsg := response.ErrorResp(consts.InvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
 
-	if err = h.svc.RoomDeleteByID(ctx, hotelRef, id); err != nil {
-		if errors.Is(err, consts.RoomNotFound) {
-			errMsg := response.ErrorResp(consts.RoomNotFound)
-			helper.SendError(w, r, http.StatusNotFound, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	err = h.svc.RoomDeleteByID(ctx, hotelRef, id)
+	errHandler := &helper.ErrorHandler{NotFoundError: consts.RoomNotFound}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 

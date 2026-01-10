@@ -3,7 +3,7 @@
 package mocks
 
 import (
-	models "auth/internal/repository/postgres/models"
+	models "auth/internal/repository/models"
 	context "context"
 
 	mock "github.com/stretchr/testify/mock"

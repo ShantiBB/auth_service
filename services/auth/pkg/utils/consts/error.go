@@ -2,7 +2,7 @@ package consts
 
 import "errors"
 
-// auth
+// Auth
 var (
 	UserNotFound        = errors.New("user not found")
 	InvalidEmail        = errors.New("invalid email format")
@@ -15,23 +15,14 @@ var (
 	Unauthorized        = errors.New("unauthorized")
 )
 
-// hotel
+// Field
 var (
-	HotelNotFound    = errors.New("hotel not found")
-	UniqueHotelField = errors.New("hotel title already exists")
-)
-
-// room
-var (
-	RoomNotFound    = errors.New("room not found")
-	UniqueRoomField = errors.New("room number already exists")
+	FieldRequired = errors.New("field is required")
 )
 
 var (
 	InvalidID         = errors.New("invalid ID")
-	InvalidSlug       = errors.New("invalid slug")
 	InvalidQueryParam = errors.New("invalid query parameter")
-	FieldRequired     = errors.New("field is required")
 	InternalServer    = errors.New("internal server error")
 	Forbidden         = errors.New("forbidden")
 	InvalidJSON       = errors.New("invalid JSON body")

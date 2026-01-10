@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+
 	"hotel/internal/repository/models"
 
 	"github.com/google/uuid"
@@ -12,6 +13,7 @@ type RoomRepository interface {
 	RoomGetByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) (models.Room, error)
 	RoomGetAll(ctx context.Context, hotel models.HotelRef, limit, offset uint64) (models.RoomList, error)
 	RoomUpdateByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomUpdate) error
+	RoomStatusUpdateByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomStatusUpdate) error
 	RoomDeleteByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) error
 }
 
@@ -50,6 +52,19 @@ func (s *Service) RoomUpdateByID(
 	room models.RoomUpdate,
 ) error {
 	if err := s.repo.RoomUpdateByID(ctx, hotel, id, room); err != nil {
+		return err
+	}
+
+	return nil
+}
+
+func (s *Service) RoomStatusUpdateByID(
+	ctx context.Context,
+	hotel models.HotelRef,
+	id uuid.UUID,
+	room models.RoomStatusUpdate,
+) error {
+	if err := s.repo.RoomStatusUpdateByID(ctx, hotel, id, room); err != nil {
 		return err
 	}
 

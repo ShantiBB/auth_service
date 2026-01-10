@@ -3,13 +3,13 @@ package postgres
 import (
 	"context"
 	"errors"
+
 	"hotel/internal/repository/models"
 	"hotel/internal/repository/postgres/query"
+	"hotel/pkg/utils/consts"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
-
-	"fukuro-reserve/pkg/utils/consts"
 )
 
 func (r *Repository) HotelCreate(

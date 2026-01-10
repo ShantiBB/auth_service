@@ -7,10 +7,11 @@ import (
 
 	"auth/internal/http/dto/request"
 	"auth/internal/http/dto/response"
-	"auth/internal/http/lib/jwt"
-	"auth/internal/http/lib/password"
-	"fukuro-reserve/pkg/utils/consts"
-	"fukuro-reserve/pkg/utils/helper"
+	"auth/internal/http/utils/helper"
+	"auth/internal/http/utils/validation"
+	"auth/pkg/utils/consts"
+	"auth/pkg/utils/jwt"
+	"auth/pkg/utils/password"
 )
 
 const BearerType = "Bearer"
@@ -37,7 +38,7 @@ type TokenService interface {
 func (h *Handler) RegisterByEmail(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	var req request.UserCreate
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
@@ -49,14 +50,10 @@ func (h *Handler) RegisterByEmail(w http.ResponseWriter, r *http.Request) {
 	}
 
 	tokens, err := h.svc.RegisterByEmail(ctx, req.Email, hashPassword)
-	if err != nil {
-		if errors.Is(err, consts.UniqueUserField) {
-			errMsg := response.ErrorResp(consts.UniqueUserField)
-			helper.SendError(w, r, http.StatusConflict, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	errHandler := &helper.ErrorHandler{
+		Conflict: consts.UniqueUserField,
+	}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
@@ -83,7 +80,7 @@ func (h *Handler) RegisterByEmail(w http.ResponseWriter, r *http.Request) {
 func (h *Handler) LoginByEmail(w http.ResponseWriter, r *http.Request) {
 	ctx := r.Context()
 	var req request.UserCreate
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
@@ -120,20 +117,16 @@ func (h *Handler) LoginByEmail(w http.ResponseWriter, r *http.Request) {
 //	@Router			/auth/refresh [post]
 func (h *Handler) RefreshToken(w http.ResponseWriter, r *http.Request) {
 	var req jwt.RefreshToken
-	if err := helper.ParseJSON(w, r, &req, h.customValidationError); err != nil {
+	if err := helper.ParseJSON(w, r, &req, validation.CustomValidationError); err != nil {
 		return
 	}
 
 	token := &jwt.Token{Refresh: req.RefreshToken}
 	tokens, err := h.svc.RefreshToken(token)
-	if err != nil {
-		if errors.Is(err, consts.InvalidRefreshToken) {
-			errMsg := response.ErrorResp(consts.InvalidRefreshToken)
-			helper.SendError(w, r, http.StatusUnauthorized, errMsg)
-			return
-		}
-		errMsg := response.ErrorResp(consts.InternalServer)
-		helper.SendError(w, r, http.StatusInternalServerError, errMsg)
+	errHandler := &helper.ErrorHandler{
+		Unauthorized: consts.InvalidRefreshToken,
+	}
+	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
 
