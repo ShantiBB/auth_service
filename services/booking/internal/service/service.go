@@ -1,7 +1,10 @@
 package service
 
 type Repository interface {
+	BookingTransactionRepository
 	BookingRepository
+	BookingRoomRepository
+	RoomLockRepository
 }
 
 type Service struct {
