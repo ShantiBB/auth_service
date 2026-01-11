@@ -3,6 +3,7 @@ package postgres
 import (
 	"context"
 	"errors"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -13,36 +14,62 @@ import (
 	"booking/pkg/utils/consts"
 )
 
-func (r *Repository) CreateRoomLock(
+func (r *Repository) CreateRoomLocks(
 	ctx context.Context,
 	tx pgx.Tx,
-	roomLock models.CreateRoomLock,
-) (models.RoomLock, error) {
+	locks []models.CreateRoomLock,
+) ([]models.RoomLock, error) {
+
+	if len(locks) == 0 {
+		return nil, nil
+	}
+
 	db := r.executor(tx)
 
-	newRoomLock := roomLock.ToRead()
-	insertArgs := []any{
-		roomLock.RoomID,
-		roomLock.BookingID,
-		roomLock.StayRange.Start,
-		roomLock.StayRange.End,
-		roomLock.ExpiresAt,
-	}
-	scanArgs := []any{
-		&newRoomLock.ID,
-		&newRoomLock.ISActive,
-		&newRoomLock.CreatedAt,
+	roomIDs := make([]uuid.UUID, 0, len(locks))
+	bookingIDs := make([]uuid.UUID, 0, len(locks))
+	startDates := make([]time.Time, 0, len(locks))
+	endDates := make([]time.Time, 0, len(locks))
+	expiresAts := make([]time.Time, 0, len(locks))
+
+	for _, l := range locks {
+		roomIDs = append(roomIDs, l.RoomID)
+		bookingIDs = append(bookingIDs, l.BookingID)
+		startDates = append(startDates, l.StayRange.Start)
+		endDates = append(endDates, l.StayRange.End)
+		expiresAts = append(expiresAts, l.ExpiresAt)
 	}
 
-	if err := db.QueryRow(ctx, query.CreateRoomLock, insertArgs...).Scan(scanArgs...); err != nil {
+	rows, err := db.Query(ctx, query.CreateRoomLocks, roomIDs, bookingIDs, startDates, endDates, expiresAts)
+	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23P01" {
-			return models.RoomLock{}, consts.RoomLockAlreadyExist
+			return nil, consts.RoomLockAlreadyExist
 		}
-		return models.RoomLock{}, err
+		return nil, err
+	}
+	defer rows.Close()
+
+	out := make([]models.RoomLock, 0, len(locks))
+	for rows.Next() {
+		var rl models.RoomLock
+		if err = rows.Scan(
+			&rl.ID,
+			&rl.RoomID,
+			&rl.BookingID,
+			&rl.ISActive,
+			&rl.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+		out = append(out, rl)
 	}
 
-	return newRoomLock, nil
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return out, nil
 }
 
 func (r *Repository) GetRoomsLockByBookingID(

@@ -34,7 +34,7 @@ type BookingRepository interface {
 }
 
 type BookingRoomRepository interface {
-	CreateBookingRoom(ctx context.Context, tx pgx.Tx, bRoom models.CreateBookingRoom) (models.BookingRoom, error)
+	CreateBookingRooms(ctx context.Context, tx pgx.Tx, rooms []models.CreateBookingRoom) ([]models.BookingRoom, error)
 	GetBookingRoomsByBookingID(ctx context.Context, tx pgx.Tx, bookingID uuid.UUID) ([]models.BookingRoom, error)
 	GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.BookingRoom, error)
 	UpdateBookingRoomGuestCountsByID(
@@ -47,7 +47,7 @@ type BookingRoomRepository interface {
 }
 
 type RoomLockRepository interface {
-	CreateRoomLock(ctx context.Context, tx pgx.Tx, roomLock models.CreateRoomLock) (models.RoomLock, error)
+	CreateRoomLocks(ctx context.Context, tx pgx.Tx, locks []models.CreateRoomLock) ([]models.RoomLock, error)
 	GetRoomsLockByBookingID(ctx context.Context, tx pgx.Tx, bookingID uuid.UUID) ([]models.RoomLock, error)
 	GetRoomLockByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.RoomLock, error)
 	UpdateRoomLockActivityByID(
@@ -64,7 +64,6 @@ func (s *Service) BookingCreate(
 	b models.CreateBooking,
 	rooms []models.CreateBookingRoom,
 ) (models.Booking, error) {
-
 	tx, err := s.repo.BeginTx(ctx)
 	if err != nil {
 		return models.Booking{}, err
@@ -75,52 +74,54 @@ func (s *Service) BookingCreate(
 	if err != nil {
 		return models.Booking{}, err
 	}
-	if nights <= 0 {
-		return models.Booking{}, consts.ErrInvalidDates
-	}
 
-	var roomTotal decimal.Decimal
-	var finalTotalAmount decimal.Decimal
+	finalTotalAmount := decimal.Zero
 	for _, room := range rooms {
-		roomTotal = room.PricePerNight.Mul(decimal.NewFromInt(int64(nights)))
+		roomTotal := room.PricePerNight.Mul(decimal.NewFromInt(int64(nights)))
 		finalTotalAmount = finalTotalAmount.Add(roomTotal)
 	}
 
 	if !b.ExpectedTotalAmount.IsZero() {
 		diff := finalTotalAmount.Sub(b.ExpectedTotalAmount).Abs()
-		if diff.GreaterThan(decimal.NewFromFloat(0.01)) {
+		if diff.GreaterThan(decimal.RequireFromString("0.01")) {
 			return models.Booking{}, consts.ErrPriceChanged
 		}
 	}
 
 	b.FinalTotalAmount = finalTotalAmount
+
 	newBooking, err := s.repo.CreateBooking(ctx, tx, b)
 	if err != nil {
 		return models.Booking{}, err
 	}
 
-	var newRoom models.BookingRoom
-	for _, room := range rooms {
-		room.BookingID = newBooking.ID
+	for i := range rooms {
+		rooms[i].BookingID = newBooking.ID
+	}
 
-		newRoom, err = s.repo.CreateBookingRoom(ctx, tx, room)
-		if err != nil {
-			return models.Booking{}, err
-		}
+	newRooms, err := s.repo.CreateBookingRooms(ctx, tx, rooms)
+	if err != nil {
+		return models.Booking{}, err
+	}
 
-		roomLock := models.CreateRoomLock{
-			RoomID:    newRoom.RoomID,
-			BookingID: newBooking.ID,
-			StayRange: models.DateRange{
-				Start: b.CheckIn,
-				End:   b.CheckOut,
+	now := time.Now()
+	locks := make([]models.CreateRoomLock, 0, len(newRooms))
+	for _, nr := range newRooms {
+		locks = append(
+			locks, models.CreateRoomLock{
+				RoomID:    nr.RoomID,
+				BookingID: newBooking.ID,
+				StayRange: models.DateRange{
+					Start: b.CheckIn,
+					End:   b.CheckOut,
+				},
+				ExpiresAt: now.Add(15 * time.Minute),
 			},
-			ExpiresAt: time.Now().Add(15 * time.Minute),
-		}
+		)
+	}
 
-		if _, err = s.repo.CreateRoomLock(ctx, tx, roomLock); err != nil {
-			return models.Booking{}, err
-		}
+	if _, err = s.repo.CreateRoomLocks(ctx, tx, locks); err != nil {
+		return models.Booking{}, err
 	}
 
 	if err = tx.Commit(ctx); err != nil {

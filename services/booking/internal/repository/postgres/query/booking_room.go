@@ -1,10 +1,19 @@
 package query
 
 const (
-	CreateBookingRoom = `
+	CreateBookingRooms = `
+		WITH input AS (
+		  SELECT
+			$1::uuid AS booking_id,
+			unnest($2::uuid[])    AS room_id,
+			unnest($3::int[])     AS adults,
+			unnest($4::int[])     AS children,
+			unnest($5::numeric[]) AS price_per_night
+		)
 		INSERT INTO booking_room (booking_id, room_id, adults, children, price_per_night)
-		VALUES ($1, $2, $3, $4, $5)
-		RETURNING id, created_at;`
+		SELECT booking_id, room_id, adults, children, price_per_night
+		FROM input
+		RETURNING id, booking_id, room_id, adults, children, price_per_night, created_at;`
 
 	GetBookingRoomsByBookingID = `
 		SELECT

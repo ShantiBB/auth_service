@@ -12,29 +12,71 @@ import (
 	"booking/pkg/utils/consts"
 )
 
-func (r *Repository) CreateBookingRoom(ctx context.Context, tx pgx.Tx, bRoom models.CreateBookingRoom) (
-	models.BookingRoom, error,
-) {
+func (r *Repository) CreateBookingRooms(
+	ctx context.Context,
+	tx pgx.Tx,
+	rooms []models.CreateBookingRoom,
+) ([]models.BookingRoom, error) {
+
+	if len(rooms) == 0 {
+		return nil, nil
+	}
+
 	db := r.executor(tx)
 
-	newBookingRoom := bRoom.ToRead()
-	insertArgs := []any{
-		bRoom.BookingID,
-		bRoom.RoomID,
-		bRoom.Adults,
-		bRoom.Children,
-		bRoom.PricePerNight,
-	}
-	scanArgs := []any{
-		&newBookingRoom.ID,
-		&newBookingRoom.CreatedAt,
+	bookingID := rooms[0].BookingID
+
+	roomIDs := make([]uuid.UUID, 0, len(rooms))
+	adults := make([]int32, 0, len(rooms))
+	children := make([]int32, 0, len(rooms))
+	prices := make([]string, 0, len(rooms))
+
+	for _, r := range rooms {
+		if r.BookingID != bookingID {
+			return nil, errors.New("all rooms must have same booking_id")
+		}
+
+		roomIDs = append(roomIDs, r.RoomID)
+		adults = append(adults, int32(r.Adults))
+		children = append(children, int32(r.Children))
+		prices = append(prices, r.PricePerNight.StringFixed(2))
 	}
 
-	if err := db.QueryRow(ctx, query.CreateBookingRoom, insertArgs...).Scan(scanArgs...); err != nil {
-		return models.BookingRoom{}, err
+	rows, err := db.Query(ctx, query.CreateBookingRooms, bookingID, roomIDs, adults, children, prices)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
+
+	out := make([]models.BookingRoom, 0, len(rooms))
+	for rows.Next() {
+		var br models.BookingRoom
+
+		var a, c int32
+
+		if err := rows.Scan(
+			&br.ID,
+			&br.BookingID,
+			&br.RoomID,
+			&a,
+			&c,
+			&br.PricePerNight,
+			&br.CreatedAt,
+		); err != nil {
+			return nil, err
+		}
+
+		br.Adults = uint8(a)
+		br.Children = uint8(c)
+
+		out = append(out, br)
 	}
 
-	return newBookingRoom, nil
+	if err := rows.Err(); err != nil {
+		return nil, err
+	}
+
+	return out, nil
 }
 
 func (r *Repository) GetBookingRoomsByBookingID(
