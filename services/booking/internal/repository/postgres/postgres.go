@@ -5,25 +5,34 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/pgconn"
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/lib/pq"
 
 	"booking/internal/config"
 )
 
-type Repository struct {
-	db *pgxpool.Pool
+type DBTX interface {
+	Exec(ctx context.Context, sql string, arguments ...interface{}) (pgconn.CommandTag, error)
+	Query(ctx context.Context, sql string, args ...interface{}) (pgx.Rows, error)
+	QueryRow(ctx context.Context, sql string, args ...interface{}) pgx.Row
 }
 
-func NewRepository(config *config.Config) (*Repository, error) {
+type Repository struct {
+	db   DBTX
+	pool *pgxpool.Pool
+}
+
+func NewRepository(cfgApp *config.Config) (*Repository, error) {
 	url := fmt.Sprintf(
 		"postgres://%s:%s@%s:%d/%s?sslmode=%s",
-		config.Postgres.User,
-		config.Postgres.Password,
-		config.Postgres.Host,
-		config.Postgres.Port,
-		config.Postgres.DB,
-		config.Postgres.SSLMode,
+		cfgApp.Postgres.User,
+		cfgApp.Postgres.Password,
+		cfgApp.Postgres.Host,
+		cfgApp.Postgres.Port,
+		cfgApp.Postgres.DB,
+		cfgApp.Postgres.SSLMode,
 	)
 
 	cfg, err := pgxpool.ParseConfig(url)
@@ -33,14 +42,29 @@ func NewRepository(config *config.Config) (*Repository, error) {
 
 	cfg.MaxConns = 20
 	cfg.MinConns = 5
-
 	cfg.MaxConnIdleTime = 5 * time.Minute
 	cfg.MaxConnLifetime = 30 * time.Minute
 	cfg.HealthCheckPeriod = 1 * time.Minute
-
 	cfg.ConnConfig.ConnectTimeout = 10 * time.Second
 
-	db, err := pgxpool.NewWithConfig(context.Background(), cfg)
+	pool, err := pgxpool.NewWithConfig(context.Background(), cfg)
+	if err != nil {
+		return nil, err
+	}
 
-	return &Repository{db: db}, nil
+	return &Repository{
+		db:   pool,
+		pool: pool,
+	}, nil
+}
+
+func (r *Repository) BeginTx(ctx context.Context) (pgx.Tx, error) {
+	return r.pool.Begin(ctx)
+}
+
+func (r *Repository) executor(tx pgx.Tx) DBTX {
+	if tx != nil {
+		return tx
+	}
+	return r.db
 }

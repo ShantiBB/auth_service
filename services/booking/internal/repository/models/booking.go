@@ -9,8 +9,8 @@ import (
 type CreateBooking struct {
 	UserID      int64
 	HotelID     string
-	CheckIn     string
-	CheckOut    string
+	CheckIn     time.Time
+	CheckOut    time.Time
 	GuestName   string
 	GuestEmail  *string
 	GuestPhone  *string
@@ -22,8 +22,8 @@ type UpdateBooking struct {
 	GuestName   *string
 	GuestEmail  *string
 	GuestPhone  *string
-	CheckIn     *string
-	CheckOut    *string
+	CheckIn     *time.Time
+	CheckOut    *time.Time
 	TotalAmount *string
 }
 
@@ -32,11 +32,11 @@ type BookingStatusInfo struct {
 }
 
 type Booking struct {
-	ID          string
+	ID          uuid.UUID
 	UserID      int64
 	HotelID     string
-	CheckIn     string
-	CheckOut    string
+	CheckIn     time.Time
+	CheckOut    time.Time
 	Status      BookingStatus
 	GuestName   string
 	GuestEmail  *string
@@ -51,8 +51,8 @@ type BookingShort struct {
 	ID          string
 	UserID      int64
 	HotelID     string
-	CheckIn     string
-	CheckOut    string
+	CheckIn     time.Time
+	CheckOut    time.Time
 	Status      BookingStatus
 	GuestName   string
 	GuestEmail  *string

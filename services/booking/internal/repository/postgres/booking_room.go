@@ -12,9 +12,11 @@ import (
 	"booking/pkg/utils/consts"
 )
 
-func (r *Repository) CreateBookingRoom(ctx context.Context, bRoom models.BookingRoomCreate) (
+func (r *Repository) CreateBookingRoom(ctx context.Context, tx pgx.Tx, bRoom models.CreateBookingRoom) (
 	models.BookingRoom, error,
 ) {
+	db := r.executor(tx)
+
 	newBookingRoom := bRoom.ToRead()
 	insertArgs := []any{
 		bRoom.BookingID,
@@ -28,7 +30,7 @@ func (r *Repository) CreateBookingRoom(ctx context.Context, bRoom models.Booking
 		&newBookingRoom.CreatedAt,
 	}
 
-	if err := r.db.QueryRow(ctx, query.CreateBookingRoom, insertArgs...).Scan(scanArgs...); err != nil {
+	if err := db.QueryRow(ctx, query.CreateBookingRoom, insertArgs...).Scan(scanArgs...); err != nil {
 		return models.BookingRoom{}, err
 	}
 
@@ -37,10 +39,13 @@ func (r *Repository) CreateBookingRoom(ctx context.Context, bRoom models.Booking
 
 func (r *Repository) GetBookingRoomsByBookingID(
 	ctx context.Context,
+	tx pgx.Tx,
 	bookingID uuid.UUID,
 ) (models.BookingRoomList, error) {
+	db := r.executor(tx)
+
 	var bookingRoomList models.BookingRoomList
-	rows, err := r.db.Query(ctx, query.GetBookingRoomsByBookingID, bookingID)
+	rows, err := db.Query(ctx, query.GetBookingRoomsByBookingID, bookingID)
 	if err != nil {
 		return models.BookingRoomList{}, err
 	}
@@ -66,7 +71,9 @@ func (r *Repository) GetBookingRoomsByBookingID(
 	return bookingRoomList, nil
 }
 
-func (r *Repository) GetBookingRoomByID(ctx context.Context, id uuid.UUID) (models.BookingRoom, error) {
+func (r *Repository) GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.BookingRoom, error) {
+	db := r.executor(tx)
+
 	var bRoom models.BookingRoom
 	scanArgs := []any{
 		bRoom.ID,
@@ -78,7 +85,7 @@ func (r *Repository) GetBookingRoomByID(ctx context.Context, id uuid.UUID) (mode
 		bRoom.CreatedAt,
 	}
 
-	if err := r.db.QueryRow(ctx, query.GetBookingRoomByID, id).Scan(scanArgs...); err != nil {
+	if err := db.QueryRow(ctx, query.GetBookingRoomByID, id).Scan(scanArgs...); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return models.BookingRoom{}, consts.BookingRoomNotFound
 		}
@@ -90,10 +97,13 @@ func (r *Repository) GetBookingRoomByID(ctx context.Context, id uuid.UUID) (mode
 
 func (r *Repository) UpdateBookingRoomGuestCountsByID(
 	ctx context.Context,
+	tx pgx.Tx,
 	id uuid.UUID,
 	bRoom models.BookingRoomGuestCounts,
 ) error {
-	row, err := r.db.Exec(ctx, query.UpdateBookingRoomGuestCountsByID, id, bRoom.Adults, bRoom.Children)
+	db := r.executor(tx)
+
+	row, err := db.Exec(ctx, query.UpdateBookingRoomGuestCountsByID, id, bRoom.Adults, bRoom.Children)
 	if err != nil {
 		return err
 	}
@@ -104,8 +114,10 @@ func (r *Repository) UpdateBookingRoomGuestCountsByID(
 	return nil
 }
 
-func (r *Repository) DeleteBookingRoomByID(ctx context.Context, id uuid.UUID) error {
-	row, err := r.db.Exec(ctx, query.DeleteBookingRoomByID, id)
+func (r *Repository) DeleteBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) error {
+	db := r.executor(tx)
+
+	row, err := db.Exec(ctx, query.DeleteBookingRoomByID, id)
 	if err != nil {
 		return err
 	}

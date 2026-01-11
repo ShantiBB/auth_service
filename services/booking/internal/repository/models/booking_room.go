@@ -7,7 +7,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-type BookingRoomCreate struct {
+type CreateBookingRoom struct {
 	BookingID     uuid.UUID
 	RoomID        uuid.UUID
 	Adults        uint8
@@ -34,7 +34,7 @@ type BookingRoomList struct {
 	BookingRooms []BookingRoom
 }
 
-func (b *BookingRoomCreate) ToRead() BookingRoom {
+func (b *CreateBookingRoom) ToRead() BookingRoom {
 	return BookingRoom{
 		BookingID:     b.BookingID,
 		RoomID:        b.RoomID,

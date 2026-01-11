@@ -6,10 +6,15 @@ import (
 	"github.com/google/uuid"
 )
 
+type DateRange struct {
+	Start time.Time
+	End   time.Time
+}
+
 type CreateRoomLock struct {
 	RoomID    uuid.UUID
 	BookingID uuid.UUID
-	StayRange time.Time
+	StayRange DateRange
 	ExpiresAt time.Time
 }
 
@@ -21,7 +26,7 @@ type RoomLock struct {
 	ID        uuid.UUID
 	RoomID    uuid.UUID
 	BookingID uuid.UUID
-	StayRange time.Time
+	StayRange DateRange
 	ExpiresAt time.Time
 	ISActive  bool
 	CreatedAt time.Time

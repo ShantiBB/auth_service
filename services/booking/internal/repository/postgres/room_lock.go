@@ -14,8 +14,11 @@ import (
 
 func (r *Repository) CreateRoomLock(
 	ctx context.Context,
+	tx pgx.Tx,
 	roomLock models.CreateRoomLock,
 ) (models.RoomLock, error) {
+	db := r.executor(tx)
+
 	newRoomLock := roomLock.ToRead()
 	insertArgs := []any{
 		roomLock.RoomID,
@@ -29,7 +32,7 @@ func (r *Repository) CreateRoomLock(
 		&newRoomLock.CreatedAt,
 	}
 
-	if err := r.db.QueryRow(ctx, query.CreateRoomLock, insertArgs...).Scan(scanArgs...); err != nil {
+	if err := db.QueryRow(ctx, query.CreateRoomLock, insertArgs...).Scan(scanArgs...); err != nil {
 		return models.RoomLock{}, err
 	}
 
@@ -38,10 +41,13 @@ func (r *Repository) CreateRoomLock(
 
 func (r *Repository) GetRoomsLockByBookingID(
 	ctx context.Context,
+	tx pgx.Tx,
 	bookingID uuid.UUID,
 ) (models.RoomLockList, error) {
+	db := r.executor(tx)
+
 	var roomLockList models.RoomLockList
-	rows, err := r.db.Query(ctx, query.GetRoomsLockByBookingID, bookingID)
+	rows, err := db.Query(ctx, query.GetRoomsLockByBookingID, bookingID)
 	if err != nil {
 		return models.RoomLockList{}, err
 	}
@@ -67,7 +73,9 @@ func (r *Repository) GetRoomsLockByBookingID(
 	return roomLockList, nil
 }
 
-func (r *Repository) GetRoomLockByID(ctx context.Context, id uuid.UUID) (models.RoomLock, error) {
+func (r *Repository) GetRoomLockByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.RoomLock, error) {
+	db := r.executor(tx)
+
 	var roomLock models.RoomLock
 	scanArgs := []any{
 		roomLock.ID,
@@ -79,7 +87,7 @@ func (r *Repository) GetRoomLockByID(ctx context.Context, id uuid.UUID) (models.
 		roomLock.CreatedAt,
 	}
 
-	if err := r.db.QueryRow(ctx, query.GetRoomLockByID, id).Scan(scanArgs...); err != nil {
+	if err := db.QueryRow(ctx, query.GetRoomLockByID, id).Scan(scanArgs...); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return models.RoomLock{}, consts.RoomLockNotFound
 		}
@@ -91,10 +99,13 @@ func (r *Repository) GetRoomLockByID(ctx context.Context, id uuid.UUID) (models.
 
 func (r *Repository) UpdateRoomLockActivityByID(
 	ctx context.Context,
+	tx pgx.Tx,
 	id uuid.UUID,
 	roomLock models.UpdateRoomLockActivity,
 ) error {
-	row, err := r.db.Exec(ctx, query.UpdateRoomLockActivityByID, id, roomLock.IsActive, roomLock.ExpiresAt)
+	db := r.executor(tx)
+
+	row, err := db.Exec(ctx, query.UpdateRoomLockActivityByID, id, roomLock.IsActive, roomLock.ExpiresAt)
 	if err != nil {
 		return err
 	}
@@ -105,8 +116,10 @@ func (r *Repository) UpdateRoomLockActivityByID(
 	return nil
 }
 
-func (r *Repository) DeleteRoomLockByID(ctx context.Context, id uuid.UUID) error {
-	row, err := r.db.Exec(ctx, query.DeleteRoomLockByID, id)
+func (r *Repository) DeleteRoomLockByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) error {
+	db := r.executor(tx)
+
+	row, err := db.Exec(ctx, query.DeleteRoomLockByID, id)
 	if err != nil {
 		return err
 	}
