@@ -8,6 +8,8 @@ var (
 	BookingRoomNotFound  = errors.New("booking room not found")
 	RoomLockNotFound     = errors.New("room lock room not found")
 	RoomLockAlreadyExist = errors.New("room lock already exists")
+	ErrInvalidDates      = errors.New("invalid booking dates")
+	ErrPriceChanged      = errors.New("expected total amount does not match calculated total")
 )
 
 // Field

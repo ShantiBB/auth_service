@@ -19,7 +19,8 @@ CREATE TABLE IF NOT EXISTS booking (
     guest_phone TEXT,
 
     currency CHAR(3) NOT NULL CHECK (currency ~ '^[A-Z]{3}$'),
-    total_amount NUMERIC(12,2) NOT NULL CHECK (total_amount >= 0),
+    expected_total_amount NUMERIC(12,2) NOT NULL CHECK (expected_total_amount >= 0),
+    final_total_amount NUMERIC(12,2) NOT NULL CHECK (final_total_amount >= 0),
 
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP

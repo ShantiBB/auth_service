@@ -44,7 +44,8 @@ func (h *Handler) BookingCreate(w http.ResponseWriter, r *http.Request) {
 
 	createdBooking, err := h.svc.BookingCreate(ctx, newBooking, rooms)
 	errHandler := &helper.ErrorHandler{
-		Conflict: consts.RoomLockAlreadyExist,
+		Conflict:   consts.RoomLockAlreadyExist,
+		BadRequest: consts.ErrPriceChanged,
 	}
 	if err = errHandler.Handle(w, r, err); err != nil {
 		return

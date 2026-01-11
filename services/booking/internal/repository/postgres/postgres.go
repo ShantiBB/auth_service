@@ -40,6 +40,11 @@ func NewRepository(cfgApp *config.Config) (*Repository, error) {
 		return nil, err
 	}
 
+	cfg.AfterConnect = func(ctx context.Context, conn *pgx.Conn) error {
+		_, err = conn.Exec(ctx, "SET log_min_duration_statement = 0")
+		return err
+	}
+
 	cfg.MaxConns = 20
 	cfg.MinConns = 5
 	cfg.MaxConnIdleTime = 5 * time.Minute

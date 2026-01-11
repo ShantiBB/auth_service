@@ -4,18 +4,20 @@ import (
 	"time"
 
 	"github.com/google/uuid"
+	"github.com/shopspring/decimal"
 )
 
 type CreateBooking struct {
-	UserID      int64
-	HotelID     string
-	CheckIn     time.Time
-	CheckOut    time.Time
-	GuestName   string
-	GuestEmail  *string
-	GuestPhone  *string
-	Currency    string
-	TotalAmount string
+	UserID              int64
+	HotelID             string
+	CheckIn             time.Time
+	CheckOut            time.Time
+	GuestName           string
+	GuestEmail          *string
+	GuestPhone          *string
+	Currency            string
+	ExpectedTotalAmount decimal.Decimal
+	FinalTotalAmount    decimal.Decimal
 }
 
 type UpdateBooking struct {
@@ -32,33 +34,35 @@ type BookingStatusInfo struct {
 }
 
 type Booking struct {
-	ID          uuid.UUID
-	UserID      int64
-	HotelID     string
-	CheckIn     time.Time
-	CheckOut    time.Time
-	Status      BookingStatus
-	GuestName   string
-	GuestEmail  *string
-	GuestPhone  *string
-	Currency    string
-	TotalAmount string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID                  uuid.UUID
+	UserID              int64
+	HotelID             string
+	CheckIn             time.Time
+	CheckOut            time.Time
+	Status              BookingStatus
+	GuestName           string
+	GuestEmail          *string
+	GuestPhone          *string
+	Currency            string
+	ExpectedTotalAmount decimal.Decimal
+	FinalTotalAmount    decimal.Decimal
+	CreatedAt           time.Time
+	UpdatedAt           time.Time
 }
 
 type BookingShort struct {
-	ID          string
-	UserID      int64
-	HotelID     string
-	CheckIn     time.Time
-	CheckOut    time.Time
-	Status      BookingStatus
-	GuestName   string
-	GuestEmail  *string
-	GuestPhone  *string
-	Currency    string
-	TotalAmount string
+	ID                  string
+	UserID              int64
+	HotelID             string
+	CheckIn             time.Time
+	CheckOut            time.Time
+	Status              BookingStatus
+	GuestName           string
+	GuestEmail          *string
+	GuestPhone          *string
+	Currency            string
+	ExpectedTotalAmount decimal.Decimal
+	FinalTotalAmount    decimal.Decimal
 }
 
 type BookingList struct {
@@ -74,14 +78,15 @@ type BookingRef struct {
 
 func (b *CreateBooking) ToRead() Booking {
 	return Booking{
-		UserID:      b.UserID,
-		HotelID:     b.HotelID,
-		CheckIn:     b.CheckIn,
-		CheckOut:    b.CheckOut,
-		GuestName:   b.GuestName,
-		GuestEmail:  b.GuestEmail,
-		GuestPhone:  b.GuestPhone,
-		Currency:    b.Currency,
-		TotalAmount: b.TotalAmount,
+		UserID:              b.UserID,
+		HotelID:             b.HotelID,
+		CheckIn:             b.CheckIn,
+		CheckOut:            b.CheckOut,
+		GuestName:           b.GuestName,
+		GuestEmail:          b.GuestEmail,
+		GuestPhone:          b.GuestPhone,
+		Currency:            b.Currency,
+		ExpectedTotalAmount: b.ExpectedTotalAmount,
+		FinalTotalAmount:    b.FinalTotalAmount,
 	}
 }

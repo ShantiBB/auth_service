@@ -25,10 +25,12 @@ func (r *Repository) CreateBooking(ctx context.Context, tx pgx.Tx, b models.Crea
 		b.GuestEmail,
 		b.GuestPhone,
 		b.Currency,
-		b.TotalAmount,
+		b.ExpectedTotalAmount,
+		b.FinalTotalAmount,
 	}
 	scanArgs := []any{
 		&newBooking.ID,
+		&newBooking.Status,
 		&newBooking.CreatedAt,
 		&newBooking.UpdatedAt,
 	}
@@ -76,7 +78,8 @@ func (r *Repository) GetBookingsByHotelInfo(
 			b.GuestEmail,
 			b.GuestPhone,
 			b.Currency,
-			b.TotalAmount,
+			b.ExpectedTotalAmount,
+			b.FinalTotalAmount,
 		)
 		if err != nil {
 			return models.BookingList{}, err
@@ -114,7 +117,8 @@ func (r *Repository) GetBookingByID(ctx context.Context, tx pgx.Tx, id uuid.UUID
 		b.GuestEmail,
 		b.GuestPhone,
 		b.Currency,
-		b.TotalAmount,
+		b.ExpectedTotalAmount,
+		b.FinalTotalAmount,
 		b.CreatedAt,
 		b.UpdatedAt,
 	}
