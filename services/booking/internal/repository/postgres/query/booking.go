@@ -55,15 +55,12 @@ const (
 		FROM booking
 		WHERE id = $1;`
 
-	BookingUpdateByID = `
+	BookingGuestInfoUpdateByID = `
 		UPDATE booking
 		SET
 			guest_name = $2,
 			guest_email = $3,
-			guest_phone = $4,
-			check_in = $5,
-			check_out = $6,
-			total_amount = $7
+			guest_phone = $4
 		WHERE id = $1`
 
 	BookingStatusUpdateByID = `

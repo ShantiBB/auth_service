@@ -126,23 +126,16 @@ func (r *Repository) BookingGetByID(ctx context.Context, id uuid.UUID) (models.B
 	return b, nil
 }
 
-func (r *Repository) BookingUpdateByID(ctx context.Context, id uuid.UUID, b models.BookingUpdate) error {
+func (r *Repository) BookingGuestInfoUpdateByID(ctx context.Context, id uuid.UUID, b models.BookingUpdate) error {
 	updateArgs := []any{
 		id,
 		b.GuestName,
 		b.GuestEmail,
 		b.GuestPhone,
-		b.CheckIn,
-		b.CheckOut,
-		b.TotalAmount,
 	}
 
-	row, err := r.db.Exec(ctx, query.BookingUpdateByID, updateArgs...)
+	row, err := r.db.Exec(ctx, query.BookingGuestInfoUpdateByID, updateArgs...)
 	if err != nil {
-		var pgErr *pgconn.PgError
-		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
-			return consts.UniqueBookingField
-		}
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
@@ -160,10 +153,6 @@ func (r *Repository) BookingStatusUpdateByID(ctx context.Context, id uuid.UUID, 
 
 	row, err := r.db.Exec(ctx, query.BookingStatusUpdateByID, updateArgs...)
 	if err != nil {
-		var pgErr *pgconn.PgError
-		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
-			return consts.UniqueBookingField
-		}
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
