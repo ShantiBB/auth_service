@@ -6,6 +6,7 @@ import (
 
 	"github.com/joho/godotenv"
 
+	"booking/internal/app/booking"
 	"booking/internal/config"
 )
 
@@ -35,6 +36,6 @@ func main() {
 		panic("failed to load config: " + err.Error())
 	}
 
-	bookingApp := hotel.App{Config: cfg}
+	bookingApp := booking.App{Config: cfg}
 	bookingApp.MustLoad()
 }

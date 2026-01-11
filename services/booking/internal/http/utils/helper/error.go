@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	"hotel/internal/http/dto/response"
-	"hotel/pkg/utils/consts"
+	"booking/internal/http/dto/response"
+	"booking/pkg/utils/consts"
 )
 
 type ErrorHandler struct {

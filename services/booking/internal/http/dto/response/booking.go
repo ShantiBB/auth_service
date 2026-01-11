@@ -1,16 +1,19 @@
 package response
 
 import (
-	"booking/internal/repository/models"
 	"time"
+
+	"github.com/google/uuid"
+
+	"booking/internal/repository/models"
 )
 
 type Booking struct {
-	ID          string               `json:"id"`
+	ID          uuid.UUID            `json:"id"`
 	UserID      int64                `json:"user_id"`
 	HotelID     string               `json:"hotel_id"`
-	CheckIn     string               `json:"check_id"`
-	CheckOut    string               `json:"check_out"`
+	CheckIn     time.Time            `json:"check_in"`
+	CheckOut    time.Time            `json:"check_out"`
 	Status      models.BookingStatus `json:"status"`
 	GuestName   string               `json:"guest_name"`
 	GuestEmail  *string              `json:"guest_email"`

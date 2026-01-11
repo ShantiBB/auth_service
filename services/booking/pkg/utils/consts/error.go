@@ -4,9 +4,10 @@ import "errors"
 
 // Bookings
 var (
-	BookingNotFound     = errors.New("booking not found")
-	BookingRoomNotFound = errors.New("booking room not found")
-	RoomLockNotFound    = errors.New("room lock room not found")
+	BookingNotFound      = errors.New("booking not found")
+	BookingRoomNotFound  = errors.New("booking room not found")
+	RoomLockNotFound     = errors.New("room lock room not found")
+	RoomLockAlreadyExist = errors.New("room lock already exists")
 )
 
 // Field
