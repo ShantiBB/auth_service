@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/jackc/pgx/v5"
-	"github.com/shopspring/decimal"
 
 	"booking/internal/repository/models"
 	"booking/internal/service/utils/helper"
@@ -64,31 +63,17 @@ func (s *Service) BookingCreate(
 	b models.CreateBooking,
 	rooms []models.CreateBookingRoom,
 ) (models.Booking, error) {
+	var err error
+	b.FinalTotalAmount, err = helper.CalculateFinalTotalAmount(b.CheckIn, b.CheckOut, rooms, b.ExpectedTotalAmount)
+	if err != nil {
+		return models.Booking{}, err
+	}
+
 	tx, err := s.repo.BeginTx(ctx)
 	if err != nil {
 		return models.Booking{}, err
 	}
 	defer tx.Rollback(ctx)
-
-	nights, err := helper.Nights(b.CheckIn, b.CheckOut)
-	if err != nil {
-		return models.Booking{}, err
-	}
-
-	finalTotalAmount := decimal.Zero
-	for _, room := range rooms {
-		roomTotal := room.PricePerNight.Mul(decimal.NewFromInt(int64(nights)))
-		finalTotalAmount = finalTotalAmount.Add(roomTotal)
-	}
-
-	if !b.ExpectedTotalAmount.IsZero() {
-		diff := finalTotalAmount.Sub(b.ExpectedTotalAmount).Abs()
-		if diff.GreaterThan(decimal.RequireFromString("0.01")) {
-			return models.Booking{}, consts.ErrPriceChanged
-		}
-	}
-
-	b.FinalTotalAmount = finalTotalAmount
 
 	newBooking, err := s.repo.CreateBooking(ctx, tx, b)
 	if err != nil {
@@ -104,7 +89,8 @@ func (s *Service) BookingCreate(
 		return models.Booking{}, err
 	}
 
-	now := time.Now()
+	newBooking.BookingRooms = newRooms
+
 	locks := make([]models.CreateRoomLock, 0, len(newRooms))
 	for _, nr := range newRooms {
 		locks = append(
@@ -115,7 +101,7 @@ func (s *Service) BookingCreate(
 					Start: b.CheckIn,
 					End:   b.CheckOut,
 				},
-				ExpiresAt: now.Add(15 * time.Minute),
+				ExpiresAt: time.Now().Add(consts.ExpireRoomLockMinutes * time.Minute),
 			},
 		)
 	}
