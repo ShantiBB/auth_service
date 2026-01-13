@@ -37,5 +37,5 @@ func main() {
 	}
 
 	bookingApp := booking.App{Config: cfg}
-	bookingApp.MustLoad()
+	bookingApp.MustLoadGRPC()
 }

@@ -3,22 +3,23 @@ package booking
 import (
 	"fmt"
 	"log/slog"
-	"net/http"
+	"net"
 
+	"google.golang.org/grpc"
+	"google.golang.org/grpc/reflection"
+
+	bookingv1 "booking/api/booking/v1"
 	"booking/internal/config"
-	"booking/internal/http/handler"
-	"booking/internal/http/router"
+	"booking/internal/grpc/handler"
 	"booking/internal/repository/postgres"
 	"booking/internal/service"
-
-	"github.com/go-chi/chi/v5"
 )
 
 type App struct {
 	Config *config.Config
 }
 
-func (app *App) MustLoad() {
+func (app *App) MustLoadGRPC() {
 	repo, err := postgres.NewRepository(app.Config)
 	if err != nil {
 		panic(err.Error())
@@ -27,12 +28,19 @@ func (app *App) MustLoad() {
 	svc := service.New(repo)
 	h := handler.New(svc)
 
-	r := chi.NewRouter()
-	router.New(r, h)
+	addr := fmt.Sprintf("%s:%d", app.Config.Server.Host, app.Config.Server.Port)
+	lis, err := net.Listen("tcp", addr)
+	if err != nil {
+		panic(err.Error())
+	}
 
-	server := fmt.Sprintf("%s:%d", app.Config.Server.Host, app.Config.Server.Port)
-	slog.Info("Starting server", "address", server)
-	if err = http.ListenAndServe(server, r); err != nil {
+	grpcServer := grpc.NewServer()
+
+	bookingv1.RegisterBookingServiceServer(grpcServer, h)
+	reflection.Register(grpcServer)
+
+	slog.Info("Starting gRPC server", "address", addr)
+	if err = grpcServer.Serve(lis); err != nil {
 		panic(err.Error())
 	}
 }
