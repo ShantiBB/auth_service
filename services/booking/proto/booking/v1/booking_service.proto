@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+package booking.v1;
+
+option go_package = "booking/api/booking/v1;bookingv1";
+
+import "booking/v1/create_booking.proto";
+import "booking/v1/get_bookings.proto";
+
+service BookingService {
+  rpc CreateBooking(CreateBookingRequest) returns (CreateBookingResponse);
+  rpc GetBookings(GetBookingsRequest) returns (GetBookingsResponse);
+}

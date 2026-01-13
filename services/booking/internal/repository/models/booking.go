@@ -52,9 +52,10 @@ type Booking struct {
 }
 
 type BookingShort struct {
-	ID                  string
+	ID                  uuid.UUID
 	UserID              int64
 	HotelID             uuid.UUID
+	BookingRooms        []BookingRoom
 	CheckIn             time.Time
 	CheckOut            time.Time
 	Status              BookingStatus

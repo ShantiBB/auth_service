@@ -2,6 +2,7 @@ package service
 
 import (
 	"context"
+	"fmt"
 	"time"
 
 	"github.com/jackc/pgx/v5"
@@ -34,7 +35,7 @@ type BookingRepository interface {
 
 type BookingRoomRepository interface {
 	CreateBookingRooms(ctx context.Context, tx pgx.Tx, rooms []models.CreateBookingRoom) ([]models.BookingRoom, error)
-	GetBookingRoomsByBookingID(ctx context.Context, tx pgx.Tx, bookingID uuid.UUID) ([]models.BookingRoom, error)
+	GetBookingRoomsByBookingIDs(ctx context.Context, tx pgx.Tx, bookingIDs []uuid.UUID) ([]models.BookingRoom, error)
 	GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.BookingRoom, error)
 	UpdateBookingRoomGuestCountsByID(
 		ctx context.Context,
@@ -117,22 +118,47 @@ func (s *Service) BookingCreate(
 	return newBooking, nil
 }
 
-//func (s *Service) BookingGetAll(
-//	ctx context.Context,
-//	bookingRef models.BookingRef,
-//	page uint64,
-//	limit uint64,
-//) (models.BookingList, error) {
-//	offset := (page - 1) * limit
-//
-//	bookingList, err := s.repo.BookingGetAll(ctx, bookingRef, limit, offset)
-//	if err != nil {
-//		return models.BookingList{}, err
-//	}
-//
-//	return bookingList, nil
-//}
-//
+func (s *Service) GetBookings(
+	ctx context.Context,
+	bookingRef models.BookingRef,
+	page uint64,
+	limit uint64,
+) (models.BookingList, error) {
+	offset := (page - 1) * limit
+
+	tx, err := s.repo.BeginTx(ctx)
+	if err != nil {
+		return models.BookingList{}, err
+	}
+	defer tx.Rollback(ctx)
+
+	bookingList, err := s.repo.GetBookingsByHotelInfo(ctx, tx, bookingRef, limit, offset)
+	if err != nil {
+		return models.BookingList{}, err
+	}
+
+	bookingIDs := make([]uuid.UUID, len(bookingList.Bookings))
+	for i, booking := range bookingList.Bookings {
+		bookingIDs[i] = booking.ID
+	}
+
+	allRooms, err := s.repo.GetBookingRoomsByBookingIDs(ctx, tx, bookingIDs)
+	if err != nil {
+		return models.BookingList{}, fmt.Errorf("get booking rooms: %w", err)
+	}
+
+	roomsByBookingID := make(map[uuid.UUID][]models.BookingRoom)
+	for _, room := range allRooms {
+		roomsByBookingID[room.BookingID] = append(roomsByBookingID[room.BookingID], room)
+	}
+
+	for i := range bookingList.Bookings {
+		bookingList.Bookings[i].BookingRooms = roomsByBookingID[bookingList.Bookings[i].ID]
+	}
+
+	return bookingList, nil
+}
+
 //func (s *Service) BookingGetByID(ctx context.Context, id uuid.UUID) (models.Booking, error) {
 //	b, err := s.repo.BookingGetByID(ctx, id)
 //	if err != nil {
@@ -141,7 +167,7 @@ func (s *Service) BookingCreate(
 //
 //	return b, nil
 //}
-//
+
 //func (s *Service) BookingUpdateByID(ctx context.Context, id uuid.UUID, b models.UpdateBooking) error {
 //	if err := s.repo.BookingUpdateByID(ctx, id, b); err != nil {
 //		return err

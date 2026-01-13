@@ -9,8 +9,8 @@ import (
 	"booking/pkg/utils/consts"
 )
 
-func BookingRoomToProto(r *models.BookingRoom) *bookingv1.CreateBookingRoomResponse {
-	return &bookingv1.CreateBookingRoomResponse{
+func BookingRoomToProto(r *models.BookingRoom) *bookingv1.BookingRoomResponse {
+	return &bookingv1.BookingRoomResponse{
 		RoomId:        r.RoomID.String(),
 		Adults:        uint32(r.Adults),
 		Children:      uint32(r.Children),
@@ -43,4 +43,21 @@ func CreateBookingRoomsToDomain(rooms []*bookingv1.CreateBookingRoom) ([]models.
 	}
 
 	return result, nil
+}
+
+func BookingRoomsShortToProto(rooms []models.BookingRoom) []*bookingv1.BookingRoomShort {
+	result := make([]*bookingv1.BookingRoomShort, 0, len(rooms))
+	for _, r := range rooms {
+		result = append(
+			result, &bookingv1.BookingRoomShort{
+				Id:            r.ID.String(),
+				RoomId:        r.RoomID.String(),
+				Adults:        uint32(r.Adults),
+				Children:      uint32(r.Children),
+				PricePerNight: r.PricePerNight.String(),
+				RoomLock:      RoomLockToProto(&r.RoomLock),
+			},
+		)
+	}
+	return result
 }

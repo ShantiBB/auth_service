@@ -68,18 +68,18 @@ func (r *Repository) GetBookingsByHotelInfo(
 	var b models.BookingShort
 	for rows.Next() {
 		err = rows.Scan(
-			b.ID,
-			b.UserID,
-			b.HotelID,
-			b.CheckIn,
-			b.CheckOut,
-			b.Status,
-			b.GuestName,
-			b.GuestEmail,
-			b.GuestPhone,
-			b.Currency,
-			b.ExpectedTotalAmount,
-			b.FinalTotalAmount,
+			&b.ID,
+			&b.UserID,
+			&b.HotelID,
+			&b.CheckIn,
+			&b.CheckOut,
+			&b.Status,
+			&b.GuestName,
+			&b.GuestEmail,
+			&b.GuestPhone,
+			&b.Currency,
+			&b.ExpectedTotalAmount,
+			&b.FinalTotalAmount,
 		)
 		if err != nil {
 			return models.BookingList{}, err

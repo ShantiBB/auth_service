@@ -27,8 +27,16 @@ type RoomLock struct {
 	RoomID    uuid.UUID
 	BookingID uuid.UUID
 	StayRange DateRange
-	ExpiresAt time.Time
 	ISActive  bool
+	ExpiresAt time.Time
+	CreatedAt time.Time
+}
+
+type RoomLockShort struct {
+	ID        uuid.UUID
+	StayRange DateRange
+	ISActive  bool
+	ExpiresAt time.Time
 	CreatedAt time.Time
 }
 

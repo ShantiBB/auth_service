@@ -24,6 +24,7 @@ type BookingRoom struct {
 	ID            uuid.UUID
 	BookingID     uuid.UUID
 	RoomID        uuid.UUID
+	RoomLock      RoomLockShort
 	Adults        uint8
 	Children      uint8
 	PricePerNight decimal.Decimal
