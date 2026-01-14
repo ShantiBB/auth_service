@@ -30,15 +30,15 @@ type BookingRepository interface {
 
 type BookingRoomRepository interface {
 	CreateBookingRooms(ctx context.Context, tx pgx.Tx, rooms []models.CreateBookingRoom) (
-		[]models.BookingRoomInfo, error,
+		[]models.BookingRoomFullInfo, error,
 	)
 	GetBookingRoomsInfoByBookingIDs(ctx context.Context, tx pgx.Tx, bookingIDs []uuid.UUID) (
-		[]models.BookingRoomInfo, error,
+		[]models.BookingRoomFullInfo, error,
 	)
 	GetBookingRoomsFullInfoByBookingIDs(ctx context.Context, tx pgx.Tx, bookingID uuid.UUID) (
 		[]models.BookingRoomFullInfo, error,
 	)
-	GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.BookingRoomInfo, error)
+	GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.BookingRoomFullInfo, error)
 	UpdateBookingRoomGuestCountsByID(
 		ctx context.Context,
 		tx pgx.Tx,

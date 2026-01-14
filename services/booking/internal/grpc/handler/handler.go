@@ -18,6 +18,7 @@ type BookingService interface {
 		page uint64,
 		limit uint64,
 	) (models.BookingList, error)
+	GetBookingById(ctx context.Context, bookingID uuid.UUID) (models.Booking, error)
 }
 
 type BookingRoomService interface {

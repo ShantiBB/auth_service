@@ -46,6 +46,7 @@ func (r *Repository) CreateRoomLocks(
 	}
 	defer rows.Close()
 
+	i := 0
 	out := make([]models.RoomLock, 0, len(locks))
 	for rows.Next() {
 		var rl models.RoomLock
@@ -58,7 +59,12 @@ func (r *Repository) CreateRoomLocks(
 		); err != nil {
 			return nil, err
 		}
+
+		rl.StayRange = locks[i].StayRange
+		rl.ExpiresAt = locks[i].ExpiresAt
+
 		out = append(out, rl)
+		i++
 	}
 
 	if err = rows.Err(); err != nil {

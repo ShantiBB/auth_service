@@ -37,7 +37,6 @@ type Booking struct {
 	ID                  uuid.UUID
 	UserID              int64
 	HotelID             uuid.UUID
-	BookingRooms        []BookingRoomInfo
 	CheckIn             time.Time
 	CheckOut            time.Time
 	Status              BookingStatus
@@ -48,6 +47,7 @@ type Booking struct {
 	ExpectedTotalAmount decimal.Decimal
 	FinalTotalAmount    decimal.Decimal
 	CreatedAt           time.Time
+	BookingRooms        []BookingRoomFullInfo
 	UpdatedAt           time.Time
 }
 
@@ -55,7 +55,7 @@ type BookingShort struct {
 	ID                  uuid.UUID
 	UserID              int64
 	HotelID             uuid.UUID
-	BookingRooms        []BookingRoomInfo
+	BookingRooms        []BookingRoomFullInfo
 	CheckIn             time.Time
 	CheckOut            time.Time
 	Status              BookingStatus

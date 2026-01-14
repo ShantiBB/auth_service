@@ -40,8 +40,9 @@ const (
 
 	GetBookingByID = `
 		SELECT
+		    id,
 			user_id,
-			hotel_id,
+			hotel_id::uuid,
 			check_in,
 			check_out,
 			status,

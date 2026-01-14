@@ -15,6 +15,12 @@ func DomainError(err error) error {
 	}
 
 	switch {
+	case errors.Is(err, consts.BookingNotFound):
+		return status.Error(codes.NotFound, consts.BookingNotFound.Error())
+
+	case errors.Is(err, consts.BookingRoomNotFound):
+		return status.Error(codes.NotFound, consts.BookingRoomNotFound.Error())
+
 	case errors.Is(err, consts.RoomLockAlreadyExist):
 		return status.Error(codes.AlreadyExists, consts.RoomLockAlreadyExist.Error())
 

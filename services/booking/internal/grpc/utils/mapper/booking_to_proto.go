@@ -22,13 +22,7 @@ func BookingToProto(b *models.Booking) *bookingv1.Booking {
 		FinalTotalAmount: b.FinalTotalAmount.String(),
 		CreatedAt:        timestamppb.New(b.CreatedAt),
 		UpdatedAt:        timestamppb.New(b.UpdatedAt),
-	}
-
-	if len(b.BookingRooms) > 0 {
-		p.BookingRooms = make([]*bookingv1.BookingRoomInfo, 0, len(b.BookingRooms))
-		for i := range b.BookingRooms {
-			p.BookingRooms = append(p.BookingRooms, BookingRoomInfoToProto(&b.BookingRooms[i]))
-		}
+		BookingRooms:     BookingRoomsFullInfoToProto(b.BookingRooms),
 	}
 
 	return p

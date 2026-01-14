@@ -5,7 +5,7 @@ import (
 	"booking/internal/repository/models"
 )
 
-func BookingRoomInfoToProto(r *models.BookingRoomInfo) *bookingv1.BookingRoomInfo {
+func BookingRoomInfoToProto(r *models.BookingRoomFullInfo) *bookingv1.BookingRoomInfo {
 	return &bookingv1.BookingRoomInfo{
 		RoomId:        r.RoomID.String(),
 		Adults:        uint32(r.Adults),
@@ -14,7 +14,7 @@ func BookingRoomInfoToProto(r *models.BookingRoomInfo) *bookingv1.BookingRoomInf
 	}
 }
 
-func BookingRoomsInfoToProto(rooms []models.BookingRoomInfo) []*bookingv1.BookingRoomInfo {
+func BookingRoomsInfoToProto(rooms []models.BookingRoomFullInfo) []*bookingv1.BookingRoomInfo {
 	result := make([]*bookingv1.BookingRoomInfo, 0, len(rooms))
 	for _, r := range rooms {
 		result = append(

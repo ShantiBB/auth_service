@@ -103,27 +103,28 @@ func (r *Repository) GetBookingsByHotelInfo(
 	return bookingList, nil
 }
 
-func (r *Repository) GetBookingByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.Booking, error) {
+func (r *Repository) GetBookingByID(ctx context.Context, tx pgx.Tx, bookingID uuid.UUID) (models.Booking, error) {
 	db := r.executor(tx)
 
 	var b models.Booking
 	scanArgs := []any{
-		b.UserID,
-		b.HotelID,
-		b.CheckIn,
-		b.CheckOut,
-		b.Status,
-		b.GuestName,
-		b.GuestEmail,
-		b.GuestPhone,
-		b.Currency,
-		b.ExpectedTotalAmount,
-		b.FinalTotalAmount,
-		b.CreatedAt,
-		b.UpdatedAt,
+		&b.ID,
+		&b.UserID,
+		&b.HotelID,
+		&b.CheckIn,
+		&b.CheckOut,
+		&b.Status,
+		&b.GuestName,
+		&b.GuestEmail,
+		&b.GuestPhone,
+		&b.Currency,
+		&b.ExpectedTotalAmount,
+		&b.FinalTotalAmount,
+		&b.CreatedAt,
+		&b.UpdatedAt,
 	}
 
-	if err := db.QueryRow(ctx, query.GetBookingByID, id).Scan(scanArgs...); err != nil {
+	if err := db.QueryRow(ctx, query.GetBookingByID, bookingID).Scan(scanArgs...); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return models.Booking{}, consts.BookingNotFound
 		}

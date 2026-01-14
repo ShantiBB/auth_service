@@ -50,6 +50,15 @@ func GetBookingsRequestToDomain(req *bookingv1.GetBookingsRequest) (models.Booki
 	return bookingRef, nil
 }
 
+func GetBookingRequestToDomain(req *bookingv1.GetBookingRequest) (uuid.UUID, error) {
+	bookingID, err := uuid.Parse(req.BookingId)
+	if err != nil {
+		return uuid.UUID{}, err
+	}
+
+	return bookingID, nil
+}
+
 func BookingStatusToDomain(status bookingv1.BookingStatus) models.BookingStatus {
 	var s models.BookingStatus
 	switch status {

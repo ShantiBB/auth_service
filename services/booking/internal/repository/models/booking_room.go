@@ -20,16 +20,6 @@ type BookingRoomGuestCounts struct {
 	Children uint8
 }
 
-type BookingRoomInfo struct {
-	ID            uuid.UUID
-	BookingID     uuid.UUID
-	RoomID        uuid.UUID
-	Adults        uint8
-	Children      uint8
-	PricePerNight decimal.Decimal
-	CreatedAt     time.Time
-}
-
 type BookingRoomFullInfo struct {
 	ID            uuid.UUID
 	BookingID     uuid.UUID
@@ -41,8 +31,8 @@ type BookingRoomFullInfo struct {
 	CreatedAt     time.Time
 }
 
-func (b *CreateBookingRoom) ToRead() BookingRoomInfo {
-	return BookingRoomInfo{
+func (b *CreateBookingRoom) ToRead() BookingRoomFullInfo {
+	return BookingRoomFullInfo{
 		BookingID:     b.BookingID,
 		RoomID:        b.RoomID,
 		Adults:        b.Adults,

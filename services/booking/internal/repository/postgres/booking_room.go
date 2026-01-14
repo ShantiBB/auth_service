@@ -17,7 +17,7 @@ func (r *Repository) CreateBookingRooms(
 	ctx context.Context,
 	tx pgx.Tx,
 	rooms []models.CreateBookingRoom,
-) ([]models.BookingRoomInfo, error) {
+) ([]models.BookingRoomFullInfo, error) {
 
 	if len(rooms) == 0 {
 		return nil, nil
@@ -49,13 +49,13 @@ func (r *Repository) CreateBookingRooms(
 	}
 	defer rows.Close()
 
-	out := make([]models.BookingRoomInfo, 0, len(rooms))
+	out := make([]models.BookingRoomFullInfo, 0, len(rooms))
 	for rows.Next() {
-		var br models.BookingRoomInfo
+		var br models.BookingRoomFullInfo
 
 		var a, c int32
 
-		if err := rows.Scan(
+		if err = rows.Scan(
 			&br.ID,
 			&br.BookingID,
 			&br.RoomID,
@@ -73,7 +73,7 @@ func (r *Repository) CreateBookingRooms(
 		out = append(out, br)
 	}
 
-	if err := rows.Err(); err != nil {
+	if err = rows.Err(); err != nil {
 		return nil, err
 	}
 
@@ -84,16 +84,16 @@ func (r *Repository) GetBookingRoomsInfoByBookingIDs(
 	ctx context.Context,
 	tx pgx.Tx,
 	bookingIDs []uuid.UUID,
-) ([]models.BookingRoomInfo, error) {
+) ([]models.BookingRoomFullInfo, error) {
 	db := r.executor(tx)
 
-	var bookingRoomList []models.BookingRoomInfo
+	var bookingRoomList []models.BookingRoomFullInfo
 	rows, err := db.Query(ctx, query.GetBookingRoomsInfoByBookingID, bookingIDs)
 	if err != nil {
-		return []models.BookingRoomInfo{}, err
+		return []models.BookingRoomFullInfo{}, err
 	}
 
-	var bRoom models.BookingRoomInfo
+	var bRoom models.BookingRoomFullInfo
 	for rows.Next() {
 		err = rows.Scan(
 			&bRoom.ID,
@@ -105,7 +105,7 @@ func (r *Repository) GetBookingRoomsInfoByBookingIDs(
 			&bRoom.CreatedAt,
 		)
 		if err != nil {
-			return []models.BookingRoomInfo{}, err
+			return []models.BookingRoomFullInfo{}, err
 		}
 
 		bookingRoomList = append(bookingRoomList, bRoom)
@@ -157,10 +157,12 @@ func (r *Repository) GetBookingRoomsFullInfoByBookingIDs(
 	return bookingRoomList, nil
 }
 
-func (r *Repository) GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.BookingRoomInfo, error) {
+func (r *Repository) GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (
+	models.BookingRoomFullInfo, error,
+) {
 	db := r.executor(tx)
 
-	var bRoom models.BookingRoomInfo
+	var bRoom models.BookingRoomFullInfo
 	scanArgs := []any{
 		bRoom.ID,
 		bRoom.BookingID,
@@ -173,9 +175,9 @@ func (r *Repository) GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.
 
 	if err := db.QueryRow(ctx, query.GetBookingRoomByID, id).Scan(scanArgs...); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return models.BookingRoomInfo{}, consts.BookingRoomNotFound
+			return models.BookingRoomFullInfo{}, consts.BookingRoomNotFound
 		}
-		return models.BookingRoomInfo{}, err
+		return models.BookingRoomFullInfo{}, err
 	}
 
 	return bRoom, nil

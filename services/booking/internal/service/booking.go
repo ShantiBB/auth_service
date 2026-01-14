@@ -43,14 +43,12 @@ func (s *Service) BookingCreate(
 		return models.Booking{}, err
 	}
 
-	newBooking.BookingRooms = newRooms
-
 	locks := make([]models.CreateRoomLock, 0, len(newRooms))
 	for _, nr := range newRooms {
 		locks = append(
 			locks, models.CreateRoomLock{
 				RoomID:    nr.RoomID,
-				BookingID: newBooking.ID,
+				BookingID: nr.BookingID,
 				StayRange: models.DateRange{
 					Start: b.CheckIn,
 					End:   b.CheckOut,
@@ -60,9 +58,29 @@ func (s *Service) BookingCreate(
 		)
 	}
 
-	if _, err = s.repo.CreateRoomLocks(ctx, tx, locks); err != nil {
+	newLocks, err := s.repo.CreateRoomLocks(ctx, tx, locks)
+	if err != nil {
 		return models.Booking{}, err
 	}
+
+	locksByRoomID := make(map[uuid.UUID]models.RoomLockShort)
+	for _, lock := range newLocks {
+		locksByRoomID[lock.RoomID] = models.RoomLockShort{
+			ID:        lock.ID,
+			ISActive:  lock.ISActive,
+			StayRange: lock.StayRange,
+			ExpiresAt: lock.ExpiresAt,
+			CreatedAt: lock.CreatedAt,
+		}
+	}
+
+	for i := range newRooms {
+		if lock, exists := locksByRoomID[newRooms[i].RoomID]; exists {
+			newRooms[i].RoomLock = lock
+		}
+	}
+
+	newBooking.BookingRooms = newRooms
 
 	if err = tx.Commit(ctx); err != nil {
 		return models.Booking{}, err
@@ -78,14 +96,7 @@ func (s *Service) GetBookings(
 	limit uint64,
 ) (models.BookingList, error) {
 	offset := (page - 1) * limit
-
-	tx, err := s.repo.BeginTx(ctx)
-	if err != nil {
-		return models.BookingList{}, err
-	}
-	defer tx.Rollback(ctx)
-
-	bookingList, err := s.repo.GetBookingsByHotelInfo(ctx, tx, bookingRef, limit, offset)
+	bookingList, err := s.repo.GetBookingsByHotelInfo(ctx, nil, bookingRef, limit, offset)
 	if err != nil {
 		return models.BookingList{}, err
 	}
@@ -95,12 +106,12 @@ func (s *Service) GetBookings(
 		bookingIDs[i] = booking.ID
 	}
 
-	allRooms, err := s.repo.GetBookingRoomsInfoByBookingIDs(ctx, tx, bookingIDs)
+	allRooms, err := s.repo.GetBookingRoomsInfoByBookingIDs(ctx, nil, bookingIDs)
 	if err != nil {
 		return models.BookingList{}, fmt.Errorf("get booking rooms: %w", err)
 	}
 
-	roomsByBookingID := make(map[uuid.UUID][]models.BookingRoomInfo)
+	roomsByBookingID := make(map[uuid.UUID][]models.BookingRoomFullInfo)
 	for _, room := range allRooms {
 		roomsByBookingID[room.BookingID] = append(roomsByBookingID[room.BookingID], room)
 	}
@@ -110,6 +121,22 @@ func (s *Service) GetBookings(
 	}
 
 	return bookingList, nil
+}
+
+func (s *Service) GetBookingById(ctx context.Context, bookingID uuid.UUID) (models.Booking, error) {
+	booking, err := s.repo.GetBookingByID(ctx, nil, bookingID)
+	if err != nil {
+		return models.Booking{}, err
+	}
+
+	allRooms, err := s.repo.GetBookingRoomsFullInfoByBookingIDs(ctx, nil, booking.ID)
+	if err != nil {
+		return models.Booking{}, fmt.Errorf("get booking rooms: %w", err)
+	}
+
+	booking.BookingRooms = allRooms
+
+	return booking, nil
 }
 
 //func (s *Service) BookingGetByID(ctx context.Context, id uuid.UUID) (models.Booking, error) {

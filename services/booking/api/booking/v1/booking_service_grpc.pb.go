@@ -21,6 +21,7 @@ const _ = grpc.SupportPackageIsVersion9
 const (
 	BookingService_CreateBooking_FullMethodName   = "/booking.v1.BookingService/CreateBooking"
 	BookingService_GetBookings_FullMethodName     = "/booking.v1.BookingService/GetBookings"
+	BookingService_GetBooking_FullMethodName      = "/booking.v1.BookingService/GetBooking"
 	BookingService_GetBookingRooms_FullMethodName = "/booking.v1.BookingService/GetBookingRooms"
 )
 
@@ -30,6 +31,7 @@ const (
 type BookingServiceClient interface {
 	CreateBooking(ctx context.Context, in *CreateBookingRequest, opts ...grpc.CallOption) (*CreateBookingResponse, error)
 	GetBookings(ctx context.Context, in *GetBookingsRequest, opts ...grpc.CallOption) (*GetBookingsResponse, error)
+	GetBooking(ctx context.Context, in *GetBookingRequest, opts ...grpc.CallOption) (*GetBookingResponse, error)
 	GetBookingRooms(ctx context.Context, in *GetBookingRoomsRequest, opts ...grpc.CallOption) (*GetBookingRoomsResponse, error)
 }
 
@@ -61,6 +63,16 @@ func (c *bookingServiceClient) GetBookings(ctx context.Context, in *GetBookingsR
 	return out, nil
 }
 
+func (c *bookingServiceClient) GetBooking(ctx context.Context, in *GetBookingRequest, opts ...grpc.CallOption) (*GetBookingResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetBookingResponse)
+	err := c.cc.Invoke(ctx, BookingService_GetBooking_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 func (c *bookingServiceClient) GetBookingRooms(ctx context.Context, in *GetBookingRoomsRequest, opts ...grpc.CallOption) (*GetBookingRoomsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetBookingRoomsResponse)
@@ -77,6 +89,7 @@ func (c *bookingServiceClient) GetBookingRooms(ctx context.Context, in *GetBooki
 type BookingServiceServer interface {
 	CreateBooking(context.Context, *CreateBookingRequest) (*CreateBookingResponse, error)
 	GetBookings(context.Context, *GetBookingsRequest) (*GetBookingsResponse, error)
+	GetBooking(context.Context, *GetBookingRequest) (*GetBookingResponse, error)
 	GetBookingRooms(context.Context, *GetBookingRoomsRequest) (*GetBookingRoomsResponse, error)
 	mustEmbedUnimplementedBookingServiceServer()
 }
@@ -93,6 +106,9 @@ func (UnimplementedBookingServiceServer) CreateBooking(context.Context, *CreateB
 }
 func (UnimplementedBookingServiceServer) GetBookings(context.Context, *GetBookingsRequest) (*GetBookingsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetBookings not implemented")
+}
+func (UnimplementedBookingServiceServer) GetBooking(context.Context, *GetBookingRequest) (*GetBookingResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetBooking not implemented")
 }
 func (UnimplementedBookingServiceServer) GetBookingRooms(context.Context, *GetBookingRoomsRequest) (*GetBookingRoomsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetBookingRooms not implemented")
@@ -154,6 +170,24 @@ func _BookingService_GetBookings_Handler(srv interface{}, ctx context.Context, d
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookingService_GetBooking_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBookingRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingServiceServer).GetBooking(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookingService_GetBooking_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingServiceServer).GetBooking(ctx, req.(*GetBookingRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _BookingService_GetBookingRooms_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetBookingRoomsRequest)
 	if err := dec(in); err != nil {
@@ -186,6 +220,10 @@ var BookingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBookings",
 			Handler:    _BookingService_GetBookings_Handler,
+		},
+		{
+			MethodName: "GetBooking",
+			Handler:    _BookingService_GetBooking_Handler,
 		},
 		{
 			MethodName: "GetBookingRooms",

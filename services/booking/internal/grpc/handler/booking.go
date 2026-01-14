@@ -67,3 +67,27 @@ func (h *Handler) GetBookings(
 		Limit:      req.Limit,
 	}, nil
 }
+
+func (h *Handler) GetBooking(
+	ctx context.Context,
+	req *bookingv1.GetBookingRequest,
+) (*bookingv1.GetBookingResponse, error) {
+	if err := h.validator.Validate(req); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	bookingId, err := mapper.GetBookingRequestToDomain(req)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	booking, err := h.svc.GetBookingById(ctx, bookingId)
+	if err != nil {
+		slog.Error(err.Error())
+		return nil, helper.DomainError(err)
+	}
+
+	return &bookingv1.GetBookingResponse{
+		Booking: mapper.BookingToProto(&booking),
+	}, nil
+}
