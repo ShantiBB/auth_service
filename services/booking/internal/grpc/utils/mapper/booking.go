@@ -100,7 +100,7 @@ func BookingShortToProto(b *models.BookingShort) *bookingv1.BookingShort {
 		Currency:            b.Currency,
 		ExpectedTotalAmount: b.ExpectedTotalAmount.String(),
 		FinalTotalAmount:    b.FinalTotalAmount.String(),
-		Rooms:               BookingRoomsShortToProto(b.BookingRooms),
+		Rooms:               BookingRoomsInfoToProto(b.BookingRooms),
 	}
 }
 

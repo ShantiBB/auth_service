@@ -2,11 +2,11 @@ syntax = "proto3";
 
 package booking.v1;
 
-option go_package = "booking/api/booking/v1;bookingv1";
+option go_package = "api/booking/v1;bookingv1";
 
-import "booking/v1/booking_messages.proto";
 import "google/protobuf/timestamp.proto";
 import "buf/validate/validate.proto";
+import "booking/v1/models/booking.proto";
 
 message CreateBookingRequest {
   int64 user_id = 1 [(buf.validate.field).int64.gt = 0];

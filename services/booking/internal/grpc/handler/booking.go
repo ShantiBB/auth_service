@@ -8,7 +8,7 @@ import (
 	"google.golang.org/grpc/status"
 
 	bookingv1 "booking/api/booking/v1"
-	"booking/internal/grpc/dto/response"
+	"booking/internal/grpc/utils/helper"
 	"booking/internal/grpc/utils/mapper"
 	"booking/internal/repository/models"
 )
@@ -44,7 +44,7 @@ func (h *Handler) CreateBooking(
 	created, err := h.svc.BookingCreate(ctx, *booking, rooms)
 	if err != nil {
 		slog.Error(err.Error())
-		return nil, response.DomainError(err)
+		return nil, helper.DomainError(err)
 	}
 
 	return &bookingv1.CreateBookingResponse{
@@ -68,7 +68,7 @@ func (h *Handler) GetBookings(
 	bookingList, err := h.svc.GetBookings(ctx, bookingRef, req.Page, req.Limit)
 	if err != nil {
 		slog.Error(err.Error())
-		return nil, response.DomainError(err)
+		return nil, helper.DomainError(err)
 	}
 
 	return &bookingv1.GetBookingsResponse{

@@ -15,7 +15,20 @@ const (
 		FROM input
 		RETURNING id, booking_id, room_id, adults, children, price_per_night, created_at;`
 
-	GetBookingRoomsByBookingID = `
+	GetBookingRoomsInfoByBookingID = `
+		SELECT
+			id::text,
+			booking_id::text,
+			room_id::text,
+			adults,
+			children,
+			price_per_night,
+			created_at
+		FROM booking_room
+		WHERE booking_id = ANY($1)
+		ORDER BY created_at;`
+
+	GetBookingRoomsFullInfoByBookingID = `
 		SELECT
 			br.id::text as booking_room_id,
 			br.booking_id::text,
@@ -23,15 +36,15 @@ const (
 			br.adults,
 			br.children,
 			br.price_per_night,
-			br.created_at as booking_room_created_at,
-			rl.id::text as room_lock_id,
+			br.created_at,
+			rl.id::text,
 			rl.stay_range,
 			rl.is_active,
 			rl.expires_at,
-			rl.created_at as room_lock_created_at
+			rl.created_at
 		FROM booking_room br
 		LEFT JOIN room_lock rl ON rl.booking_id = br.booking_id AND rl.room_id = br.room_id
-		WHERE br.booking_id = ANY($1)
+		WHERE br.booking_id = $1
 		ORDER BY br.created_at;`
 
 	GetBookingRoomByID = `

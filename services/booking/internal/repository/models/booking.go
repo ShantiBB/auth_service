@@ -37,7 +37,7 @@ type Booking struct {
 	ID                  uuid.UUID
 	UserID              int64
 	HotelID             uuid.UUID
-	BookingRooms        []BookingRoom
+	BookingRooms        []BookingRoomInfo
 	CheckIn             time.Time
 	CheckOut            time.Time
 	Status              BookingStatus
@@ -55,7 +55,7 @@ type BookingShort struct {
 	ID                  uuid.UUID
 	UserID              int64
 	HotelID             uuid.UUID
-	BookingRooms        []BookingRoom
+	BookingRooms        []BookingRoomInfo
 	CheckIn             time.Time
 	CheckOut            time.Time
 	Status              BookingStatus

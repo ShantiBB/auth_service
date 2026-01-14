@@ -34,9 +34,13 @@ type BookingRepository interface {
 }
 
 type BookingRoomRepository interface {
-	CreateBookingRooms(ctx context.Context, tx pgx.Tx, rooms []models.CreateBookingRoom) ([]models.BookingRoom, error)
-	GetBookingRoomsByBookingIDs(ctx context.Context, tx pgx.Tx, bookingIDs []uuid.UUID) ([]models.BookingRoom, error)
-	GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.BookingRoom, error)
+	CreateBookingRooms(ctx context.Context, tx pgx.Tx, rooms []models.CreateBookingRoom) (
+		[]models.BookingRoomInfo, error,
+	)
+	GetBookingRoomsInfoByBookingIDs(ctx context.Context, tx pgx.Tx, bookingIDs []uuid.UUID) (
+		[]models.BookingRoomInfo, error,
+	)
+	GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (models.BookingRoomInfo, error)
 	UpdateBookingRoomGuestCountsByID(
 		ctx context.Context,
 		tx pgx.Tx,
@@ -142,12 +146,12 @@ func (s *Service) GetBookings(
 		bookingIDs[i] = booking.ID
 	}
 
-	allRooms, err := s.repo.GetBookingRoomsByBookingIDs(ctx, tx, bookingIDs)
+	allRooms, err := s.repo.GetBookingRoomsInfoByBookingIDs(ctx, tx, bookingIDs)
 	if err != nil {
 		return models.BookingList{}, fmt.Errorf("get booking rooms: %w", err)
 	}
 
-	roomsByBookingID := make(map[uuid.UUID][]models.BookingRoom)
+	roomsByBookingID := make(map[uuid.UUID][]models.BookingRoomInfo)
 	for _, room := range allRooms {
 		roomsByBookingID[room.BookingID] = append(roomsByBookingID[room.BookingID], room)
 	}
