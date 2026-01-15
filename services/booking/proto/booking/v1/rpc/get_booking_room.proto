@@ -5,12 +5,12 @@ package booking.v1;
 option go_package = "api/booking/v1;bookingv1";
 
 import "buf/validate/validate.proto";
-import "booking/v1/models/booking.proto";
+import "booking/v1/models/booking_room.proto";
 
-message GetBookingRequest {
+message GetBookingRoomRequest {
   string id = 1 [(buf.validate.field).string.uuid = true];
 }
 
-message GetBookingResponse {
-  Booking booking = 1;
+message GetBookingRoomResponse {
+  BookingRoomFullInfo booking_room = 1;
 }

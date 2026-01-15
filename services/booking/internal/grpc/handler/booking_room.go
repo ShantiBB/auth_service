@@ -35,3 +35,27 @@ func (h *Handler) GetBookingRooms(
 		BookingRooms: mapper.BookingRoomsFullInfoToProto(bookingRooms),
 	}, nil
 }
+
+func (h *Handler) GetBookingRoom(
+	ctx context.Context,
+	req *bookingv1.GetBookingRoomRequest,
+) (*bookingv1.GetBookingRoomResponse, error) {
+	if err := h.validator.Validate(req); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	id, err := mapper.GetBookingRoomRequestToDomain(req)
+	if err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	bRoom, err := h.svc.GetBookingRoomByID(ctx, id)
+	if err != nil {
+		slog.Error(err.Error())
+		return nil, helper.DomainError(err)
+	}
+
+	return &bookingv1.GetBookingRoomResponse{
+		BookingRoom: mapper.BookingRoomFullInfoToProto(bRoom),
+	}, nil
+}

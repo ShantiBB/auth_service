@@ -23,6 +23,7 @@ const (
 	BookingService_GetBookings_FullMethodName     = "/booking.v1.BookingService/GetBookings"
 	BookingService_GetBooking_FullMethodName      = "/booking.v1.BookingService/GetBooking"
 	BookingService_GetBookingRooms_FullMethodName = "/booking.v1.BookingService/GetBookingRooms"
+	BookingService_GetBookingRoom_FullMethodName  = "/booking.v1.BookingService/GetBookingRoom"
 )
 
 // BookingServiceClient is the client API for BookingService service.
@@ -33,6 +34,7 @@ type BookingServiceClient interface {
 	GetBookings(ctx context.Context, in *GetBookingsRequest, opts ...grpc.CallOption) (*GetBookingsResponse, error)
 	GetBooking(ctx context.Context, in *GetBookingRequest, opts ...grpc.CallOption) (*GetBookingResponse, error)
 	GetBookingRooms(ctx context.Context, in *GetBookingRoomsRequest, opts ...grpc.CallOption) (*GetBookingRoomsResponse, error)
+	GetBookingRoom(ctx context.Context, in *GetBookingRoomRequest, opts ...grpc.CallOption) (*GetBookingRoomResponse, error)
 }
 
 type bookingServiceClient struct {
@@ -83,6 +85,16 @@ func (c *bookingServiceClient) GetBookingRooms(ctx context.Context, in *GetBooki
 	return out, nil
 }
 
+func (c *bookingServiceClient) GetBookingRoom(ctx context.Context, in *GetBookingRoomRequest, opts ...grpc.CallOption) (*GetBookingRoomResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(GetBookingRoomResponse)
+	err := c.cc.Invoke(ctx, BookingService_GetBookingRoom_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookingServiceServer is the server API for BookingService service.
 // All implementations must embed UnimplementedBookingServiceServer
 // for forward compatibility.
@@ -91,6 +103,7 @@ type BookingServiceServer interface {
 	GetBookings(context.Context, *GetBookingsRequest) (*GetBookingsResponse, error)
 	GetBooking(context.Context, *GetBookingRequest) (*GetBookingResponse, error)
 	GetBookingRooms(context.Context, *GetBookingRoomsRequest) (*GetBookingRoomsResponse, error)
+	GetBookingRoom(context.Context, *GetBookingRoomRequest) (*GetBookingRoomResponse, error)
 	mustEmbedUnimplementedBookingServiceServer()
 }
 
@@ -112,6 +125,9 @@ func (UnimplementedBookingServiceServer) GetBooking(context.Context, *GetBooking
 }
 func (UnimplementedBookingServiceServer) GetBookingRooms(context.Context, *GetBookingRoomsRequest) (*GetBookingRoomsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetBookingRooms not implemented")
+}
+func (UnimplementedBookingServiceServer) GetBookingRoom(context.Context, *GetBookingRoomRequest) (*GetBookingRoomResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method GetBookingRoom not implemented")
 }
 func (UnimplementedBookingServiceServer) mustEmbedUnimplementedBookingServiceServer() {}
 func (UnimplementedBookingServiceServer) testEmbeddedByValue()                        {}
@@ -206,6 +222,24 @@ func _BookingService_GetBookingRooms_Handler(srv interface{}, ctx context.Contex
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookingService_GetBookingRoom_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetBookingRoomRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingServiceServer).GetBookingRoom(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookingService_GetBookingRoom_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingServiceServer).GetBookingRoom(ctx, req.(*GetBookingRoomRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BookingService_ServiceDesc is the grpc.ServiceDesc for BookingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -228,6 +262,10 @@ var BookingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBookingRooms",
 			Handler:    _BookingService_GetBookingRooms_Handler,
+		},
+		{
+			MethodName: "GetBookingRoom",
+			Handler:    _BookingService_GetBookingRoom_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

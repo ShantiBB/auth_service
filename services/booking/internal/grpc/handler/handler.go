@@ -23,6 +23,7 @@ type BookingService interface {
 
 type BookingRoomService interface {
 	GetBookingRooms(ctx context.Context, bookingID uuid.UUID) ([]models.BookingRoomFullInfo, error)
+	GetBookingRoomByID(ctx context.Context, bookingID uuid.UUID) (models.BookingRoomFullInfo, error)
 }
 
 type Service interface {

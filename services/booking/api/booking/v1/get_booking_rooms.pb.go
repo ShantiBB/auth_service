@@ -115,7 +115,7 @@ var File_booking_v1_rpc_get_booking_rooms_proto protoreflect.FileDescriptor
 const file_booking_v1_rpc_get_booking_rooms_proto_rawDesc = "" +
 	"\n" +
 	"&booking/v1/rpc/get_booking_rooms.proto\x12\n" +
-	"booking.v1\x1a\x1bbuf/validate/validate.proto\x1a$booking/v1/models/booking_room.proto\x1a!booking/v1/models/room_lock.proto\"A\n" +
+	"booking.v1\x1a\x1bbuf/validate/validate.proto\x1a$booking/v1/models/booking_room.proto\"A\n" +
 	"\x16GetBookingRoomsRequest\x12'\n" +
 	"\n" +
 	"booking_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\tbookingId\"_\n" +
@@ -155,7 +155,6 @@ func file_booking_v1_rpc_get_booking_rooms_proto_init() {
 		return
 	}
 	file_booking_v1_models_booking_room_proto_init()
-	file_booking_v1_models_room_lock_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

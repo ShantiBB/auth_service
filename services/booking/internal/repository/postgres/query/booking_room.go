@@ -17,9 +17,9 @@ const (
 
 	GetBookingRoomsInfoByBookingID = `
 		SELECT
-			id::text,
-			booking_id::text,
-			room_id::text,
+			id::uuid,
+			booking_id::uuid,
+			room_id::uuid,
 			adults,
 			children,
 			price_per_night,
@@ -30,14 +30,14 @@ const (
 
 	GetBookingRoomsFullInfoByBookingID = `
 		SELECT
-			br.id::text as booking_room_id,
-			br.booking_id::text,
-			br.room_id::text,
+			br.id::uuid as booking_room_id,
+			br.booking_id::uuid,
+			br.room_id::uuid,
 			br.adults,
 			br.children,
 			br.price_per_night,
 			br.created_at,
-			rl.id::text,
+			rl.id::uuid,
 			rl.stay_range,
 			rl.is_active,
 			rl.expires_at,
@@ -47,17 +47,23 @@ const (
 		WHERE br.booking_id = $1
 		ORDER BY br.created_at;`
 
-	GetBookingRoomByID = `
+	GetBookingRoomFullInfoByID = `
 		SELECT
-		  id,
-		  booking_id,
-		  room_id,
-		  adults,
-		  children,
-		  price_per_night,
-		  created_at
-		FROM booking_room
-		WHERE id = $1;`
+			br.id::uuid as booking_room_id,
+			br.booking_id::uuid,
+			br.room_id::uuid,
+			br.adults,
+			br.children,
+			br.price_per_night,
+			br.created_at,
+			rl.id::uuid,
+			rl.stay_range,
+			rl.is_active,
+			rl.expires_at,
+			rl.created_at
+		FROM booking_room br
+		LEFT JOIN room_lock rl ON rl.booking_id = br.booking_id AND rl.room_id = br.room_id
+		WHERE br.id = $1;`
 
 	UpdateBookingRoomGuestCountsByID = `
 		UPDATE booking_room

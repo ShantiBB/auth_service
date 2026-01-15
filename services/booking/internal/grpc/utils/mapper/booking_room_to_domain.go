@@ -44,3 +44,12 @@ func GetBookingRoomsRequestToDomain(req *bookingv1.GetBookingRoomsRequest) (uuid
 
 	return bookingID, nil
 }
+
+func GetBookingRoomRequestToDomain(req *bookingv1.GetBookingRoomRequest) (uuid.UUID, error) {
+	id, err := uuid.Parse(req.Id)
+	if err != nil {
+		return uuid.UUID{}, err
+	}
+
+	return id, nil
+}

@@ -163,22 +163,31 @@ func (r *Repository) GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.
 	db := r.executor(tx)
 
 	var bRoom models.BookingRoomFullInfo
+	var stayRange *pgtype.Range[pgtype.Date]
 	scanArgs := []any{
-		bRoom.ID,
-		bRoom.BookingID,
-		bRoom.RoomID,
-		bRoom.Adults,
-		bRoom.Children,
-		bRoom.PricePerNight,
-		bRoom.CreatedAt,
+		&bRoom.ID,
+		&bRoom.BookingID,
+		&bRoom.RoomID,
+		&bRoom.Adults,
+		&bRoom.Children,
+		&bRoom.PricePerNight,
+		&bRoom.CreatedAt,
+		&bRoom.RoomLock.ID,
+		&stayRange,
+		&bRoom.RoomLock.ISActive,
+		&bRoom.RoomLock.ExpiresAt,
+		&bRoom.RoomLock.CreatedAt,
 	}
 
-	if err := db.QueryRow(ctx, query.GetBookingRoomByID, id).Scan(scanArgs...); err != nil {
+	if err := db.QueryRow(ctx, query.GetBookingRoomFullInfoByID, id).Scan(scanArgs...); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
 			return models.BookingRoomFullInfo{}, consts.BookingRoomNotFound
 		}
 		return models.BookingRoomFullInfo{}, err
 	}
+
+	bRoom.RoomLock.StayRange.Start = stayRange.Lower.Time
+	bRoom.RoomLock.StayRange.End = stayRange.Upper.Time
 
 	return bRoom, nil
 }

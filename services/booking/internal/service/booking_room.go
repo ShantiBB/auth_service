@@ -17,3 +17,12 @@ func (s *Service) GetBookingRooms(ctx context.Context, bookingID uuid.UUID) ([]m
 
 	return allRooms, nil
 }
+
+func (s *Service) GetBookingRoomByID(ctx context.Context, bookingID uuid.UUID) (models.BookingRoomFullInfo, error) {
+	bRoom, err := s.repo.GetBookingRoomByID(ctx, nil, bookingID)
+	if err != nil {
+		return models.BookingRoomFullInfo{}, fmt.Errorf("get booking room: %w", err)
+	}
+
+	return bRoom, nil
+}

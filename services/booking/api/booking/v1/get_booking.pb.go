@@ -24,7 +24,7 @@ const (
 
 type GetBookingRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	BookingId     string                 `protobuf:"bytes,1,opt,name=booking_id,json=bookingId,proto3" json:"booking_id,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,9 +59,9 @@ func (*GetBookingRequest) Descriptor() ([]byte, []int) {
 	return file_booking_v1_rpc_get_booking_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetBookingRequest) GetBookingId() string {
+func (x *GetBookingRequest) GetId() string {
 	if x != nil {
-		return x.BookingId
+		return x.Id
 	}
 	return ""
 }
@@ -115,10 +115,9 @@ var File_booking_v1_rpc_get_booking_proto protoreflect.FileDescriptor
 const file_booking_v1_rpc_get_booking_proto_rawDesc = "" +
 	"\n" +
 	" booking/v1/rpc/get_booking.proto\x12\n" +
-	"booking.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fbooking/v1/models/booking.proto\"<\n" +
-	"\x11GetBookingRequest\x12'\n" +
-	"\n" +
-	"booking_id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\tbookingId\"C\n" +
+	"booking.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1fbooking/v1/models/booking.proto\"-\n" +
+	"\x11GetBookingRequest\x12\x18\n" +
+	"\x02id\x18\x01 \x01(\tB\b\xbaH\x05r\x03\xb0\x01\x01R\x02id\"C\n" +
 	"\x12GetBookingResponse\x12-\n" +
 	"\abooking\x18\x01 \x01(\v2\x13.booking.v1.BookingR\abookingB\x1aZ\x18api/booking/v1;bookingv1b\x06proto3"
 

@@ -51,12 +51,12 @@ func GetBookingsRequestToDomain(req *bookingv1.GetBookingsRequest) (models.Booki
 }
 
 func GetBookingRequestToDomain(req *bookingv1.GetBookingRequest) (uuid.UUID, error) {
-	bookingID, err := uuid.Parse(req.BookingId)
+	id, err := uuid.Parse(req.Id)
 	if err != nil {
 		return uuid.UUID{}, err
 	}
 
-	return bookingID, nil
+	return id, nil
 }
 
 func BookingStatusToDomain(status bookingv1.BookingStatus) models.BookingStatus {
