@@ -1,3 +1,5 @@
+-- +goose Up
+-- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS booking_room (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
     booking_id UUID NOT NULL REFERENCES booking(id) ON DELETE CASCADE,
@@ -14,3 +16,12 @@ CREATE TABLE IF NOT EXISTS booking_room (
 
 CREATE INDEX IF NOT EXISTS idx_booking_room_booking ON booking_room(booking_id);
 CREATE INDEX IF NOT EXISTS idx_booking_room_room ON booking_room(room_id);
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+DROP INDEX IF EXISTS idx_booking_room_booking;
+DROP INDEX IF EXISTS idx_booking_room_room;
+
+DROP TABLE IF EXISTS booking_room;
+-- +goose StatementEnd

@@ -1,3 +1,5 @@
+-- +goose Up
+-- +goose StatementBegin
 CREATE TYPE room_type AS ENUM ('single', 'double', 'suite', 'deluxe', 'family', 'presidential');
 CREATE TYPE room_status AS ENUM ('available', 'occupied', 'maintenance', 'cleaning');
 
@@ -30,3 +32,20 @@ CREATE TRIGGER update_rooms_updated_at
     BEFORE UPDATE ON room
     FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
+
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+DROP TRIGGER IF EXISTS update_rooms_updated_at ON room;
+
+DROP INDEX IF EXISTS rooms_hotel_id_idx;
+DROP INDEX IF EXISTS rooms_type_idx;
+DROP INDEX IF EXISTS rooms_status_idx;
+DROP INDEX IF EXISTS rooms_price_idx;
+
+DROP TABLE IF EXISTS room;
+
+DROP TYPE IF EXISTS room_type;
+DROP TYPE IF EXISTS room_status;
+-- +goose StatementEnd

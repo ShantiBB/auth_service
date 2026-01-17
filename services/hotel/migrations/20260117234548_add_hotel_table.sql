@@ -1,3 +1,5 @@
+-- +goose Up
+-- +goose StatementBegin
 CREATE EXTENSION IF NOT EXISTS postgis;
 
 CREATE TABLE IF NOT EXISTS hotel (
@@ -38,3 +40,19 @@ CREATE TRIGGER update_hotels_updated_at
     BEFORE UPDATE ON hotel
     FOR EACH ROW
 EXECUTE FUNCTION update_updated_at_column();
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+DROP TRIGGER IF EXISTS update_hotels_updated_at ON hotel;
+
+DROP FUNCTION IF EXISTS update_updated_at_column();
+
+DROP INDEX IF EXISTS hotels_location_idx;
+DROP INDEX IF EXISTS hotels_owner_idx;
+DROP INDEX IF EXISTS hotels_name_idx;
+
+DROP TABLE IF EXISTS hotel;
+
+DROP EXTENSION IF EXISTS postgis;
+-- +goose StatementEnd

@@ -1,14 +1,12 @@
+-- +goose Up
+-- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS room_lock (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-
     room_id UUID NOT NULL,
     booking_id UUID NOT NULL REFERENCES booking(id) ON DELETE CASCADE,
-
     stay_range DATERANGE NOT NULL,
     is_active BOOLEAN NOT NULL DEFAULT TRUE,
-
     expires_at TIMESTAMPTZ,
-
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -27,3 +25,20 @@ ALTER TABLE room_lock
 ALTER TABLE room_lock
     ADD CONSTRAINT room_lock_range_valid
         CHECK (upper(stay_range) > lower(stay_range));
+
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+ALTER TABLE IF EXISTS room_lock
+    DROP CONSTRAINT IF EXISTS room_lock_no_overlap;
+
+ALTER TABLE IF EXISTS room_lock
+    DROP CONSTRAINT IF EXISTS room_lock_range_valid;
+
+DROP INDEX IF EXISTS idx_room_lock_room;
+DROP INDEX IF EXISTS idx_room_lock_booking;
+DROP INDEX IF EXISTS idx_room_lock_expires;
+
+DROP TABLE IF EXISTS room_lock;
+-- +goose StatementEnd

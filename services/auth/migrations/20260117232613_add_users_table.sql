@@ -1,3 +1,5 @@
+-- +goose Up
+-- +goose StatementBegin
 CREATE TYPE user_role AS ENUM ('user', 'admin', 'moderator');
 
 CREATE TABLE IF NOT EXISTS users (
@@ -10,3 +12,10 @@ CREATE TABLE IF NOT EXISTS users (
     created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+-- +goose StatementEnd
+
+-- +goose Down
+-- +goose StatementBegin
+DROP TABLE IF EXISTS users;
+DROP TYPE IF EXISTS user_role;
+-- +goose StatementEnd
