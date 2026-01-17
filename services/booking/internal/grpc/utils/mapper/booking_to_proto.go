@@ -29,9 +29,9 @@ func BookingToProto(b *models.Booking) *bookingv1.Booking {
 }
 
 func BookingListToProto(bookings []models.BookingShort) []*bookingv1.BookingShort {
-	result := make([]*bookingv1.BookingShort, 0, len(bookings))
-	for _, b := range bookings {
-		result = append(result, BookingShortToProto(&b))
+	result := make([]*bookingv1.BookingShort, len(bookings))
+	for i, b := range bookings {
+		result[i] = BookingShortToProto(&b)
 	}
 	return result
 }

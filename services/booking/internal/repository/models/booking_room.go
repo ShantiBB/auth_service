@@ -8,11 +8,11 @@ import (
 )
 
 type CreateBookingRoom struct {
+	PricePerNight decimal.Decimal
 	BookingID     uuid.UUID
 	RoomID        uuid.UUID
 	Adults        uint8
 	Children      uint8
-	PricePerNight decimal.Decimal
 }
 
 type BookingRoomGuestCounts struct {
@@ -21,14 +21,14 @@ type BookingRoomGuestCounts struct {
 }
 
 type BookingRoomFullInfo struct {
+	CreatedAt     time.Time
+	PricePerNight decimal.Decimal
+	RoomLock      RoomLockShort
 	ID            uuid.UUID
 	BookingID     uuid.UUID
 	RoomID        uuid.UUID
-	RoomLock      RoomLockShort
 	Adults        uint8
 	Children      uint8
-	PricePerNight decimal.Decimal
-	CreatedAt     time.Time
 }
 
 func (b *CreateBookingRoom) ToRead() BookingRoomFullInfo {

@@ -10,27 +10,25 @@ import (
 )
 
 func CreateBookingRoomsToDomain(rooms []*bookingv1.CreateBookingRoom) ([]models.CreateBookingRoom, error) {
-	result := make([]models.CreateBookingRoom, 0, len(rooms))
+	result := make([]models.CreateBookingRoom, len(rooms))
 
-	for _, r := range rooms {
+	for i, r := range rooms {
 		roomID, err := uuid.Parse(r.RoomId)
 		if err != nil {
-			return nil, consts.InvalidRoomID
+			return nil, consts.ErrInvalidBookingRoomID
 		}
 
 		price, err := decimal.NewFromString(r.PricePerNight)
 		if err != nil {
-			return nil, consts.InvalidPricePerNightID
+			return nil, consts.ErrInvalidPricePerNightID
 		}
 
-		result = append(
-			result, models.CreateBookingRoom{
-				RoomID:        roomID,
-				Adults:        uint8(r.Adults),
-				Children:      uint8(r.Children),
-				PricePerNight: price,
-			},
-		)
+		result[i] = models.CreateBookingRoom{
+			RoomID:        roomID,
+			Adults:        uint8(r.Adults),
+			Children:      uint8(r.Children),
+			PricePerNight: price,
+		}
 	}
 
 	return result, nil
@@ -39,7 +37,7 @@ func CreateBookingRoomsToDomain(rooms []*bookingv1.CreateBookingRoom) ([]models.
 func GetBookingRoomsRequestToDomain(req *bookingv1.GetBookingRoomsRequest) (uuid.UUID, error) {
 	bookingID, err := uuid.Parse(req.BookingId)
 	if err != nil {
-		return uuid.UUID{}, err
+		return uuid.UUID{}, consts.ErrInvalidBookingID
 	}
 
 	return bookingID, nil
@@ -48,7 +46,7 @@ func GetBookingRoomsRequestToDomain(req *bookingv1.GetBookingRoomsRequest) (uuid
 func GetBookingRoomRequestToDomain(req *bookingv1.GetBookingRoomRequest) (uuid.UUID, error) {
 	id, err := uuid.Parse(req.Id)
 	if err != nil {
-		return uuid.UUID{}, err
+		return uuid.UUID{}, consts.ErrInvalidBookingRoomID
 	}
 
 	return id, nil

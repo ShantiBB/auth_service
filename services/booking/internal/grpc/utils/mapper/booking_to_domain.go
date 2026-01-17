@@ -12,12 +12,12 @@ import (
 func CreateBookingRequestToDomain(req *bookingv1.CreateBookingRequest) (*models.CreateBooking, error) {
 	hotelID, err := uuid.Parse(req.HotelId)
 	if err != nil {
-		return nil, consts.InvalidHotelID
+		return nil, consts.ErrInvalidHotelID
 	}
 
 	expectedTotalAmount, err := decimal.NewFromString(req.ExpectedTotalAmount)
 	if err != nil {
-		return nil, consts.InvalidExpectedTotalAmountID
+		return nil, consts.ErrInvalidExpectedTotalAmountID
 	}
 
 	b := &models.CreateBooking{
@@ -43,7 +43,7 @@ func GetBookingsRequestToDomain(req *bookingv1.GetBookingsRequest) (models.Booki
 
 	hotelID, err := uuid.Parse(req.HotelId)
 	if err != nil {
-		return models.BookingRef{}, consts.InvalidHotelID
+		return models.BookingRef{}, consts.ErrInvalidHotelID
 	}
 	bookingRef.HotelID = hotelID
 
@@ -53,7 +53,7 @@ func GetBookingsRequestToDomain(req *bookingv1.GetBookingsRequest) (models.Booki
 func GetBookingRequestToDomain(req *bookingv1.GetBookingRequest) (uuid.UUID, error) {
 	id, err := uuid.Parse(req.Id)
 	if err != nil {
-		return uuid.UUID{}, err
+		return uuid.UUID{}, consts.ErrInvalidBookingID
 	}
 
 	return id, nil

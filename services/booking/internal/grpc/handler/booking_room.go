@@ -22,12 +22,12 @@ func (h *Handler) GetBookingRooms(
 
 	bookingId, err := mapper.GetBookingRoomsRequestToDomain(req)
 	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
+		return nil, errInvalidBookingID
 	}
 
 	bookingRooms, err := h.svc.GetBookingRooms(ctx, bookingId)
 	if err != nil {
-		slog.Error(err.Error())
+		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
 		return nil, helper.DomainError(err)
 	}
 
@@ -46,12 +46,12 @@ func (h *Handler) GetBookingRoom(
 
 	id, err := mapper.GetBookingRoomRequestToDomain(req)
 	if err != nil {
-		return nil, status.Error(codes.InvalidArgument, err.Error())
+		return nil, errInvalidBookingRoomID
 	}
 
 	bRoom, err := h.svc.GetBookingRoomByID(ctx, id)
 	if err != nil {
-		slog.Error(err.Error())
+		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
 		return nil, helper.DomainError(err)
 	}
 

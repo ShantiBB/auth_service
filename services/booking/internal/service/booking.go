@@ -27,7 +27,7 @@ func (s *Service) BookingCreate(
 	if err != nil {
 		return models.Booking{}, err
 	}
-	defer tx.Rollback(ctx)
+	defer func() { _ = tx.Rollback(ctx) }()
 
 	newBooking, err := s.repo.CreateBooking(ctx, tx, b)
 	if err != nil {

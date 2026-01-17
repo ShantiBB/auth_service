@@ -126,7 +126,7 @@ func (r *Repository) GetBookingByID(ctx context.Context, tx pgx.Tx, bookingID uu
 
 	if err := db.QueryRow(ctx, query.GetBookingByID, bookingID).Scan(scanArgs...); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return models.Booking{}, consts.BookingNotFound
+			return models.Booking{}, consts.ErrBookingNotFound
 		}
 		return models.Booking{}, err
 	}
@@ -151,7 +151,7 @@ func (r *Repository) UpdateBookingGuestInfoByID(
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
-		return consts.BookingNotFound
+		return consts.ErrBookingNotFound
 	}
 
 	return nil
@@ -167,7 +167,7 @@ func (r *Repository) UpdateBookingStatusByID(
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
-		return consts.BookingNotFound
+		return consts.ErrBookingNotFound
 	}
 
 	return nil
@@ -181,7 +181,7 @@ func (r *Repository) DeleteBookingByID(ctx context.Context, tx pgx.Tx, id uuid.U
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
-		return consts.BookingNotFound
+		return consts.ErrBookingNotFound
 	}
 
 	return nil

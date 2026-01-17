@@ -70,7 +70,7 @@ func (r *Repository) CreateRoomLocks(
 	if err = rows.Err(); err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23P01" {
-			return nil, consts.RoomLockAlreadyExist
+			return nil, consts.ErrRoomLockAlreadyExist
 		}
 		return nil, err
 	}
@@ -128,7 +128,7 @@ func (r *Repository) GetRoomLockByID(ctx context.Context, tx pgx.Tx, id uuid.UUI
 
 	if err := db.QueryRow(ctx, query.GetRoomLockByID, id).Scan(scanArgs...); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return models.RoomLock{}, consts.RoomLockNotFound
+			return models.RoomLock{}, consts.ErrRoomLockNotFound
 		}
 		return models.RoomLock{}, err
 	}
@@ -149,7 +149,7 @@ func (r *Repository) UpdateRoomLockActivityByID(
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
-		return consts.RoomLockNotFound
+		return consts.ErrRoomLockNotFound
 	}
 
 	return nil
@@ -163,7 +163,7 @@ func (r *Repository) DeleteRoomLockByID(ctx context.Context, tx pgx.Tx, id uuid.
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
-		return consts.RoomLockNotFound
+		return consts.ErrRoomLockNotFound
 	}
 
 	return nil

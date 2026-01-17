@@ -181,7 +181,7 @@ func (r *Repository) GetBookingRoomByID(ctx context.Context, tx pgx.Tx, id uuid.
 
 	if err := db.QueryRow(ctx, query.GetBookingRoomFullInfoByID, id).Scan(scanArgs...); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return models.BookingRoomFullInfo{}, consts.BookingRoomNotFound
+			return models.BookingRoomFullInfo{}, consts.ErrBookingRoomNotFound
 		}
 		return models.BookingRoomFullInfo{}, err
 	}
@@ -205,7 +205,7 @@ func (r *Repository) UpdateBookingRoomGuestCountsByID(
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
-		return consts.BookingRoomNotFound
+		return consts.ErrBookingRoomNotFound
 	}
 
 	return nil
@@ -219,7 +219,7 @@ func (r *Repository) DeleteBookingRoomByID(ctx context.Context, tx pgx.Tx, id uu
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
-		return consts.BookingRoomNotFound
+		return consts.ErrBookingRoomNotFound
 	}
 
 	return nil

@@ -12,32 +12,32 @@ type DateRange struct {
 }
 
 type CreateRoomLock struct {
-	RoomID    uuid.UUID
-	BookingID uuid.UUID
 	StayRange DateRange
 	ExpiresAt time.Time
+	RoomID    uuid.UUID
+	BookingID uuid.UUID
 }
 
 type UpdateRoomLockActivity struct {
-	IsActive  bool
 	ExpiresAt time.Time
+	IsActive  bool
 }
 type RoomLock struct {
+	StayRange DateRange
+	ExpiresAt time.Time
+	CreatedAt time.Time
 	ID        uuid.UUID
 	RoomID    uuid.UUID
 	BookingID uuid.UUID
-	StayRange DateRange
 	ISActive  bool
-	ExpiresAt time.Time
-	CreatedAt time.Time
 }
 
 type RoomLockShort struct {
-	ID        uuid.UUID
 	StayRange DateRange
-	ISActive  bool
 	ExpiresAt time.Time
 	CreatedAt time.Time
+	ID        uuid.UUID
+	ISActive  bool
 }
 
 func (roomLock *CreateRoomLock) ToRead() RoomLock {

@@ -7,6 +7,7 @@ import (
 
 func BookingRoomInfoToProto(r *models.BookingRoomFullInfo) *bookingv1.BookingRoomInfo {
 	return &bookingv1.BookingRoomInfo{
+		Id:            r.ID.String(),
 		RoomId:        r.RoomID.String(),
 		Adults:        uint32(r.Adults),
 		Children:      uint32(r.Children),
@@ -15,17 +16,9 @@ func BookingRoomInfoToProto(r *models.BookingRoomFullInfo) *bookingv1.BookingRoo
 }
 
 func BookingRoomsInfoToProto(rooms []models.BookingRoomFullInfo) []*bookingv1.BookingRoomInfo {
-	result := make([]*bookingv1.BookingRoomInfo, 0, len(rooms))
-	for _, r := range rooms {
-		result = append(
-			result, &bookingv1.BookingRoomInfo{
-				Id:            r.ID.String(),
-				RoomId:        r.RoomID.String(),
-				Adults:        uint32(r.Adults),
-				Children:      uint32(r.Children),
-				PricePerNight: r.PricePerNight.String(),
-			},
-		)
+	result := make([]*bookingv1.BookingRoomInfo, len(rooms))
+	for i, r := range rooms {
+		result[i] = BookingRoomInfoToProto(&r)
 	}
 	return result
 }
@@ -42,11 +35,9 @@ func BookingRoomFullInfoToProto(r models.BookingRoomFullInfo) *bookingv1.Booking
 }
 
 func BookingRoomsFullInfoToProto(rooms []models.BookingRoomFullInfo) []*bookingv1.BookingRoomFullInfo {
-	result := make([]*bookingv1.BookingRoomFullInfo, 0, len(rooms))
-	for _, r := range rooms {
-		result = append(
-			result, BookingRoomFullInfoToProto(r),
-		)
+	result := make([]*bookingv1.BookingRoomFullInfo, len(rooms))
+	for i, r := range rooms {
+		result[i] = BookingRoomFullInfoToProto(r)
 	}
 	return result
 }

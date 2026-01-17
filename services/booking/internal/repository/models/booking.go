@@ -8,16 +8,16 @@ import (
 )
 
 type CreateBooking struct {
-	UserID              int64
-	HotelID             uuid.UUID
 	CheckIn             time.Time
 	CheckOut            time.Time
-	GuestName           string
 	GuestEmail          *string
 	GuestPhone          *string
+	GuestName           string
 	Currency            string
 	ExpectedTotalAmount decimal.Decimal
 	FinalTotalAmount    decimal.Decimal
+	UserID              int64
+	HotelID             uuid.UUID
 }
 
 type UpdateBooking struct {
@@ -34,37 +34,37 @@ type BookingStatusInfo struct {
 }
 
 type Booking struct {
-	ID                  uuid.UUID
-	UserID              int64
-	HotelID             uuid.UUID
+	CreatedAt           time.Time
 	CheckIn             time.Time
+	UpdatedAt           time.Time
 	CheckOut            time.Time
-	Status              BookingStatus
-	GuestName           string
-	GuestEmail          *string
 	GuestPhone          *string
+	GuestEmail          *string
+	Status              BookingStatus
 	Currency            string
+	GuestName           string
 	ExpectedTotalAmount decimal.Decimal
 	FinalTotalAmount    decimal.Decimal
-	CreatedAt           time.Time
 	BookingRooms        []BookingRoomFullInfo
-	UpdatedAt           time.Time
+	UserID              int64
+	ID                  uuid.UUID
+	HotelID             uuid.UUID
 }
 
 type BookingShort struct {
-	ID                  uuid.UUID
-	UserID              int64
-	HotelID             uuid.UUID
-	BookingRooms        []BookingRoomFullInfo
 	CheckIn             time.Time
 	CheckOut            time.Time
+	GuestPhone          *string
+	GuestEmail          *string
 	Status              BookingStatus
 	GuestName           string
-	GuestEmail          *string
-	GuestPhone          *string
 	Currency            string
 	ExpectedTotalAmount decimal.Decimal
 	FinalTotalAmount    decimal.Decimal
+	BookingRooms        []BookingRoomFullInfo
+	UserID              int64
+	ID                  uuid.UUID
+	HotelID             uuid.UUID
 }
 
 type BookingList struct {
@@ -73,9 +73,9 @@ type BookingList struct {
 }
 
 type BookingRef struct {
+	Status  BookingStatus
 	UserID  int64
 	HotelID uuid.UUID
-	Status  BookingStatus
 }
 
 func (b *CreateBooking) ToRead() Booking {
