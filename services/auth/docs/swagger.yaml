@@ -1,13 +1,24 @@
 basePath: /api/v1
 definitions:
-  auth_internal_http_dto_request.UserActiveStatus:
+  pagination.Links:
+    properties:
+      first:
+        type: string
+      last:
+        type: string
+      next:
+        type: string
+      prev:
+        type: string
+    type: object
+  request.UserActiveStatus:
     properties:
       is_active:
         type: boolean
     required:
     - is_active
     type: object
-  auth_internal_http_dto_request.UserCreate:
+  request.UserCreate:
     properties:
       email:
         example: user@example.com
@@ -20,7 +31,7 @@ definitions:
     - email
     - password
     type: object
-  auth_internal_http_dto_request.UserRoleStatus:
+  request.UserRoleStatus:
     properties:
       role:
         example: user
@@ -28,7 +39,7 @@ definitions:
     required:
     - role
     type: object
-  auth_internal_http_dto_request.UserUpdate:
+  request.UserUpdate:
     properties:
       email:
         example: user@example.com
@@ -37,14 +48,14 @@ definitions:
         example: username
         type: string
     type: object
-  auth_internal_http_dto_response.ErrorSchema:
+  response.ErrorSchema:
     properties:
-      message:
-        type: string
-      type:
-        type: string
+      errors:
+        additionalProperties:
+          type: string
+        type: object
     type: object
-  auth_internal_http_dto_response.Token:
+  response.Token:
     properties:
       access_token:
         type: string
@@ -54,7 +65,7 @@ definitions:
         example: Bearer
         type: string
     type: object
-  auth_internal_http_dto_response.User:
+  response.User:
     properties:
       created_at:
         type: string
@@ -71,38 +82,38 @@ definitions:
       username:
         type: string
     type: object
-  auth_internal_http_dto_response.UserActiveStatus:
+  response.UserActiveStatus:
     properties:
       is_active:
         type: boolean
       message:
         type: string
     type: object
-  auth_internal_http_dto_response.UserList:
+  response.UserList:
     properties:
       current_page:
         type: integer
       limit:
         type: integer
       links:
-        $ref: '#/definitions/helper.PaginationLinks'
+        $ref: '#/definitions/pagination.Links'
       total_page_count:
         type: integer
       total_users_count:
         type: integer
       users:
         items:
-          $ref: '#/definitions/auth_internal_http_dto_response.UserShort'
+          $ref: '#/definitions/response.UserShort'
         type: array
     type: object
-  auth_internal_http_dto_response.UserRoleStatus:
+  response.UserRoleStatus:
     properties:
       message:
         type: string
       role:
         type: string
     type: object
-  auth_internal_http_dto_response.UserShort:
+  response.UserShort:
     properties:
       email:
         type: string
@@ -113,17 +124,6 @@ definitions:
       role:
         type: string
       username:
-        type: string
-    type: object
-  helper.PaginationLinks:
-    properties:
-      first:
-        type: string
-      last:
-        type: string
-      next:
-        type: string
-      prev:
         type: string
     type: object
 info:
@@ -143,22 +143,22 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/auth_internal_http_dto_request.UserCreate'
+          $ref: '#/definitions/request.UserCreate'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.Token'
+            $ref: '#/definitions/response.Token'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
       summary: Login user
       tags:
       - auth
@@ -183,15 +183,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.Token'
+            $ref: '#/definitions/response.Token'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
       summary: Refresh access user tokenCreds
       tags:
       - auth
@@ -206,26 +206,26 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/auth_internal_http_dto_request.UserCreate'
+          $ref: '#/definitions/request.UserCreate'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.Token'
+            $ref: '#/definitions/response.Token'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "409":
           description: Conflict
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
       summary: Register user
       tags:
       - auth
@@ -251,15 +251,15 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.UserList'
+            $ref: '#/definitions/response.UserList'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
       security:
       - Bearer: []
       summary: Get users
@@ -275,30 +275,30 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/auth_internal_http_dto_request.UserCreate'
+          $ref: '#/definitions/request.UserCreate'
       produces:
       - application/json
       responses:
         "201":
           description: Created
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.User'
+            $ref: '#/definitions/response.User'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "409":
           description: Conflict
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
       security:
       - Bearer: []
       summary: Create user
@@ -323,19 +323,19 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
       security:
       - Bearer: []
       summary: Delete user by ID
@@ -357,23 +357,23 @@ paths:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.User'
+            $ref: '#/definitions/response.User'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
       security:
       - Bearer: []
       summary: Get user by ID
@@ -394,34 +394,34 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/auth_internal_http_dto_request.UserUpdate'
+          $ref: '#/definitions/request.UserUpdate'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.User'
+            $ref: '#/definitions/response.User'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "409":
           description: Conflict
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
       security:
       - Bearer: []
       summary: Update user by ID
@@ -443,30 +443,30 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/auth_internal_http_dto_request.UserRoleStatus'
+          $ref: '#/definitions/request.UserRoleStatus'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.UserRoleStatus'
+            $ref: '#/definitions/response.UserRoleStatus'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
       security:
       - Bearer: []
       summary: Update user role by ID
@@ -488,30 +488,30 @@ paths:
         name: request
         required: true
         schema:
-          $ref: '#/definitions/auth_internal_http_dto_request.UserActiveStatus'
+          $ref: '#/definitions/request.UserActiveStatus'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.UserActiveStatus'
+            $ref: '#/definitions/response.UserActiveStatus'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "401":
           description: Unauthorized
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "404":
           description: Not Found
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
         "500":
           description: Internal Server Error
           schema:
-            $ref: '#/definitions/auth_internal_http_dto_response.ErrorSchema'
+            $ref: '#/definitions/response.ErrorSchema'
       security:
       - Bearer: []
       summary: Update user active status by ID
