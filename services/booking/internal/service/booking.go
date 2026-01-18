@@ -81,7 +81,6 @@ func (s *Service) BookingCreate(
 			newRooms[i].RoomLock = lock
 		}
 	}
-
 	newBooking.BookingRooms = newRooms
 
 	if err = tx.Commit(ctx); err != nil {
