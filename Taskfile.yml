@@ -5,7 +5,7 @@ tasks:
     desc: "Run (task run service=auth|hotel|booking)"
     cmd: "go run services/{{.service}}/cmd/app/main.go"
     env:
-      CONFIG_PATH: "services/auth/config/local.yaml"
+      CONFIG_PATH: "services/{{.service}}/config/local.yaml"
     requires:
       vars: [service]
 
