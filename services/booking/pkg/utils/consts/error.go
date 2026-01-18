@@ -2,22 +2,34 @@ package consts
 
 import "errors"
 
-// Bookings
-var (
-	ErrBookingNotFound      = errors.New("booking not found")
-	ErrBookingRoomNotFound  = errors.New("booking room not found")
-	ErrRoomLockNotFound     = errors.New("room lock room not found")
-	ErrRoomLockAlreadyExist = errors.New("room lock already exists")
-	ErrInvalidDates         = errors.New("invalid booking dates")
-	ErrPriceChanged         = errors.New("expected total amount does not match calculated total")
+const (
+	MsgBookingNotFound              = "booking not found"
+	MsgBookingRoomNotFound          = "booking room not found"
+	MsgRoomLockNotFound             = "room lock room not found"
+	MsgRoomLockAlreadyExist         = "room lock already exists"
+	MsgInvalidDates                 = "invalid booking dates"
+	MsgPriceChanged                 = "expected total amount does not match calculated total"
+	MsgConflictBookingRooms         = "all rooms must have same booking_id"
+	MsgInvalidHotelID               = "invalid hotel ID"
+	MsgInvalidBookingID             = "invalid booking ID"
+	MsgInvalidBookingRoomID         = "invalid booking room ID"
+	MsgInvalidPricePerNightID       = "invalid price per night. example: 123.45"
+	MsgInvalidExpectedTotalAmountID = "invalid expected total amount. example: 123.45"
+	MsgInternalServer               = "internal server error"
 )
 
 var (
-	ErrInvalidHotelID               = errors.New("invalid hotel ID")
-	ErrInvalidBookingID             = errors.New("invalid booking ID")
-	ErrInvalidBookingRoomID         = errors.New("invalid booking room ID")
-	ErrInvalidPricePerNightID       = errors.New("invalid price per night. example: 123.45")
-	ErrInvalidExpectedTotalAmountID = errors.New("invalid expected total amount. example: 123.45")
-	ErrInternalServer               = errors.New("internal server error")
-	ErrInvalidRequest               = errors.New("invalid request body")
+	ErrBookingNotFound              = errors.New(MsgBookingNotFound)
+	ErrBookingRoomNotFound          = errors.New(MsgBookingRoomNotFound)
+	ErrRoomLockNotFound             = errors.New(MsgRoomLockNotFound)
+	ErrRoomLockAlreadyExist         = errors.New(MsgRoomLockAlreadyExist)
+	ErrInvalidDates                 = errors.New(MsgInvalidDates)
+	ErrPriceChanged                 = errors.New(MsgPriceChanged)
+	ErrConflictBookingRooms         = errors.New(MsgConflictBookingRooms)
+	ErrInvalidHotelID               = errors.New(MsgInvalidHotelID)
+	ErrInvalidBookingID             = errors.New(MsgInvalidBookingID)
+	ErrInvalidBookingRoomID         = errors.New(MsgInvalidBookingRoomID)
+	ErrInvalidPricePerNightID       = errors.New(MsgInvalidPricePerNightID)
+	ErrInvalidExpectedTotalAmountID = errors.New(MsgInvalidExpectedTotalAmountID)
+	ErrInternalServer               = errors.New(MsgInternalServer)
 )
