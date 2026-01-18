@@ -8,7 +8,6 @@ import (
 )
 
 var (
-	errInvalidHotelID       = status.Error(codes.InvalidArgument, consts.ErrInvalidHotelID.Error())
-	errInvalidBookingID     = status.Error(codes.InvalidArgument, consts.ErrInvalidBookingID.Error())
-	errInvalidBookingRoomID = status.Error(codes.InvalidArgument, consts.ErrInvalidBookingRoomID.Error())
+	errInvalidHotelID   = status.Error(codes.InvalidArgument, consts.ErrInvalidHotelID.Error())
+	errInvalidBookingID = status.Error(codes.InvalidArgument, consts.ErrInvalidBookingID.Error())
 )
