@@ -83,10 +83,11 @@ func (r *Repository) UpdateRoomLockActivityByID(
 	ctx context.Context,
 	tx pgx.Tx,
 	id uuid.UUID,
-	roomLock *models.UpdateRoomLockActivity,
+	roomLock *models.RoomLockActivity,
 ) error {
 	db := r.executor(tx)
 
+	roomLock.ExpiresAt = time.Now()
 	row, err := db.Exec(ctx, query.UpdateRoomLockActivityByID, id, roomLock.IsActive, roomLock.ExpiresAt)
 	if err != nil {
 		return err

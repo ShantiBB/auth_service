@@ -19,9 +19,11 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	BookingService_CreateBooking_FullMethodName = "/booking.v1.BookingService/CreateBooking"
-	BookingService_GetBookings_FullMethodName   = "/booking.v1.BookingService/GetBookings"
-	BookingService_GetBooking_FullMethodName    = "/booking.v1.BookingService/GetBooking"
+	BookingService_CreateBooking_FullMethodName        = "/booking.v1.BookingService/CreateBooking"
+	BookingService_GetBookings_FullMethodName          = "/booking.v1.BookingService/GetBookings"
+	BookingService_GetBooking_FullMethodName           = "/booking.v1.BookingService/GetBooking"
+	BookingService_ConfirmBookingStatus_FullMethodName = "/booking.v1.BookingService/ConfirmBookingStatus"
+	BookingService_CancelBookingStatus_FullMethodName  = "/booking.v1.BookingService/CancelBookingStatus"
 )
 
 // BookingServiceClient is the client API for BookingService service.
@@ -31,6 +33,8 @@ type BookingServiceClient interface {
 	CreateBooking(ctx context.Context, in *CreateBookingRequest, opts ...grpc.CallOption) (*CreateBookingResponse, error)
 	GetBookings(ctx context.Context, in *GetBookingsRequest, opts ...grpc.CallOption) (*GetBookingsResponse, error)
 	GetBooking(ctx context.Context, in *GetBookingRequest, opts ...grpc.CallOption) (*GetBookingResponse, error)
+	ConfirmBookingStatus(ctx context.Context, in *ConfirmBookingStatusRequest, opts ...grpc.CallOption) (*ConfirmBookingStatusResponse, error)
+	CancelBookingStatus(ctx context.Context, in *CancelBookingStatusRequest, opts ...grpc.CallOption) (*CancelBookingStatusResponse, error)
 }
 
 type bookingServiceClient struct {
@@ -71,6 +75,26 @@ func (c *bookingServiceClient) GetBooking(ctx context.Context, in *GetBookingReq
 	return out, nil
 }
 
+func (c *bookingServiceClient) ConfirmBookingStatus(ctx context.Context, in *ConfirmBookingStatusRequest, opts ...grpc.CallOption) (*ConfirmBookingStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(ConfirmBookingStatusResponse)
+	err := c.cc.Invoke(ctx, BookingService_ConfirmBookingStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *bookingServiceClient) CancelBookingStatus(ctx context.Context, in *CancelBookingStatusRequest, opts ...grpc.CallOption) (*CancelBookingStatusResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CancelBookingStatusResponse)
+	err := c.cc.Invoke(ctx, BookingService_CancelBookingStatus_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // BookingServiceServer is the server API for BookingService service.
 // All implementations must embed UnimplementedBookingServiceServer
 // for forward compatibility.
@@ -78,6 +102,8 @@ type BookingServiceServer interface {
 	CreateBooking(context.Context, *CreateBookingRequest) (*CreateBookingResponse, error)
 	GetBookings(context.Context, *GetBookingsRequest) (*GetBookingsResponse, error)
 	GetBooking(context.Context, *GetBookingRequest) (*GetBookingResponse, error)
+	ConfirmBookingStatus(context.Context, *ConfirmBookingStatusRequest) (*ConfirmBookingStatusResponse, error)
+	CancelBookingStatus(context.Context, *CancelBookingStatusRequest) (*CancelBookingStatusResponse, error)
 	mustEmbedUnimplementedBookingServiceServer()
 }
 
@@ -96,6 +122,12 @@ func (UnimplementedBookingServiceServer) GetBookings(context.Context, *GetBookin
 }
 func (UnimplementedBookingServiceServer) GetBooking(context.Context, *GetBookingRequest) (*GetBookingResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetBooking not implemented")
+}
+func (UnimplementedBookingServiceServer) ConfirmBookingStatus(context.Context, *ConfirmBookingStatusRequest) (*ConfirmBookingStatusResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method ConfirmBookingStatus not implemented")
+}
+func (UnimplementedBookingServiceServer) CancelBookingStatus(context.Context, *CancelBookingStatusRequest) (*CancelBookingStatusResponse, error) {
+	return nil, status.Error(codes.Unimplemented, "method CancelBookingStatus not implemented")
 }
 func (UnimplementedBookingServiceServer) mustEmbedUnimplementedBookingServiceServer() {}
 func (UnimplementedBookingServiceServer) testEmbeddedByValue()                        {}
@@ -172,6 +204,42 @@ func _BookingService_GetBooking_Handler(srv interface{}, ctx context.Context, de
 	return interceptor(ctx, in, info, handler)
 }
 
+func _BookingService_ConfirmBookingStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(ConfirmBookingStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingServiceServer).ConfirmBookingStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookingService_ConfirmBookingStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingServiceServer).ConfirmBookingStatus(ctx, req.(*ConfirmBookingStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _BookingService_CancelBookingStatus_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CancelBookingStatusRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(BookingServiceServer).CancelBookingStatus(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: BookingService_CancelBookingStatus_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(BookingServiceServer).CancelBookingStatus(ctx, req.(*CancelBookingStatusRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // BookingService_ServiceDesc is the grpc.ServiceDesc for BookingService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -190,6 +258,14 @@ var BookingService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetBooking",
 			Handler:    _BookingService_GetBooking_Handler,
+		},
+		{
+			MethodName: "ConfirmBookingStatus",
+			Handler:    _BookingService_ConfirmBookingStatus_Handler,
+		},
+		{
+			MethodName: "CancelBookingStatus",
+			Handler:    _BookingService_CancelBookingStatus_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

@@ -23,7 +23,7 @@ func (s *Service) BookingCreate(
 	}
 
 	var err error
-	b.FinalTotalAmount, err = helper.CalculateFinalTotalAmount(b.CheckIn, b.CheckOut, rooms, b.ExpectedTotalAmount)
+	b.FinalTotalAmount, err = helper.CalculateTotalAmount(b.CheckIn, b.CheckOut, rooms, b.ExpectedTotalAmount)
 	if err != nil {
 		return nil, err
 	}
@@ -109,7 +109,7 @@ func (s *Service) GetBookings(
 
 	allRooms, err := s.repo.GetBookingRoomsByBookingIDs(ctx, nil, bookingIDs)
 	if err != nil {
-		return nil, fmt.Errorf("get booking rooms: %w", err)
+		return nil, err
 	}
 
 	roomsByBookingID := make(map[uuid.UUID][]*models.BookingRoom)
@@ -139,14 +139,30 @@ func (s *Service) GetBookingById(ctx context.Context, bookingID uuid.UUID) (*mod
 	return booking, nil
 }
 
-//func (s *Service) BookingGetByID(ctx context.Context, id uuid.UUID) (models.Booking, error) {
-//	b, err := s.repo.BookingGetByID(ctx, id)
-//	if err != nil {
-//		return models.Booking{}, err
-//	}
-//
-//	return b, nil
-//}
+func (s *Service) UpdateBookingStatus(
+	ctx context.Context,
+	bookingID uuid.UUID,
+	status models.BookingStatus,
+) error {
+	if err := s.repo.UpdateBookingStatusByID(ctx, nil, bookingID, status); err != nil {
+		return err
+	}
+
+	var isActive bool
+	if status != models.BookingStatusCancelled {
+		isActive = true
+	}
+	roomLockStatus := &models.RoomLockActivity{
+		IsActive:  isActive,
+		ExpiresAt: time.Now(),
+	}
+
+	if err := s.repo.UpdateRoomLockActivityByID(ctx, nil, bookingID, roomLockStatus); err != nil {
+		return err
+	}
+
+	return nil
+}
 
 //func (s *Service) BookingUpdateByID(ctx context.Context, id uuid.UUID, b models.UpdateBooking) error {
 //	if err := s.repo.BookingUpdateByID(ctx, id, b); err != nil {

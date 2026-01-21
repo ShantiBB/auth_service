@@ -9,6 +9,7 @@ package bookingv1
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
+	_ "google.golang.org/protobuf/types/known/emptypb"
 	reflect "reflect"
 	unsafe "unsafe"
 )
@@ -25,30 +26,40 @@ var File_booking_v1_booking_service_proto protoreflect.FileDescriptor
 const file_booking_v1_booking_service_proto_rawDesc = "" +
 	"\n" +
 	" booking/v1/booking_service.proto\x12\n" +
-	"booking.v1\x1a#booking/v1/rpc/create_booking.proto\x1a!booking/v1/rpc/get_bookings.proto\x1a booking/v1/rpc/get_booking.proto2\x83\x02\n" +
+	"booking.v1\x1a\x1bgoogle/protobuf/empty.proto\x1a#booking/v1/rpc/create_booking.proto\x1a!booking/v1/rpc/get_bookings.proto\x1a booking/v1/rpc/get_booking.proto\x1a+booking/v1/rpc/confirm_booking_status.proto\x1a*booking/v1/rpc/cancel_booking_status.proto2\xd6\x03\n" +
 	"\x0eBookingService\x12T\n" +
 	"\rCreateBooking\x12 .booking.v1.CreateBookingRequest\x1a!.booking.v1.CreateBookingResponse\x12N\n" +
 	"\vGetBookings\x12\x1e.booking.v1.GetBookingsRequest\x1a\x1f.booking.v1.GetBookingsResponse\x12K\n" +
 	"\n" +
-	"GetBooking\x12\x1d.booking.v1.GetBookingRequest\x1a\x1e.booking.v1.GetBookingResponseB\x1aZ\x18api/booking/v1;bookingv1b\x06proto3"
+	"GetBooking\x12\x1d.booking.v1.GetBookingRequest\x1a\x1e.booking.v1.GetBookingResponse\x12i\n" +
+	"\x14ConfirmBookingStatus\x12'.booking.v1.ConfirmBookingStatusRequest\x1a(.booking.v1.ConfirmBookingStatusResponse\x12f\n" +
+	"\x13CancelBookingStatus\x12&.booking.v1.CancelBookingStatusRequest\x1a'.booking.v1.CancelBookingStatusResponseB\x1aZ\x18api/booking/v1;bookingv1b\x06proto3"
 
 var file_booking_v1_booking_service_proto_goTypes = []any{
-	(*CreateBookingRequest)(nil),  // 0: booking.v1.CreateBookingRequest
-	(*GetBookingsRequest)(nil),    // 1: booking.v1.GetBookingsRequest
-	(*GetBookingRequest)(nil),     // 2: booking.v1.GetBookingRequest
-	(*CreateBookingResponse)(nil), // 3: booking.v1.CreateBookingResponse
-	(*GetBookingsResponse)(nil),   // 4: booking.v1.GetBookingsResponse
-	(*GetBookingResponse)(nil),    // 5: booking.v1.GetBookingResponse
+	(*CreateBookingRequest)(nil),         // 0: booking.v1.CreateBookingRequest
+	(*GetBookingsRequest)(nil),           // 1: booking.v1.GetBookingsRequest
+	(*GetBookingRequest)(nil),            // 2: booking.v1.GetBookingRequest
+	(*ConfirmBookingStatusRequest)(nil),  // 3: booking.v1.ConfirmBookingStatusRequest
+	(*CancelBookingStatusRequest)(nil),   // 4: booking.v1.CancelBookingStatusRequest
+	(*CreateBookingResponse)(nil),        // 5: booking.v1.CreateBookingResponse
+	(*GetBookingsResponse)(nil),          // 6: booking.v1.GetBookingsResponse
+	(*GetBookingResponse)(nil),           // 7: booking.v1.GetBookingResponse
+	(*ConfirmBookingStatusResponse)(nil), // 8: booking.v1.ConfirmBookingStatusResponse
+	(*CancelBookingStatusResponse)(nil),  // 9: booking.v1.CancelBookingStatusResponse
 }
 var file_booking_v1_booking_service_proto_depIdxs = []int32{
 	0, // 0: booking.v1.BookingService.CreateBooking:input_type -> booking.v1.CreateBookingRequest
 	1, // 1: booking.v1.BookingService.GetBookings:input_type -> booking.v1.GetBookingsRequest
 	2, // 2: booking.v1.BookingService.GetBooking:input_type -> booking.v1.GetBookingRequest
-	3, // 3: booking.v1.BookingService.CreateBooking:output_type -> booking.v1.CreateBookingResponse
-	4, // 4: booking.v1.BookingService.GetBookings:output_type -> booking.v1.GetBookingsResponse
-	5, // 5: booking.v1.BookingService.GetBooking:output_type -> booking.v1.GetBookingResponse
-	3, // [3:6] is the sub-list for method output_type
-	0, // [0:3] is the sub-list for method input_type
+	3, // 3: booking.v1.BookingService.ConfirmBookingStatus:input_type -> booking.v1.ConfirmBookingStatusRequest
+	4, // 4: booking.v1.BookingService.CancelBookingStatus:input_type -> booking.v1.CancelBookingStatusRequest
+	5, // 5: booking.v1.BookingService.CreateBooking:output_type -> booking.v1.CreateBookingResponse
+	6, // 6: booking.v1.BookingService.GetBookings:output_type -> booking.v1.GetBookingsResponse
+	7, // 7: booking.v1.BookingService.GetBooking:output_type -> booking.v1.GetBookingResponse
+	8, // 8: booking.v1.BookingService.ConfirmBookingStatus:output_type -> booking.v1.ConfirmBookingStatusResponse
+	9, // 9: booking.v1.BookingService.CancelBookingStatus:output_type -> booking.v1.CancelBookingStatusResponse
+	5, // [5:10] is the sub-list for method output_type
+	0, // [0:5] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
 	0, // [0:0] is the sub-list for extension extendee
 	0, // [0:0] is the sub-list for field type_name
@@ -62,6 +73,8 @@ func file_booking_v1_booking_service_proto_init() {
 	file_booking_v1_rpc_create_booking_proto_init()
 	file_booking_v1_rpc_get_bookings_proto_init()
 	file_booking_v1_rpc_get_booking_proto_init()
+	file_booking_v1_rpc_confirm_booking_status_proto_init()
+	file_booking_v1_rpc_cancel_booking_status_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

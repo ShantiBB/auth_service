@@ -29,10 +29,6 @@ type UpdateBooking struct {
 	TotalAmount *string
 }
 
-type BookingStatusInfo struct {
-	Status BookingStatus
-}
-
 type Booking struct {
 	CreatedAt           time.Time
 	CheckIn             time.Time

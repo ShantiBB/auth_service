@@ -18,6 +18,7 @@ type BookingService interface {
 		ctx context.Context, bookingRef models.BookingRef, page uint64, limit uint64,
 	) (*models.BookingList, error)
 	GetBookingById(ctx context.Context, bookingID uuid.UUID) (*models.Booking, error)
+	UpdateBookingStatus(ctx context.Context, bookingID uuid.UUID, status models.BookingStatus) error
 }
 
 type Service interface {

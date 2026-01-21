@@ -50,8 +50,8 @@ func GetBookingsRequestToDomain(req *bookingv1.GetBookingsRequest) (models.Booki
 	return bookingRef, nil
 }
 
-func GetBookingRequestToDomain(req *bookingv1.GetBookingRequest) (uuid.UUID, error) {
-	id, err := uuid.Parse(req.Id)
+func GetBookingRequestToDomain(idStr string) (uuid.UUID, error) {
+	id, err := uuid.Parse(idStr)
 	if err != nil {
 		return uuid.UUID{}, consts.ErrInvalidBookingID
 	}

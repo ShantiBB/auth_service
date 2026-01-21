@@ -3,7 +3,10 @@
 CREATE EXTENSION IF NOT EXISTS pgcrypto;
 CREATE EXTENSION IF NOT EXISTS btree_gist;
 
-CREATE TYPE booking_status AS ENUM ('pending', 'confirmed', 'cancelled');
+CREATE TYPE booking_status AS ENUM ('BOOKING_STATUS_UNSPECIFIED',
+                                    'BOOKING_STATUS_PENDING',
+                                    'BOOKING_STATUS_CONFIRMED',
+                                    'BOOKING_STATUS_CANCELLED');
 
 CREATE TABLE IF NOT EXISTS booking (
     id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

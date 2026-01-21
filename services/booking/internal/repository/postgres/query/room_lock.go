@@ -26,7 +26,7 @@ const (
 		SET
 		  is_active = $2,
 		  expires_at = $3
-		WHERE id = $1;`
+		WHERE booking_id = $1;`
 
 	DeleteRoomLockByID = `
 		DELETE FROM room_lock

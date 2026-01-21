@@ -10,6 +10,7 @@ import (
 	bookingv1 "booking/api/booking/v1"
 	"booking/internal/grpc/utils/helper"
 	"booking/internal/grpc/utils/mapper"
+	"booking/internal/repository/models"
 )
 
 func (h *Handler) CreateBooking(
@@ -76,7 +77,7 @@ func (h *Handler) GetBooking(
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	bookingId, err := mapper.GetBookingRequestToDomain(req)
+	bookingId, err := mapper.GetBookingRequestToDomain(req.Id)
 	if err != nil {
 		return nil, errInvalidBookingID
 	}
@@ -89,5 +90,53 @@ func (h *Handler) GetBooking(
 
 	return &bookingv1.GetBookingResponse{
 		Booking: mapper.BookingToProto(booking),
+	}, nil
+}
+
+func (h *Handler) ConfirmBookingStatus(
+	ctx context.Context,
+	req *bookingv1.ConfirmBookingStatusRequest,
+) (*bookingv1.ConfirmBookingStatusResponse, error) {
+	if err := h.validator.Validate(req); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	bookingId, err := mapper.GetBookingRequestToDomain(req.Id)
+	if err != nil {
+		return nil, errInvalidBookingID
+	}
+
+	err = h.svc.UpdateBookingStatus(ctx, bookingId, models.BookingStatusConfirmed)
+	if err != nil {
+		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
+		return nil, helper.DomainError(err)
+	}
+
+	return &bookingv1.ConfirmBookingStatusResponse{
+		Status: mapper.BookingStatusToProto(models.BookingStatusConfirmed),
+	}, nil
+}
+
+func (h *Handler) CancelBookingStatus(
+	ctx context.Context,
+	req *bookingv1.CancelBookingStatusRequest,
+) (*bookingv1.CancelBookingStatusResponse, error) {
+	if err := h.validator.Validate(req); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	bookingId, err := mapper.GetBookingRequestToDomain(req.Id)
+	if err != nil {
+		return nil, errInvalidBookingID
+	}
+
+	err = h.svc.UpdateBookingStatus(ctx, bookingId, models.BookingStatusCancelled)
+	if err != nil {
+		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
+		return nil, helper.DomainError(err)
+	}
+
+	return &bookingv1.CancelBookingStatusResponse{
+		Status: mapper.BookingStatusToProto(models.BookingStatusCancelled),
 	}, nil
 }

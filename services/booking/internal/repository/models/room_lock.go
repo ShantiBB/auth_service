@@ -18,7 +18,7 @@ type CreateRoomLock struct {
 	BookingID uuid.UUID
 }
 
-type UpdateRoomLockActivity struct {
+type RoomLockActivity struct {
 	ExpiresAt time.Time
 	IsActive  bool
 }

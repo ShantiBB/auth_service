@@ -20,7 +20,7 @@ type BookingRepository interface {
 	) (*models.BookingList, error)
 	GetBookingByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) (*models.Booking, error)
 	UpdateBookingGuestInfoByID(ctx context.Context, tx pgx.Tx, id uuid.UUID, b *models.UpdateBooking) error
-	UpdateBookingStatusByID(ctx context.Context, tx pgx.Tx, id uuid.UUID, b *models.BookingStatusInfo) error
+	UpdateBookingStatusByID(ctx context.Context, tx pgx.Tx, id uuid.UUID, status models.BookingStatus) error
 	DeleteBookingByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) error
 }
 
@@ -43,7 +43,7 @@ type BookingRoomRepository interface {
 type RoomLockRepository interface {
 	CreateRoomLocks(ctx context.Context, tx pgx.Tx, locks []*models.CreateRoomLock) ([]*models.RoomLockDetail, error)
 	UpdateRoomLockActivityByID(
-		ctx context.Context, tx pgx.Tx, id uuid.UUID, roomLock *models.UpdateRoomLockActivity,
+		ctx context.Context, tx pgx.Tx, id uuid.UUID, roomLock *models.RoomLockActivity,
 	) error
 	DeleteRoomLockByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) error
 }

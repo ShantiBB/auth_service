@@ -9,7 +9,7 @@ import (
 	"booking/pkg/utils/consts"
 )
 
-func CalculateFinalTotalAmount(
+func CalculateTotalAmount(
 	checkIn time.Time,
 	checkOut time.Time,
 	rooms []*models.CreateBookingRoom,

@@ -3,7 +3,7 @@ package models
 type BookingStatus string
 
 const (
-	BookingStatusPending   BookingStatus = "pending"
-	BookingStatusConfirmed BookingStatus = "confirmed"
-	BookingStatusCancelled BookingStatus = "cancelled"
+	BookingStatusPending   BookingStatus = "BOOKING_STATUS_PENDING"
+	BookingStatusConfirmed BookingStatus = "BOOKING_STATUS_CONFIRMED"
+	BookingStatusCancelled BookingStatus = "BOOKING_STATUS_CANCELLED"
 )

@@ -65,11 +65,11 @@ func (r *Repository) GetBookingsByHotelInfo(
 	}
 	defer rows.Close()
 
-	values := make([]models.BookingShort, 0, limit)
+	values := make([]models.BookingShort, limit)
 	var b models.BookingShort
-
+	var idx int
 	for rows.Next() {
-		if err = rows.Scan(
+		err = rows.Scan(
 			&b.ID,
 			&b.UserID,
 			&b.HotelID,
@@ -82,21 +82,22 @@ func (r *Repository) GetBookingsByHotelInfo(
 			&b.Currency,
 			&b.ExpectedTotalAmount,
 			&b.FinalTotalAmount,
-		); err != nil {
+		)
+		if err != nil {
 			return nil, err
 		}
-
-		values = append(values, b)
+		values[idx] = b
+		idx++
 	}
 
 	if err = rows.Err(); err != nil {
 		return nil, err
 	}
+	values = values[:idx]
 
 	bookingList := &models.BookingList{
 		Bookings: make([]*models.BookingShort, len(values)),
 	}
-
 	for i := range values {
 		bookingList.Bookings[i] = &values[i]
 	}
@@ -174,11 +175,11 @@ func (r *Repository) UpdateBookingStatusByID(
 	ctx context.Context,
 	tx pgx.Tx,
 	id uuid.UUID,
-	b *models.BookingStatusInfo,
+	status models.BookingStatus,
 ) error {
 	db := r.executor(tx)
 
-	row, err := db.Exec(ctx, query.UpdateBookingStatusByID, id, b.Status)
+	row, err := db.Exec(ctx, query.UpdateBookingStatusByID, id, status)
 	if err != nil {
 		return err
 	}
