@@ -79,7 +79,7 @@ func (r *Repository) CreateRoomLocks(
 	return out, nil
 }
 
-func (r *Repository) UpdateRoomLockActivityByID(
+func (r *Repository) UpdateRoomLocksActivityByID(
 	ctx context.Context,
 	tx pgx.Tx,
 	id uuid.UUID,
@@ -87,7 +87,7 @@ func (r *Repository) UpdateRoomLockActivityByID(
 ) error {
 	db := r.executor(tx)
 
-	row, err := db.Exec(ctx, query.UpdateRoomLockActivityByID, id, roomLock.IsActive, roomLock.ExpiresAt)
+	row, err := db.Exec(ctx, query.UpdateRoomLocksActivityByID, id, roomLock.IsActive, roomLock.ExpiresAt)
 	if err != nil {
 		return err
 	}

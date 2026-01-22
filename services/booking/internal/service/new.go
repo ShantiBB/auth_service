@@ -42,7 +42,7 @@ type BookingRoomRepository interface {
 
 type RoomLockRepository interface {
 	CreateRoomLocks(ctx context.Context, tx pgx.Tx, locks []*models.CreateRoomLock) ([]*models.RoomLockDetail, error)
-	UpdateRoomLockActivityByID(
+	UpdateRoomLocksActivityByID(
 		ctx context.Context, tx pgx.Tx, id uuid.UUID, roomLock *models.RoomLockActivity,
 	) error
 	DeleteRoomLockByID(ctx context.Context, tx pgx.Tx, id uuid.UUID) error

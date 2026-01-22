@@ -21,7 +21,7 @@ const (
 		FROM input
 		RETURNING id, room_id, booking_id, is_active, created_at;`
 
-	UpdateRoomLockActivityByID = `
+	UpdateRoomLocksActivityByID = `
 		UPDATE room_lock
 		SET
 		  is_active = $2,
