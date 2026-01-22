@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package booking.v1;
+
+option go_package = "api/booking/v1;bookingv1";
+
+import "buf/validate/validate.proto";
+import "booking/v1/models/booking.proto";
+
+message GetBookingRequest {
+  string id = 1 [
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message GetBookingResponse {
+  Booking booking = 1;
+}

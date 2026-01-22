@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+package booking.v1;
+
+option go_package = "api/booking/v1;bookingv1";
+
+import "booking/v1/models/room_lock.proto";
+
+message BookingRoom {
+  string id = 1;
+  string room_id = 2;
+  uint32 adults = 3;
+  uint32 children = 4;
+  string price_per_night = 5;
+}
+
+message BookingRoomWithLock {
+  string id = 1;
+  string room_id = 2;
+  uint32 adults = 3;
+  uint32 children = 4;
+  string price_per_night = 5;
+  RoomLockShort room_lock = 6;
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package booking.v1;
+
+option go_package = "api/booking/v1;bookingv1";
+
+import "buf/validate/validate.proto";
+import "booking/v1/enums/booking_status.proto";
+
+message ConfirmBookingStatusRequest {
+  string id = 1 [
+    (buf.validate.field).string.uuid = true
+  ];
+}
+
+message ConfirmBookingStatusResponse {
+  BookingStatus status = 1;
+}

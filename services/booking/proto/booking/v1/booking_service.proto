@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package booking.v1;
+
+option go_package = "api/booking/v1;bookingv1";
+
+import "google/protobuf/empty.proto";
+import "booking/v1/rpc/create_booking.proto";
+import "booking/v1/rpc/get_bookings.proto";
+import "booking/v1/rpc/get_booking.proto";
+import "booking/v1/rpc/confirm_booking_status.proto";
+import "booking/v1/rpc/cancel_booking_status.proto";
+import "booking/v1/rpc/delete_booking.proto";
+
+service BookingService {
+  rpc CreateBooking(CreateBookingRequest) returns (CreateBookingResponse);
+  rpc GetBookings(GetBookingsRequest) returns (GetBookingsResponse);
+  rpc GetBooking(GetBookingRequest) returns (GetBookingResponse);
+  rpc ConfirmBookingStatus(ConfirmBookingStatusRequest) returns (ConfirmBookingStatusResponse);
+  rpc CancelBookingStatus(CancelBookingStatusRequest) returns (CancelBookingStatusResponse);
+  rpc DeleteBooking(DeleteBookingRequest) returns (DeleteBookingResponse);
+}

@@ -1,0 +1,43 @@
+syntax = "proto3";
+
+package booking.v1;
+
+option go_package = "api/booking/v1;bookingv1";
+
+import "google/protobuf/timestamp.proto";
+import "booking/v1/enums/booking_status.proto";
+import "booking/v1/models/booking_room.proto";
+
+message Booking {
+  string id = 1;
+  int64 user_id = 2;
+  string hotel_id = 3;
+  google.protobuf.Timestamp check_in = 4;
+  google.protobuf.Timestamp check_out = 5;
+  BookingStatus status = 6;
+  string guest_name = 7;
+  optional string guest_email = 8;
+  optional string guest_phone = 9;
+  string currency = 10;
+  string expected_total_amount = 11;
+  string final_total_amount = 12;
+  google.protobuf.Timestamp created_at = 13;
+  google.protobuf.Timestamp updated_at = 14;
+  repeated BookingRoomWithLock booking_rooms = 15;
+}
+
+message BookingShort {
+  string id = 1;
+  int64 user_id = 2;
+  string hotel_id = 3;
+  google.protobuf.Timestamp check_in = 4;
+  google.protobuf.Timestamp check_out = 5;
+  BookingStatus status = 6;
+  string guest_name = 7;
+  optional string guest_email = 8;
+  optional string guest_phone = 9;
+  string currency = 10;
+  string expected_total_amount = 11;
+  string final_total_amount = 12;
+  repeated BookingRoom booking_rooms = 13;
+}

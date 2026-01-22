@@ -1,0 +1,32 @@
+syntax = "proto3";
+
+package booking.v1;
+
+option go_package = "api/booking/v1;bookingv1";
+
+import "buf/validate/validate.proto";
+import "booking/v1/enums/booking_status.proto";
+import "booking/v1/models/booking.proto";
+
+message GetBookingsRequest {
+  int64 user_id = 1 [
+    (buf.validate.field).int64.gt = 0
+  ];
+  string hotel_id = 2 [
+    (buf.validate.field).string.uuid = true
+  ];
+  BookingStatus status = 3;
+  uint64 page = 4 [
+    (buf.validate.field).uint64.gte = 1
+  ];
+  uint64 limit = 5 [
+    (buf.validate.field).uint64 = {gte: 1, lte: 100}
+  ];
+}
+
+message GetBookingsResponse {
+  repeated BookingShort bookings = 1;
+  uint64 total_count = 2;
+  uint64 page = 3;
+  uint64 limit = 4;
+}

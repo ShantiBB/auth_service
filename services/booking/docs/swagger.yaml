@@ -1,0 +1,15 @@
+basePath: /api/v1
+host: localhost:8083
+info:
+  contact: {}
+  description: Bookings service for microservices.
+  title: Swagger Bookings API
+  version: "1.0"
+paths: {}
+securityDefinitions:
+  Bearer:
+    description: Type "Bearer" followed by a space and JWT token.
+    in: header
+    name: Authorization
+    type: apiKey
+swagger: "2.0"

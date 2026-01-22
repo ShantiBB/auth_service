@@ -69,19 +69,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.HotelList"
+                            "$ref": "#/definitions/response.HotelList"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -124,7 +124,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_request.HotelCreate"
+                            "$ref": "#/definitions/request.HotelCreate"
                         }
                     }
                 ],
@@ -132,31 +132,31 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.Hotel"
+                            "$ref": "#/definitions/response.Hotel"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -207,31 +207,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.Hotel"
+                            "$ref": "#/definitions/response.Hotel"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -281,7 +281,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_request.HotelUpdate"
+                            "$ref": "#/definitions/request.HotelUpdate"
                         }
                     }
                 ],
@@ -289,31 +289,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.HotelUpdate"
+                            "$ref": "#/definitions/response.HotelUpdate"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -365,25 +365,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -450,19 +450,19 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.RoomList"
+                            "$ref": "#/definitions/response.RoomList"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -512,7 +512,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_request.RoomCreate"
+                            "$ref": "#/definitions/request.RoomCreate"
                         }
                     }
                 ],
@@ -520,31 +520,31 @@ const docTemplate = `{
                     "201": {
                         "description": "Created",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.Room"
+                            "$ref": "#/definitions/response.Room"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "409": {
                         "description": "Conflict",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -602,31 +602,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.Room"
+                            "$ref": "#/definitions/response.Room"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -683,7 +683,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_request.RoomUpdate"
+                            "$ref": "#/definitions/request.RoomUpdate"
                         }
                     }
                 ],
@@ -691,31 +691,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.RoomUpdate"
+                            "$ref": "#/definitions/response.RoomUpdate"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -774,25 +774,25 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -851,7 +851,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_request.RoomStatusUpdate"
+                            "$ref": "#/definitions/request.RoomStatusUpdate"
                         }
                     }
                 ],
@@ -859,31 +859,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.RoomStatusUpdate"
+                            "$ref": "#/definitions/response.RoomStatusUpdate"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -935,7 +935,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_request.HotelTitleUpdate"
+                            "$ref": "#/definitions/request.HotelTitleUpdate"
                         }
                     }
                 ],
@@ -943,31 +943,31 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.HotelTitleUpdate"
+                            "$ref": "#/definitions/response.HotelTitleUpdate"
                         }
                     },
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "404": {
                         "description": "Not Found",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
-                            "$ref": "#/definitions/hotel_internal_http_dto_response.ErrorSchema"
+                            "$ref": "#/definitions/response.ErrorSchema"
                         }
                     }
                 }
@@ -975,7 +975,58 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "hotel_internal_http_dto_request.HotelCreate": {
+        "models.RoomStatus": {
+            "type": "string",
+            "enum": [
+                "available",
+                "occupied",
+                "maintenance",
+                "cleaning"
+            ],
+            "x-enum-varnames": [
+                "RoomStatusAvailable",
+                "RoomStatusOccupied",
+                "RoomStatusMaintenance",
+                "RoomStatusCleaning"
+            ]
+        },
+        "models.RoomType": {
+            "type": "string",
+            "enum": [
+                "single",
+                "double",
+                "suite",
+                "deluxe",
+                "family",
+                "presidential"
+            ],
+            "x-enum-varnames": [
+                "RoomTypeSingle",
+                "RoomTypeDouble",
+                "RoomTypeSuite",
+                "RoomTypeDeluxe",
+                "RoomTypeFamily",
+                "RoomTypePresidential"
+            ]
+        },
+        "pagination.Links": {
+            "type": "object",
+            "properties": {
+                "first": {
+                    "type": "string"
+                },
+                "last": {
+                    "type": "string"
+                },
+                "next": {
+                    "type": "string"
+                },
+                "prev": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.HotelCreate": {
             "type": "object",
             "required": [
                 "address",
@@ -986,15 +1037,15 @@ const docTemplate = `{
             "properties": {
                 "address": {
                     "type": "string",
-                    "maxLength": 300,
+                    "maxLength": 500,
                     "minLength": 5
                 },
                 "description": {
                     "type": "string",
-                    "maxLength": 1000
+                    "maxLength": 2000
                 },
                 "location": {
-                    "$ref": "#/definitions/hotel_internal_http_dto_request.Location"
+                    "$ref": "#/definitions/request.Location"
                 },
                 "owner_id": {
                     "type": "integer"
@@ -1006,7 +1057,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_request.HotelTitleUpdate": {
+        "request.HotelTitleUpdate": {
             "type": "object",
             "required": [
                 "title"
@@ -1019,7 +1070,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_request.HotelUpdate": {
+        "request.HotelUpdate": {
             "type": "object",
             "required": [
                 "address",
@@ -1028,19 +1079,19 @@ const docTemplate = `{
             "properties": {
                 "address": {
                     "type": "string",
-                    "maxLength": 300,
+                    "maxLength": 500,
                     "minLength": 5
                 },
                 "description": {
                     "type": "string",
-                    "maxLength": 1000
+                    "maxLength": 2000
                 },
                 "location": {
-                    "$ref": "#/definitions/hotel_internal_http_dto_request.Location"
+                    "$ref": "#/definitions/request.Location"
                 }
             }
         },
-        "hotel_internal_http_dto_request.Location": {
+        "request.Location": {
             "type": "object",
             "required": [
                 "latitude",
@@ -1059,7 +1110,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_request.RoomCreate": {
+        "request.RoomCreate": {
             "type": "object",
             "required": [
                 "area_sqm",
@@ -1073,24 +1124,32 @@ const docTemplate = `{
             "properties": {
                 "amenities": {
                     "type": "array",
+                    "maxItems": 50,
                     "items": {
                         "type": "string"
                     }
                 },
                 "area_sqm": {
-                    "type": "number"
+                    "type": "number",
+                    "maximum": 9999.99
                 },
                 "capacity": {
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 10,
+                    "minimum": 1
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 1000
                 },
                 "floor": {
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 2147483647,
+                    "minimum": 0
                 },
                 "images": {
                     "type": "array",
+                    "maxItems": 50,
                     "items": {
                         "type": "string"
                     }
@@ -1099,17 +1158,21 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "room_number": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 1
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3
                 },
                 "type": {
-                    "$ref": "#/definitions/hotel_internal_repository_models.RoomType"
+                    "$ref": "#/definitions/models.RoomType"
                 }
             }
         },
-        "hotel_internal_http_dto_request.RoomStatusUpdate": {
+        "request.RoomStatusUpdate": {
             "type": "object",
             "required": [
                 "status"
@@ -1120,7 +1183,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_request.RoomUpdate": {
+        "request.RoomUpdate": {
             "type": "object",
             "required": [
                 "area_sqm",
@@ -1134,24 +1197,32 @@ const docTemplate = `{
             "properties": {
                 "amenities": {
                     "type": "array",
+                    "maxItems": 50,
                     "items": {
                         "type": "string"
                     }
                 },
                 "area_sqm": {
-                    "type": "number"
+                    "type": "number",
+                    "maximum": 9999.99
                 },
                 "capacity": {
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 10,
+                    "minimum": 1
                 },
                 "description": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 1000
                 },
                 "floor": {
-                    "type": "integer"
+                    "type": "integer",
+                    "maximum": 2147483647,
+                    "minimum": 0
                 },
                 "images": {
                     "type": "array",
+                    "maxItems": 50,
                     "items": {
                         "type": "string"
                     }
@@ -1160,17 +1231,21 @@ const docTemplate = `{
                     "type": "number"
                 },
                 "room_number": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 10,
+                    "minLength": 1
                 },
                 "title": {
-                    "type": "string"
+                    "type": "string",
+                    "maxLength": 100,
+                    "minLength": 3
                 },
                 "type": {
-                    "$ref": "#/definitions/hotel_internal_repository_models.RoomType"
+                    "$ref": "#/definitions/models.RoomType"
                 }
             }
         },
-        "hotel_internal_http_dto_response.ErrorSchema": {
+        "response.ErrorSchema": {
             "type": "object",
             "properties": {
                 "errors": {
@@ -1181,7 +1256,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_response.Hotel": {
+        "response.Hotel": {
             "type": "object",
             "properties": {
                 "address": {
@@ -1197,7 +1272,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "location": {
-                    "$ref": "#/definitions/hotel_internal_http_dto_response.Location"
+                    "$ref": "#/definitions/response.Location"
                 },
                 "owner_id": {
                     "type": "integer"
@@ -1213,7 +1288,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_response.HotelList": {
+        "response.HotelList": {
             "type": "object",
             "properties": {
                 "current_page": {
@@ -1222,14 +1297,14 @@ const docTemplate = `{
                 "hotels": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/hotel_internal_http_dto_response.HotelShort"
+                        "$ref": "#/definitions/response.HotelShort"
                     }
                 },
                 "limit": {
                     "type": "integer"
                 },
                 "links": {
-                    "$ref": "#/definitions/hotel_internal_http_utils_helper.PaginationLinks"
+                    "$ref": "#/definitions/pagination.Links"
                 },
                 "total_page_count": {
                     "type": "integer"
@@ -1239,7 +1314,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_response.HotelShort": {
+        "response.HotelShort": {
             "type": "object",
             "properties": {
                 "address": {
@@ -1249,7 +1324,7 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "location": {
-                    "$ref": "#/definitions/hotel_internal_http_dto_response.Location"
+                    "$ref": "#/definitions/response.Location"
                 },
                 "owner_id": {
                     "type": "integer"
@@ -1265,7 +1340,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_response.HotelTitleUpdate": {
+        "response.HotelTitleUpdate": {
             "type": "object",
             "properties": {
                 "slug": {
@@ -1276,7 +1351,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_response.HotelUpdate": {
+        "response.HotelUpdate": {
             "type": "object",
             "properties": {
                 "address": {
@@ -1286,11 +1361,11 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "location": {
-                    "$ref": "#/definitions/hotel_internal_http_dto_response.Location"
+                    "$ref": "#/definitions/response.Location"
                 }
             }
         },
-        "hotel_internal_http_dto_response.Location": {
+        "response.Location": {
             "type": "object",
             "properties": {
                 "latitude": {
@@ -1301,7 +1376,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_response.Room": {
+        "response.Room": {
             "type": "object",
             "properties": {
                 "amenities": {
@@ -1341,20 +1416,20 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/hotel_internal_repository_models.RoomStatus"
+                    "$ref": "#/definitions/models.RoomStatus"
                 },
                 "title": {
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/hotel_internal_repository_models.RoomType"
+                    "$ref": "#/definitions/models.RoomType"
                 },
                 "updated_at": {
                     "type": "string"
                 }
             }
         },
-        "hotel_internal_http_dto_response.RoomList": {
+        "response.RoomList": {
             "type": "object",
             "properties": {
                 "current_page": {
@@ -1364,12 +1439,12 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "links": {
-                    "$ref": "#/definitions/hotel_internal_http_utils_helper.PaginationLinks"
+                    "$ref": "#/definitions/pagination.Links"
                 },
                 "rooms": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/hotel_internal_http_dto_response.RoomShort"
+                        "$ref": "#/definitions/response.RoomShort"
                     }
                 },
                 "total_page_count": {
@@ -1380,7 +1455,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_response.RoomShort": {
+        "response.RoomShort": {
             "type": "object",
             "properties": {
                 "amenities": {
@@ -1411,17 +1486,17 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "status": {
-                    "$ref": "#/definitions/hotel_internal_repository_models.RoomStatus"
+                    "$ref": "#/definitions/models.RoomStatus"
                 },
                 "title": {
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/hotel_internal_repository_models.RoomType"
+                    "$ref": "#/definitions/models.RoomType"
                 }
             }
         },
-        "hotel_internal_http_dto_response.RoomStatusUpdate": {
+        "response.RoomStatusUpdate": {
             "type": "object",
             "properties": {
                 "status": {
@@ -1429,7 +1504,7 @@ const docTemplate = `{
                 }
             }
         },
-        "hotel_internal_http_dto_response.RoomUpdate": {
+        "response.RoomUpdate": {
             "type": "object",
             "properties": {
                 "amenities": {
@@ -1466,60 +1541,9 @@ const docTemplate = `{
                     "type": "string"
                 },
                 "type": {
-                    "$ref": "#/definitions/hotel_internal_repository_models.RoomType"
+                    "$ref": "#/definitions/models.RoomType"
                 }
             }
-        },
-        "hotel_internal_http_utils_helper.PaginationLinks": {
-            "type": "object",
-            "properties": {
-                "first": {
-                    "type": "string"
-                },
-                "last": {
-                    "type": "string"
-                },
-                "next": {
-                    "type": "string"
-                },
-                "prev": {
-                    "type": "string"
-                }
-            }
-        },
-        "hotel_internal_repository_models.RoomStatus": {
-            "type": "string",
-            "enum": [
-                "available",
-                "occupied",
-                "maintenance",
-                "cleaning"
-            ],
-            "x-enum-varnames": [
-                "RoomStatusAvailable",
-                "RoomStatusOccupied",
-                "RoomStatusMaintenance",
-                "RoomStatusCleaning"
-            ]
-        },
-        "hotel_internal_repository_models.RoomType": {
-            "type": "string",
-            "enum": [
-                "single",
-                "double",
-                "suite",
-                "deluxe",
-                "family",
-                "presidential"
-            ],
-            "x-enum-varnames": [
-                "RoomTypeSingle",
-                "RoomTypeDouble",
-                "RoomTypeSuite",
-                "RoomTypeDeluxe",
-                "RoomTypeFamily",
-                "RoomTypePresidential"
-            ]
         }
     },
     "securityDefinitions": {

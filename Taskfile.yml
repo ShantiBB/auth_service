@@ -2,47 +2,22 @@ version: '3'
 
 tasks:
   run:
-    desc: "Run specific service (usage: task run service=auth mode=bin|direct)"
-    cmds:
-      - task: run-{{.mode}}
-        vars:
-          service: "{{.service}}"
+    desc: "Run (task run service=auth|hotel|booking)"
+    cmd: "go run services/{{.service}}/cmd/app/main.go"
+    env:
+      CONFIG_PATH: "services/{{.service}}/config/local.yaml"
     requires:
-      vars: [service, mode]
-
-  run-direct:
-    internal: true
-    cmds:
-      - "go run services/{{.service}}/cmd/app/main.go"
-    env:
-      CONFIG_PATH: "{{.ROOT_DIR}}/services/{{.service}}/config/local.yaml"
-
-  run-bin:
-    internal: true
-    cmds:
-      - task: build
-        vars:
-          service: "{{.service}}"
-      - "build/{{.service}}-service"
-    env:
-      CONFIG_PATH: "{{.ROOT_DIR}}/services/{{.service}}/config/local.yaml"
+      vars: [service]
 
   build:
-    desc: "Build specific service (usage: task build service=auth)"
+    desc: "Build (task build service=auth|hotel|booking)"
     cmds:
       - go build -o build/{{.service}}-service services/{{.service}}/cmd/app/main.go
     requires:
       vars: [service]
 
-  migrate-gen:
-    desc: "Create migration for specific service (usage: task migrate-gen service=auth name=users)"
-    cmds:
-      - migrate create -ext sql -dir ./services/{{.service}}/migrations -seq {{.name}}
-    requires:
-      vars: [service, name]
-
   mock-gen:
-    desc: "Generate mocks for specific service (usage: task mock-gen service=auth)"
+    desc: "Generate mocks (task mock-gen service=auth|hotel|booking)"
     dir: services/{{.service}}
     cmds:
       - rm -rf internal/mocks
@@ -51,15 +26,15 @@ tasks:
       vars: [service]
 
   swag-gen:
-    desc: "Generate Swagger docs for specific service (usage: task swag-gen service=auth)"
+    desc: "Generate Swagger docs (task swag-gen service=auth|hotel|booking)"
     dir: services/{{.service}}
     cmds:
-      - swag init --parseDependency -g cmd/app/main.go --output docs
+      - swag init -g cmd/app/main.go --output docs
     requires:
       vars: [service]
 
   test-unit-handler:
-    desc: "Run unit tests for specific handler (usage: task test-unit-handler service=auth)"
+    desc: "Run unit tests (task test-unit-handler service=auth|hotel|booking)"
     cmds:
       - go test ./services/{{.service}}/internal/http/handler/ -v
     requires:
@@ -68,9 +43,30 @@ tasks:
   postgres-up:
     desc: "Start PostgreSQL container"
     cmds:
-      - docker compose --env-file docker/.env -f docker/postgres.yaml up -d
+      - docker compose --env-file .env.dev -f docker/postgres.yaml up -d
 
-  postgres-stop:
+  postgres-down:
     desc: "Stop PostgreSQL container"
     cmds:
-      - docker compose --env-file docker/.env -f docker/postgres.yaml down
+      - docker compose --env-file .env.dev -f docker/postgres.yaml down
+
+  goose:
+    dotenv: [".env.dev"]
+    desc: "Goose migrations (task goose service=auth|hotel|booking mode=status|up|down)"
+    cmd: |
+      goose -dir services/{{.service}}/migrations postgres \
+        "host=${POSTGRES_HOST} \
+        port=${POSTGRES_PORT} \
+        user=${POSTGRES_USER} \
+        password=${POSTGRES_PASSWORD} \
+        dbname={{.service}} \
+        sslmode=disable" \
+        {{default "status" .mode}}
+    requires:
+      vars: [service]
+
+  goose-gen:
+    desc: "Goose gen sql schema (task goose-gen service=auth|hotel|booking)"
+    cmd: goose create {{.title}} sql --dir services/{{.service}}/migrations
+    requires:
+      vars: [service]
