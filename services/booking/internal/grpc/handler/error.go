@@ -4,7 +4,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"booking/pkg/utils/consts"
+	"booking/pkg/lib/utils/consts"
 )
 
 var (

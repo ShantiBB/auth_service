@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"log/slog"
 	"net"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"buf.build/go/protovalidate"
 	"google.golang.org/grpc"
@@ -18,9 +21,12 @@ import (
 
 type App struct {
 	Config *config.Config
+	Logger *slog.Logger
 }
 
 func (app *App) MustLoadGRPC() {
+	slog.SetDefault(app.Logger)
+
 	repo, err := postgres.NewRepository(app.Config)
 	if err != nil {
 		panic(err.Error())
@@ -40,13 +46,27 @@ func (app *App) MustLoadGRPC() {
 		panic(err.Error())
 	}
 
-	grpcServer := grpc.NewServer()
+	grpcServer := newGRPCServer(app.Logger)
 
 	bookingv1.RegisterBookingServiceServer(grpcServer, h)
 	reflection.Register(grpcServer)
 
-	slog.Info("Starting gRPC server", "address", addr)
-	if err = grpcServer.Serve(lis); err != nil {
-		panic(err.Error())
-	}
+	go func() {
+		slog.Info("Starting gRPC server", "address", addr)
+		if err = grpcServer.Serve(lis); err != nil {
+			slog.Error("Failed to serve", "error", err)
+		}
+	}()
+
+	app.gracefulShutdown(grpcServer)
+}
+
+func (app *App) gracefulShutdown(grpcServer *grpc.Server) {
+	quit := make(chan os.Signal, 1)
+	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
+	<-quit
+
+	slog.Info("Shutting down gRPC server...")
+	grpcServer.GracefulStop()
+	slog.Info("gRPC server stopped")
 }
