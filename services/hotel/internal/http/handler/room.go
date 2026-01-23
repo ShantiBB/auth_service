@@ -12,7 +12,7 @@ import (
 	"hotel/internal/http/utils/pagination"
 	"hotel/internal/http/utils/validation"
 	"hotel/internal/repository/models"
-	"hotel/pkg/utils/consts"
+	"hotel/pkg/lib/utils/consts"
 
 	"github.com/google/uuid"
 )
@@ -22,7 +22,9 @@ type RoomService interface {
 	RoomGetByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) (models.Room, error)
 	RoomGetAll(ctx context.Context, hotel models.HotelRef, limit, offset uint64) (models.RoomList, error)
 	RoomUpdateByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomUpdate) error
-	RoomStatusUpdateByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomStatusUpdate) error
+	RoomStatusUpdateByID(
+		ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomStatusUpdate,
+	) error
 	RoomDeleteByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) error
 }
 
@@ -85,7 +87,7 @@ func (h *Handler) RoomGetAll(w http.ResponseWriter, r *http.Request) {
 
 	paginationParams, err := pagination.ParsePaginationQuery(r)
 	if err != nil {
-		errMsg := response.ErrorResp(consts.InvalidQueryParam)
+		errMsg := response.ErrorResp(consts.ErrInvalidQueryParam)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -139,7 +141,7 @@ func (h *Handler) RoomGetByID(w http.ResponseWriter, r *http.Request) {
 
 	id, err := helper.ParseUUIDParam(r, "id")
 	if err != nil {
-		errMsg := response.ErrorResp(consts.InvalidID)
+		errMsg := response.ErrorResp(consts.ErrInvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -178,7 +180,7 @@ func (h *Handler) RoomUpdateByID(w http.ResponseWriter, r *http.Request) {
 	hotelRef := middleware.GetHotelRef(ctx)
 
 	id, err := helper.ParseUUIDParam(r, "id")
-	errHandler := &helper.ErrorHandler{BadRequest: consts.InvalidID}
+	errHandler := &helper.ErrorHandler{BadRequest: consts.ErrInvalidID}
 	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
@@ -224,7 +226,7 @@ func (h *Handler) RoomStatusUpdateByID(w http.ResponseWriter, r *http.Request) {
 
 	id, err := helper.ParseUUIDParam(r, "id")
 	if err != nil {
-		errMsg := response.ErrorResp(consts.InvalidID)
+		errMsg := response.ErrorResp(consts.ErrInvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}
@@ -269,7 +271,7 @@ func (h *Handler) RoomDeleteByID(w http.ResponseWriter, r *http.Request) {
 
 	id, err := helper.ParseUUIDParam(r, "id")
 	if err != nil {
-		errMsg := response.ErrorResp(consts.InvalidID)
+		errMsg := response.ErrorResp(consts.ErrInvalidID)
 		helper.SendError(w, r, http.StatusBadRequest, errMsg)
 		return
 	}

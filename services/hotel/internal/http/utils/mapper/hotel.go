@@ -6,12 +6,12 @@ import (
 	"hotel/internal/repository/models"
 )
 
-func HotelCreateRequestToEntity(req request.HotelCreate) models.HotelCreate {
+func HotelCreateRequestToEntity(req request.HotelCreate) models.CreateHotel {
 	location := models.Location{
 		Latitude:  *req.Location.Latitude,
 		Longitude: *req.Location.Longitude,
 	}
-	return models.HotelCreate{
+	return models.CreateHotel{
 		Title:       *req.Title,
 		OwnerID:     *req.OwnerID,
 		Description: req.Description,
@@ -20,20 +20,20 @@ func HotelCreateRequestToEntity(req request.HotelCreate) models.HotelCreate {
 	}
 }
 
-func HotelUpdateRequestToEntity(req request.HotelUpdate) models.HotelUpdate {
+func HotelUpdateRequestToEntity(req request.HotelUpdate) models.UpdateHotel {
 	location := models.Location{
 		Latitude:  *req.Location.Latitude,
 		Longitude: *req.Location.Longitude,
 	}
-	return models.HotelUpdate{
+	return models.UpdateHotel{
 		Description: req.Description,
 		Address:     *req.Address,
 		Location:    location,
 	}
 }
 
-func HotelTitleUpdateRequestToEntity(req request.HotelTitleUpdate) models.HotelTitleUpdate {
-	return models.HotelTitleUpdate{
+func HotelTitleUpdateRequestToEntity(req request.HotelTitleUpdate) models.UpdateHotelTitle {
+	return models.UpdateHotelTitle{
 		Title: *req.Title,
 	}
 }
@@ -89,7 +89,7 @@ func HotelShortEntityToShortResponse(req models.HotelShort) response.HotelShort 
 	}
 }
 
-func HotelUpdateEntityToResponse(req models.HotelUpdate) response.HotelUpdate {
+func HotelUpdateEntityToResponse(req models.UpdateHotel) response.HotelUpdate {
 	location := response.Location{
 		Latitude:  req.Location.Latitude,
 		Longitude: req.Location.Longitude,
@@ -101,7 +101,7 @@ func HotelUpdateEntityToResponse(req models.HotelUpdate) response.HotelUpdate {
 	}
 }
 
-func HotelTitleUpdateEntityToResponse(req models.HotelTitleUpdate) response.HotelTitleUpdate {
+func HotelTitleUpdateEntityToResponse(req models.UpdateHotelTitle) response.HotelTitleUpdate {
 	return response.HotelTitleUpdate{
 		Title: req.Title,
 		Slug:  req.Slug,

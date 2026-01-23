@@ -12,7 +12,7 @@ import (
 	"hotel/internal/http/utils/mapper"
 	"hotel/internal/http/utils/validation"
 	"hotel/internal/repository/models"
-	"hotel/pkg/utils/consts"
+	"hotel/pkg/lib/utils/consts"
 )
 
 func ParseJSON(
@@ -52,7 +52,7 @@ func ParseUUIDParam(r *http.Request, paramName string) (uuid.UUID, error) {
 	paramID := chi.URLParam(r, paramName)
 	id, err := uuid.Parse(paramID)
 	if err != nil {
-		return uuid.Nil, consts.InvalidID
+		return uuid.Nil, consts.ErrInvalidID
 	}
 	return id, nil
 }
