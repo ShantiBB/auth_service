@@ -7,11 +7,13 @@ import (
 )
 
 type Location struct {
-	Latitude  float64
-	Longitude float64
+	Latitude  float32
+	Longitude float32
 }
 
-type HotelCreate struct {
+type CreateHotel struct {
+	CountryCode string
+	CitySlug    string
 	Title       string
 	Slug        string
 	OwnerID     int64
@@ -20,13 +22,13 @@ type HotelCreate struct {
 	Location    Location
 }
 
-type HotelUpdate struct {
+type UpdateHotel struct {
 	Description *string
 	Address     string
 	Location    Location
 }
 
-type HotelTitleUpdate struct {
+type UpdateHotelTitle struct {
 	Title string
 	Slug  string
 }
@@ -59,7 +61,7 @@ type HotelList struct {
 	TotalCount uint64
 }
 
-func (h *HotelCreate) ToRead() Hotel {
+func (h *CreateHotel) ToRead() Hotel {
 	return Hotel{
 		Title:       h.Title,
 		Slug:        h.Slug,

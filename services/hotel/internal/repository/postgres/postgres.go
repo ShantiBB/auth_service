@@ -40,7 +40,11 @@ func NewRepository(config *config.Config) (*Repository, error) {
 
 	cfg.ConnConfig.ConnectTimeout = 10 * time.Second
 
-	db, err := pgxpool.NewWithConfig(context.Background(), cfg)
+	ctx := context.Background()
+	db, err := pgxpool.NewWithConfig(ctx, cfg)
+	if err = db.Ping(ctx); err != nil {
+		return nil, err
+	}
 
 	return &Repository{db: db}, nil
 }

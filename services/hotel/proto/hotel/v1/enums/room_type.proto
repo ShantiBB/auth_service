@@ -1,0 +1,14 @@
+syntax = "proto3";
+
+package hotel.v1;
+
+option go_package = "api/hotel/v1;hotelv1";
+
+enum RoomType {
+  ROOM_TYPE_SINGLE = 0;
+  ROOM_TYPE_DOUBLE = 1;
+  ROOM_TYPE_SUITE = 2;
+  ROOM_TYPE_DELUXE = 3;
+  ROOM_TYPE_FAMILY = 4;
+  ROOM_TYPE_PRESIDENTIAL = 5;
+}

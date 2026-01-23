@@ -9,11 +9,7 @@ import (
 )
 
 type HotelRepository interface {
-	HotelCreate(
-		ctx context.Context,
-		hotelRef models.HotelRef,
-		h models.HotelCreate,
-	) (models.Hotel, error)
+	HotelCreate(ctx context.Context, h models.CreateHotel) (models.Hotel, error)
 	HotelGetAll(
 		ctx context.Context,
 		hotelRef models.HotelRef,
@@ -22,32 +18,24 @@ type HotelRepository interface {
 		offset uint64,
 	) (models.HotelList, error)
 	HotelGetBySlug(ctx context.Context, hotelRef models.HotelRef) (models.Hotel, error)
-	HotelUpdateBySlug(ctx context.Context, hotelRef models.HotelRef, h models.HotelUpdate) error
+	HotelUpdateBySlug(ctx context.Context, hotelRef models.HotelRef, h models.UpdateHotel) error
 	HotelTitleUpdateBySlug(
 		ctx context.Context,
 		hotelRef models.HotelRef,
-		h models.HotelTitleUpdate,
+		h models.UpdateHotelTitle,
 	) error
 	HotelDeleteBySlug(ctx context.Context, hotelRef models.HotelRef) error
 }
 
-func (s *Service) HotelCreate(
-	ctx context.Context,
-	hotel models.HotelRef,
-	h models.HotelCreate,
-) (models.Hotel, error) {
-	hotelRef := models.HotelRef{
-		CountryCode: hotel.CountryCode,
-		CitySlug:    hotel.CitySlug,
-	}
+func (s *Service) HotelCreate(ctx context.Context, h *models.CreateHotel) (*models.Hotel, error) {
 	h.Slug = slug.Make(h.Title)
 
-	newHotel, err := s.repo.HotelCreate(ctx, hotelRef, h)
+	newHotel, err := s.repo.HotelCreate(ctx, *h)
 	if err != nil {
-		return models.Hotel{}, err
+		return nil, err
 	}
 
-	return newHotel, nil
+	return &newHotel, nil
 }
 
 func (s *Service) HotelGetAll(
@@ -86,7 +74,7 @@ func (s *Service) HotelGetBySlug(ctx context.Context, hotel models.HotelRef) (mo
 	return h, nil
 }
 
-func (s *Service) HotelUpdateBySlug(ctx context.Context, hotel models.HotelRef, h models.HotelUpdate) error {
+func (s *Service) HotelUpdateBySlug(ctx context.Context, hotel models.HotelRef, h models.UpdateHotel) error {
 	hotelRef := models.HotelRef{
 		CountryCode: hotel.CountryCode,
 		CitySlug:    hotel.CitySlug,
@@ -103,8 +91,8 @@ func (s *Service) HotelUpdateBySlug(ctx context.Context, hotel models.HotelRef, 
 func (s *Service) HotelTitleUpdateBySlug(
 	ctx context.Context,
 	hotel models.HotelRef,
-	h models.HotelTitleUpdate,
-) (models.HotelTitleUpdate, error) {
+	h models.UpdateHotelTitle,
+) (models.UpdateHotelTitle, error) {
 	hotelRef := models.HotelRef{
 		CountryCode: hotel.CountryCode,
 		CitySlug:    hotel.CitySlug,
@@ -113,7 +101,7 @@ func (s *Service) HotelTitleUpdateBySlug(
 	h.Slug = slug.Make(h.Title)
 
 	if err := s.repo.HotelTitleUpdateBySlug(ctx, hotelRef, h); err != nil {
-		return models.HotelTitleUpdate{}, err
+		return models.UpdateHotelTitle{}, err
 	}
 
 	return h, nil

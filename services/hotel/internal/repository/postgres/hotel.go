@@ -6,21 +6,17 @@ import (
 
 	"hotel/internal/repository/models"
 	"hotel/internal/repository/postgres/query"
-	"hotel/pkg/utils/consts"
+	"hotel/pkg/lib/utils/consts"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-func (r *Repository) HotelCreate(
-	ctx context.Context,
-	hotelRef models.HotelRef,
-	h models.HotelCreate,
-) (models.Hotel, error) {
+func (r *Repository) HotelCreate(ctx context.Context, h models.CreateHotel) (models.Hotel, error) {
 	newHotel := h.ToRead()
 	insertArgs := []any{
-		hotelRef.CountryCode,
-		hotelRef.CitySlug,
+		h.CountryCode,
+		h.CitySlug,
 		h.Title,
 		h.Slug,
 		h.OwnerID,
@@ -125,7 +121,7 @@ func (r *Repository) HotelGetBySlug(ctx context.Context, hotelRef models.HotelRe
 	return h, nil
 }
 
-func (r *Repository) HotelUpdateBySlug(ctx context.Context, hotelRef models.HotelRef, h models.HotelUpdate) error {
+func (r *Repository) HotelUpdateBySlug(ctx context.Context, hotelRef models.HotelRef, h models.UpdateHotel) error {
 	updateArgs := []any{
 		h.Description,
 		h.Address,
@@ -154,7 +150,7 @@ func (r *Repository) HotelUpdateBySlug(ctx context.Context, hotelRef models.Hote
 func (r *Repository) HotelTitleUpdateBySlug(
 	ctx context.Context,
 	hotelRef models.HotelRef,
-	h models.HotelTitleUpdate,
+	h models.UpdateHotelTitle,
 ) error {
 	updateArgs := []any{
 		h.Title,

@@ -5,22 +5,24 @@ import (
 )
 
 type ServerConfig struct {
-	Host string `yaml:"host" env:"HOST" env-required:"true"`
-	Port int    `yaml:"port" env:"PORT" env-required:"true"`
+	Host string `yaml:"host"`
+	Port int    `yaml:"port"`
 }
 
 type PostgresConfig struct {
-	Host     string `yaml:"host"     env:"HOST" env-required:"true"`
-	Port     int    `yaml:"port"     env:"PORT" env-required:"true"`
-	User     string `yaml:"user"     env:"USER" env-required:"true"`
-	Password string `yaml:"password" env:"PASSWORD" env-required:"true"`
-	DB       string `yaml:"db"       env:"DB" env-required:"true"`
-	SSLMode  string `yaml:"sslmode"  env:"SSLMODE" env-required:"true"`
+	Host     string `yaml:"host"`
+	Port     int    `yaml:"port"`
+	User     string `yaml:"user"`
+	Password string `yaml:"password"`
+	DB       string `yaml:"db"`
+	SSLMode  string `yaml:"sslmode"`
 }
 
 type Config struct {
-	Server   ServerConfig   `yaml:"server" env-prefix:"SERVER_"`
-	Postgres PostgresConfig `yaml:"postgres" env-prefix:"POSTGRES_"`
+	Env      string         `yaml:"env"`
+	LogLevel string         `yaml:"log_level"`
+	Server   ServerConfig   `yaml:"server"`
+	Postgres PostgresConfig `yaml:"postgres"`
 }
 
 func New(configPath string) (*Config, error) {

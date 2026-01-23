@@ -1,0 +1,35 @@
+syntax = "proto3";
+
+package hotel.v1;
+
+option go_package = "api/hotel/v1;hotelv1";
+
+import "google/protobuf/timestamp.proto";
+
+message Location {
+  float latitude = 1;
+  float longitude = 2;
+}
+
+message Hotel {
+  string id = 1;
+  string title = 2;
+  string slug = 3;
+  int64 owner_id = 4;
+  string description = 5;
+  optional float rating = 6;
+  string address = 7;
+  Location location = 8;
+  google.protobuf.Timestamp created_at = 9;
+  google.protobuf.Timestamp updated_at = 10;
+}
+
+message HotelShort {
+  string id = 1;
+  string title = 2;
+  string slug = 3;
+  int64 owner_id = 4;
+  string description = 5;
+  string address = 7;
+  Location location = 8;
+}

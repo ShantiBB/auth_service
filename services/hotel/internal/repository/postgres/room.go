@@ -6,7 +6,7 @@ import (
 
 	"hotel/internal/repository/models"
 	"hotel/internal/repository/postgres/query"
-	"hotel/pkg/utils/consts"
+	"hotel/pkg/lib/utils/consts"
 
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
@@ -86,7 +86,8 @@ func (r *Repository) RoomGetAll(
 			&room.Capacity,
 			&room.AreaSqm,
 			&room.Amenities,
-			&room.Images)
+			&room.Images,
+		)
 		if err != nil {
 			return models.RoomList{}, err
 		}
