@@ -32,8 +32,8 @@ const (
 )
 
 var (
-	InvalidID         = errors.New("invalid ID")
-	InvalidQueryParam = errors.New("invalid query parameter")
-	InternalServer    = errors.New("internal server error")
-	InvalidJSON       = errors.New("invalid JSON body")
+	ErrInvalidID         = errors.New("invalid ID")
+	ErrInvalidQueryParam = errors.New("invalid query parameter")
+	ErrInternalServer    = errors.New("internal server error")
+	InvalidJSON          = errors.New("invalid JSON body")
 )
