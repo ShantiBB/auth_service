@@ -165,7 +165,7 @@ const file_hotel_v1_rpc_get_hotels_proto_rawDesc = "" +
 	"\x1dhotel/v1/rpc/get_hotels.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bhotel/v1/models/hotel.proto\"\xc4\x01\n" +
 	"\x10GetHotelsRequest\x124\n" +
 	"\fcountry_code\x18\x01 \x01(\tB\x11\xbaH\x0er\f2\n" +
-	"^[A-Z]{2}$R\vcountryCode\x12<\n" +
+	"^[a-z]{2}$R\vcountryCode\x12<\n" +
 	"\tcity_slug\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\bcitySlug\x12\x1b\n" +
 	"\x04page\x18\x03 \x01(\x04B\a\xbaH\x042\x02(\x01R\x04page\x12\x1f\n" +
 	"\x05limit\x18\x04 \x01(\x04B\t\xbaH\x062\x04\x18d(\x01R\x05limit\"\x8c\x01\n" +

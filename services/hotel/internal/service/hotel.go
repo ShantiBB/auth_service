@@ -16,7 +16,7 @@ type HotelRepository interface {
 		sortField string,
 		limit uint64,
 		offset uint64,
-	) (models.HotelList, error)
+	) (*models.HotelList, error)
 	HotelGetBySlug(ctx context.Context, hotelRef models.HotelRef) (models.Hotel, error)
 	HotelUpdateBySlug(ctx context.Context, hotelRef models.HotelRef, h models.UpdateHotel) error
 	HotelTitleUpdateBySlug(
@@ -27,7 +27,7 @@ type HotelRepository interface {
 	HotelDeleteBySlug(ctx context.Context, hotelRef models.HotelRef) error
 }
 
-func (s *Service) HotelCreate(ctx context.Context, h *models.CreateHotel) (*models.Hotel, error) {
+func (s *Service) CreateHotel(ctx context.Context, h *models.CreateHotel) (*models.Hotel, error) {
 	h.Slug = slug.Make(h.Title)
 
 	newHotel, err := s.repo.HotelCreate(ctx, *h)
@@ -38,22 +38,22 @@ func (s *Service) HotelCreate(ctx context.Context, h *models.CreateHotel) (*mode
 	return &newHotel, nil
 }
 
-func (s *Service) HotelGetAll(
+func (s *Service) GetHotels(
 	ctx context.Context,
-	hotel models.HotelRef,
+	hotelIngo *models.HotelList,
 	sortField string,
 	page uint64,
 	limit uint64,
-) (models.HotelList, error) {
+) (*models.HotelList, error) {
 	hotelRef := models.HotelRef{
-		CountryCode: hotel.CountryCode,
-		CitySlug:    hotel.CitySlug,
+		CountryCode: hotelIngo.CountryCode,
+		CitySlug:    hotelIngo.CitySlug,
 	}
 	offset := (page - 1) * limit
 
 	hotelList, err := s.repo.HotelGetAll(ctx, hotelRef, sortField, limit, offset)
 	if err != nil {
-		return models.HotelList{}, err
+		return nil, err
 	}
 
 	return hotelList, nil

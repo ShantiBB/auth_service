@@ -29,7 +29,7 @@ message HotelShort {
   string title = 2;
   string slug = 3;
   int64 owner_id = 4;
-  string description = 5;
-  string address = 7;
-  Location location = 8;
+  optional float rating = 5;
+  string address = 6;
+  Location location = 7;
 }

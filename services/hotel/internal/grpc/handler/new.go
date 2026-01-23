@@ -10,10 +10,10 @@ import (
 )
 
 type HotelService interface {
-	HotelCreate(ctx context.Context, h *models.CreateHotel) (*models.Hotel, error)
+	CreateHotel(ctx context.Context, h *models.CreateHotel) (*models.Hotel, error)
 	HotelGetBySlug(ctx context.Context, hotel models.HotelRef) (models.Hotel, error)
-	HotelGetAll(ctx context.Context, hotel models.HotelRef, sortField string, page, limit uint64) (
-		models.HotelList, error,
+	GetHotels(ctx context.Context, hotelInfo *models.HotelList, sortField string, page, limit uint64) (
+		*models.HotelList, error,
 	)
 	HotelUpdateBySlug(ctx context.Context, hotel models.HotelRef, h models.UpdateHotel) error
 	HotelTitleUpdateBySlug(

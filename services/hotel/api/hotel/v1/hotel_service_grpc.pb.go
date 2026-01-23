@@ -30,7 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type HotelServiceClient interface {
 	CreateHotel(ctx context.Context, in *CreateHotelRequest, opts ...grpc.CallOption) (*CreateHotelResponse, error)
-	GetHotels(ctx context.Context, in *GetHotelsRequest, opts ...grpc.CallOption) (*GetHotelsRequest, error)
+	GetHotels(ctx context.Context, in *GetHotelsRequest, opts ...grpc.CallOption) (*GetHotelsResponse, error)
 	GetHotel(ctx context.Context, in *GetHotelRequest, opts ...grpc.CallOption) (*GetHotelResponse, error)
 	DeleteHotel(ctx context.Context, in *DeleteHotelRequest, opts ...grpc.CallOption) (*DeleteHotelResponse, error)
 }
@@ -53,9 +53,9 @@ func (c *hotelServiceClient) CreateHotel(ctx context.Context, in *CreateHotelReq
 	return out, nil
 }
 
-func (c *hotelServiceClient) GetHotels(ctx context.Context, in *GetHotelsRequest, opts ...grpc.CallOption) (*GetHotelsRequest, error) {
+func (c *hotelServiceClient) GetHotels(ctx context.Context, in *GetHotelsRequest, opts ...grpc.CallOption) (*GetHotelsResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(GetHotelsRequest)
+	out := new(GetHotelsResponse)
 	err := c.cc.Invoke(ctx, HotelService_GetHotels_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -88,7 +88,7 @@ func (c *hotelServiceClient) DeleteHotel(ctx context.Context, in *DeleteHotelReq
 // for forward compatibility.
 type HotelServiceServer interface {
 	CreateHotel(context.Context, *CreateHotelRequest) (*CreateHotelResponse, error)
-	GetHotels(context.Context, *GetHotelsRequest) (*GetHotelsRequest, error)
+	GetHotels(context.Context, *GetHotelsRequest) (*GetHotelsResponse, error)
 	GetHotel(context.Context, *GetHotelRequest) (*GetHotelResponse, error)
 	DeleteHotel(context.Context, *DeleteHotelRequest) (*DeleteHotelResponse, error)
 	mustEmbedUnimplementedHotelServiceServer()
@@ -104,7 +104,7 @@ type UnimplementedHotelServiceServer struct{}
 func (UnimplementedHotelServiceServer) CreateHotel(context.Context, *CreateHotelRequest) (*CreateHotelResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method CreateHotel not implemented")
 }
-func (UnimplementedHotelServiceServer) GetHotels(context.Context, *GetHotelsRequest) (*GetHotelsRequest, error) {
+func (UnimplementedHotelServiceServer) GetHotels(context.Context, *GetHotelsRequest) (*GetHotelsResponse, error) {
 	return nil, status.Error(codes.Unimplemented, "method GetHotels not implemented")
 }
 func (UnimplementedHotelServiceServer) GetHotel(context.Context, *GetHotelRequest) (*GetHotelResponse, error) {

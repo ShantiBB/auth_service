@@ -57,8 +57,10 @@ type Hotel struct {
 }
 
 type HotelList struct {
-	Hotels     []HotelShort
-	TotalCount uint64
+	CountryCode string
+	CitySlug    string
+	Hotels      []*HotelShort
+	TotalCount  uint64
 }
 
 func (h *CreateHotel) ToRead() Hotel {

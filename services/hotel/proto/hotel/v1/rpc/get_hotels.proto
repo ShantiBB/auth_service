@@ -9,7 +9,7 @@ import "hotel/v1/models/hotel.proto";
 
 message GetHotelsRequest {
   string country_code = 1 [
-    (buf.validate.field).string.pattern = "^[A-Z]{2}$"
+    (buf.validate.field).string.pattern = "^[a-z]{2}$"
   ];
   string city_slug = 2 [
     (buf.validate.field).string.pattern = "^[a-z0-9]+(-[a-z0-9]+)*$"

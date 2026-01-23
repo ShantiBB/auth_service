@@ -196,9 +196,9 @@ type HotelShort struct {
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
 	Slug          string                 `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
 	OwnerId       int64                  `protobuf:"varint,4,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
-	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	Address       string                 `protobuf:"bytes,7,opt,name=address,proto3" json:"address,omitempty"`
-	Location      *Location              `protobuf:"bytes,8,opt,name=location,proto3" json:"location,omitempty"`
+	Rating        *float32               `protobuf:"fixed32,5,opt,name=rating,proto3,oneof" json:"rating,omitempty"`
+	Address       string                 `protobuf:"bytes,6,opt,name=address,proto3" json:"address,omitempty"`
+	Location      *Location              `protobuf:"bytes,7,opt,name=location,proto3" json:"location,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -261,11 +261,11 @@ func (x *HotelShort) GetOwnerId() int64 {
 	return 0
 }
 
-func (x *HotelShort) GetDescription() string {
-	if x != nil {
-		return x.Description
+func (x *HotelShort) GetRating() float32 {
+	if x != nil && x.Rating != nil {
+		return *x.Rating
 	}
-	return ""
+	return 0
 }
 
 func (x *HotelShort) GetAddress() string {
@@ -304,16 +304,17 @@ const file_hotel_v1_models_hotel_proto_rawDesc = "" +
 	"\n" +
 	"updated_at\x18\n" +
 	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\t\n" +
-	"\a_rating\"\xcd\x01\n" +
+	"\a_rating\"\xd3\x01\n" +
 	"\n" +
 	"HotelShort\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
 	"\x04slug\x18\x03 \x01(\tR\x04slug\x12\x19\n" +
-	"\bowner_id\x18\x04 \x01(\x03R\aownerId\x12 \n" +
-	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x18\n" +
-	"\aaddress\x18\a \x01(\tR\aaddress\x12.\n" +
-	"\blocation\x18\b \x01(\v2\x12.hotel.v1.LocationR\blocationB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
+	"\bowner_id\x18\x04 \x01(\x03R\aownerId\x12\x1b\n" +
+	"\x06rating\x18\x05 \x01(\x02H\x00R\x06rating\x88\x01\x01\x12\x18\n" +
+	"\aaddress\x18\x06 \x01(\tR\aaddress\x12.\n" +
+	"\blocation\x18\a \x01(\v2\x12.hotel.v1.LocationR\blocationB\t\n" +
+	"\a_ratingB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
 
 var (
 	file_hotel_v1_models_hotel_proto_rawDescOnce sync.Once
@@ -352,6 +353,7 @@ func file_hotel_v1_models_hotel_proto_init() {
 		return
 	}
 	file_hotel_v1_models_hotel_proto_msgTypes[1].OneofWrappers = []any{}
+	file_hotel_v1_models_hotel_proto_msgTypes[2].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

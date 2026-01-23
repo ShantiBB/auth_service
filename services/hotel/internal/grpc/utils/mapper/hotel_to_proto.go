@@ -28,3 +28,24 @@ func HotelResponseToProto(resp *models.Hotel) *hotelv1.Hotel {
 		UpdatedAt:   timestamppb.New(resp.UpdatedAt),
 	}
 }
+
+func HotelShortResponseToProto(resp *models.HotelShort) *hotelv1.HotelShort {
+	return &hotelv1.HotelShort{
+		Id:       resp.ID.String(),
+		Title:    resp.Title,
+		Slug:     resp.Slug,
+		OwnerId:  resp.OwnerID,
+		Rating:   resp.Rating,
+		Address:  resp.Address,
+		Location: locationResponseToProto(&resp.Location),
+	}
+}
+
+func HotelsResponseToProto(resp []*models.HotelShort) []*hotelv1.HotelShort {
+	hotels := make([]*hotelv1.HotelShort, len(resp))
+	for i, h := range resp {
+		hotels[i] = HotelShortResponseToProto(h)
+	}
+
+	return hotels
+}

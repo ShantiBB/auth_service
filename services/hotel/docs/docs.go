@@ -124,7 +124,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.HotelCreate"
+                            "$ref": "#/definitions/request.CreateHotel"
                         }
                     }
                 ],
@@ -1026,7 +1026,7 @@ const docTemplate = `{
                 }
             }
         },
-        "request.HotelCreate": {
+        "request.CreateHotel": {
             "type": "object",
             "required": [
                 "address",

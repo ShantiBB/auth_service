@@ -23,3 +23,11 @@ func CreateHotelRequestToDomain(req *hotelv1.CreateHotelRequest) *models.CreateH
 		Location:    locationRequestToDomain(req.Location),
 	}
 }
+
+func GetHotelsRequestToDomain(req *hotelv1.GetHotelsRequest) (uint64, uint64, *models.HotelList) {
+	hotelInfo := &models.HotelList{
+		CountryCode: req.CountryCode,
+		CitySlug:    req.CitySlug,
+	}
+	return req.Page, req.Limit, hotelInfo
+}

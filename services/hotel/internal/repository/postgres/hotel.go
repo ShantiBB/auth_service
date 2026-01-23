@@ -48,22 +48,24 @@ func (r *Repository) HotelGetAll(
 	sortField string,
 	limit uint64,
 	offset uint64,
-) (models.HotelList, error) {
-	var hotelList models.HotelList
-	selectArgs := []any{
+) (*models.HotelList, error) {
+	rows, err := r.db.Query(
+		ctx,
+		query.HotelGetAll,
 		hotelRef.CountryCode,
 		hotelRef.CitySlug,
 		sortField,
 		limit,
 		offset,
-	}
-
-	rows, err := r.db.Query(ctx, query.HotelGetAll, selectArgs...)
+	)
 	if err != nil {
-		return models.HotelList{}, err
+		return nil, err
 	}
+	defer rows.Close()
 
+	values := make([]models.HotelShort, limit)
 	var h models.HotelShort
+	var idx int32
 	for rows.Next() {
 		err = rows.Scan(
 			&h.ID,
@@ -76,16 +78,29 @@ func (r *Repository) HotelGetAll(
 			&h.Location.Latitude,
 		)
 		if err != nil {
-			return models.HotelList{}, err
+			return nil, err
 		}
 
-		hotelList.Hotels = append(hotelList.Hotels, h)
+		values[idx] = h
+		idx++
+	}
+
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	values = values[:idx]
+
+	hotelList := &models.HotelList{
+		Hotels: make([]*models.HotelShort, len(values)),
+	}
+	for i := range values {
+		hotelList.Hotels[i] = &values[i]
 	}
 
 	if err = r.db.
 		QueryRow(ctx, query.HotelGetCountRows, hotelRef.CountryCode, hotelRef.CitySlug).
 		Scan(&hotelList.TotalCount); err != nil {
-		return models.HotelList{}, err
+		return nil, err
 	}
 
 	return hotelList, nil

@@ -11,7 +11,7 @@ import "hotel/v1/rpc/delete_hotel.proto";
 
 service HotelService {
   rpc CreateHotel(CreateHotelRequest) returns (CreateHotelResponse);
-  rpc GetHotels(GetHotelsRequest) returns (GetHotelsRequest);
+  rpc GetHotels(GetHotelsRequest) returns (GetHotelsResponse);
   rpc GetHotel(GetHotelRequest) returns (GetHotelResponse);
   rpc DeleteHotel(DeleteHotelRequest) returns (DeleteHotelResponse);
 }
