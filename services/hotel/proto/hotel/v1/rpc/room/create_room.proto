@@ -45,5 +45,5 @@ message CreateRoomRequest {
 }
 
 message CreateRoomResponse {
-  CreateRoom room = 1;
+  Room room = 1;
 }

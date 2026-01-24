@@ -93,6 +93,7 @@ func (r *Repository) SelectRooms(
 		}
 
 		values[idx] = room
+		idx++
 	}
 
 	if err = rows.Err(); err != nil {
@@ -111,19 +112,9 @@ func (r *Repository) SelectRooms(
 	return roomList, nil
 }
 
-func (r *Repository) SelectRoomByID(
-	ctx context.Context,
-	hotel models.HotelRef,
-	roomID uuid.UUID,
-) (*models.Room, error) {
+func (r *Repository) SelectRoomByID(ctx context.Context, roomID uuid.UUID) (*models.Room, error) {
 	room := &models.Room{ID: roomID}
-	err := r.db.QueryRow(
-		ctx, query.SelectRoomByID,
-		hotel.CountryCode,
-		hotel.CitySlug,
-		hotel.HotelSlug,
-		roomID,
-	).Scan(
+	err := r.db.QueryRow(ctx, query.SelectRoomByID, roomID).Scan(
 		&room.Title,
 		&room.Description,
 		&room.RoomNumber,
@@ -148,17 +139,9 @@ func (r *Repository) SelectRoomByID(
 	return room, nil
 }
 
-func (r *Repository) UpdateRoomByID(
-	ctx context.Context,
-	hotel models.HotelRef,
-	roomID uuid.UUID,
-	room *models.UpdateRoom,
-) error {
+func (r *Repository) UpdateRoomByID(ctx context.Context, roomID uuid.UUID, room *models.UpdateRoom) error {
 	row, err := r.db.Exec(
 		ctx, query.UpdateRoomByID,
-		hotel.CountryCode,
-		hotel.CitySlug,
-		hotel.HotelSlug,
 		roomID,
 		room.Title,
 		room.Description,
@@ -185,20 +168,8 @@ func (r *Repository) UpdateRoomByID(
 	return nil
 }
 
-func (r *Repository) UpdateRoomStatusByID(
-	ctx context.Context,
-	hotel models.HotelRef,
-	roomID uuid.UUID,
-	room models.UpdateRoomStatus,
-) error {
-	row, err := r.db.Exec(
-		ctx, query.UpdateRoomStatusByID,
-		hotel.CountryCode,
-		hotel.CitySlug,
-		hotel.HotelSlug,
-		roomID,
-		room.Status,
-	)
+func (r *Repository) UpdateRoomStatusByID(ctx context.Context, roomID uuid.UUID, room models.UpdateRoomStatus) error {
+	row, err := r.db.Exec(ctx, query.UpdateRoomStatusByID, roomID, room.Status)
 	if err != nil {
 		return err
 	}
@@ -209,15 +180,8 @@ func (r *Repository) UpdateRoomStatusByID(
 	return nil
 }
 
-func (r *Repository) DeleteRoomByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) error {
-	row, err := r.db.Exec(
-		ctx,
-		query.DeleteRoomByID,
-		hotel.CountryCode,
-		hotel.CitySlug,
-		hotel.HotelSlug,
-		roomID,
-	)
+func (r *Repository) DeleteRoomByID(ctx context.Context, roomID uuid.UUID) error {
+	row, err := r.db.Exec(ctx, query.DeleteRoomByID, roomID)
 	if err != nil {
 		return err
 	}

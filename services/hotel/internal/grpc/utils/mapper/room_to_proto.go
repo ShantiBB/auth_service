@@ -7,25 +7,6 @@ import (
 	"hotel/internal/repository/models"
 )
 
-func CreateRoomResponseToProto(resp *models.Room) *hotelv1.CreateRoom {
-	return &hotelv1.CreateRoom{
-		CreatedAt:   timestamppb.New(resp.CreatedAt),
-		UpdatedAt:   timestamppb.New(resp.UpdatedAt),
-		Description: resp.Description,
-		Price:       resp.Price.String(),
-		Type:        roomTypeToProto(resp.Type),
-		Status:      roomStatusToProto(resp.Status),
-		RoomNumber:  resp.RoomNumber,
-		Title:       resp.Title,
-		Amenities:   resp.Amenities,
-		Images:      resp.Images,
-		Capacity:    int64(resp.Capacity),
-		AreaSqm:     float32(resp.AreaSqm),
-		Floor:       int64(resp.Floor),
-		Id:          resp.ID.String(),
-	}
-}
-
 func roomStatusToProto(status models.RoomStatus) hotelv1.RoomStatus {
 	var s hotelv1.RoomStatus
 	switch status {
@@ -60,4 +41,66 @@ func roomTypeToProto(status models.RoomType) hotelv1.RoomType {
 		s = hotelv1.RoomType_ROOM_TYPE_UNSPECIFIED
 	}
 	return s
+}
+
+func RoomResponseToProto(resp *models.Room) *hotelv1.Room {
+	return &hotelv1.Room{
+		Id:          resp.ID.String(),
+		CreatedAt:   timestamppb.New(resp.CreatedAt),
+		UpdatedAt:   timestamppb.New(resp.UpdatedAt),
+		Description: resp.Description,
+		Price:       resp.Price.String(),
+		Type:        roomTypeToProto(resp.Type),
+		Status:      roomStatusToProto(resp.Status),
+		RoomNumber:  resp.RoomNumber,
+		Title:       resp.Title,
+		Amenities:   resp.Amenities,
+		Images:      resp.Images,
+		Capacity:    int64(resp.Capacity),
+		AreaSqm:     float32(resp.AreaSqm),
+		Floor:       int64(resp.Floor),
+	}
+}
+
+func RoomShortResponseToProto(resp *models.RoomShort) *hotelv1.RoomShort {
+	return &hotelv1.RoomShort{
+		Id:         resp.ID.String(),
+		Title:      resp.Title,
+		RoomNumber: resp.RoomNumber,
+		Type:       roomTypeToProto(resp.Type),
+		Status:     roomStatusToProto(resp.Status),
+		Price:      resp.Price.String(),
+		Amenities:  resp.Amenities,
+		Images:     resp.Images,
+		Capacity:   int64(resp.Capacity),
+		AreaSqm:    float32(resp.AreaSqm),
+	}
+}
+
+func RoomsResponseToProto(resp []*models.RoomShort) []*hotelv1.RoomShort {
+	rooms := make([]*hotelv1.RoomShort, len(resp))
+	for i, h := range resp {
+		rooms[i] = RoomShortResponseToProto(h)
+	}
+
+	return rooms
+}
+
+func UpdateRoomResponseToProto(resp *models.UpdateRoom) *hotelv1.UpdateRoom {
+	return &hotelv1.UpdateRoom{
+		Description: resp.Description,
+		Title:       resp.Title,
+		RoomNumber:  resp.RoomNumber,
+		Price:       resp.Price.String(),
+		Type:        roomTypeToProto(resp.Type),
+		Amenities:   resp.Amenities,
+		Images:      resp.Images,
+		Capacity:    int64(resp.Capacity),
+		AreaSqm:     float32(resp.AreaSqm),
+		Floor:       int64(resp.Floor),
+	}
+}
+
+func UpdateRoomStatusResponseToProto(resp models.UpdateRoomStatus) hotelv1.RoomStatus {
+	return roomStatusToProto(resp.Status)
 }

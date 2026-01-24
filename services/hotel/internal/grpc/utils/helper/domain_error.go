@@ -17,7 +17,7 @@ var (
 	errInternalServer   = status.Error(codes.Internal, consts.MsgInternalServer)
 )
 
-func DomainError(err error) error {
+func DomainErr(err error) error {
 	if err == nil {
 		return nil
 	}

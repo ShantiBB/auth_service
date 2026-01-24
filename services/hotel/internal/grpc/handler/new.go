@@ -23,13 +23,11 @@ type HotelService interface {
 
 type RoomService interface {
 	CreateRoom(ctx context.Context, hotelRef models.HotelRef, room *models.CreateRoom) (*models.Room, error)
-	GetRoomByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) (*models.Room, error)
-	GetRooms(ctx context.Context, hotel models.HotelRef, limit, offset uint64) (*models.RoomList, error)
-	UpdateRoomByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room *models.UpdateRoom) error
-	UpdateRoomStatusByID(
-		ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.UpdateRoomStatus,
-	) error
-	DeleteRoomByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) error
+	GetRooms(ctx context.Context, hotelRef models.HotelRef, page, limit uint64) (*models.RoomList, error)
+	GetRoomByID(ctx context.Context, roomID uuid.UUID) (*models.Room, error)
+	UpdateRoomByID(ctx context.Context, roomID uuid.UUID, room *models.UpdateRoom) error
+	UpdateRoomStatusByID(ctx context.Context, roomID uuid.UUID, room models.UpdateRoomStatus) error
+	DeleteRoomByID(ctx context.Context, roomID uuid.UUID) error
 }
 
 type Service interface {

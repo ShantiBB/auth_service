@@ -12,7 +12,7 @@ const (
 	RoomTypeFamily       RoomType = "ROOM_TYPE_FAMILY"
 	RoomTypePresidential RoomType = "ROOM_TYPE_PRESIDENTIAL"
 
-	RoomStatusUnspecified RoomType   = "ROOM_STATUS_UNSPECIFIED"
+	RoomStatusUnspecified RoomStatus = "ROOM_STATUS_UNSPECIFIED"
 	RoomStatusAvailable   RoomStatus = "ROOM_STATUS_AVAILABLE"
 	RoomStatusOccupied    RoomStatus = "ROOM_STATUS_OCCUPIED"
 	RoomStatusMaintenance RoomStatus = "ROOM_STATUS_MAINTENANCE"

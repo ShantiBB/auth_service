@@ -21,7 +21,7 @@ type CreateRoom struct {
 }
 
 type UpdateRoom struct {
-	Description *string
+	Description string
 	Title       string
 	RoomNumber  string
 	Type        RoomType

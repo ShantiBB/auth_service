@@ -21,13 +21,11 @@ type HotelRepository interface {
 
 type RoomRepository interface {
 	InsertRoom(ctx context.Context, hotelRef models.HotelRef, room *models.CreateRoom) (*models.Room, error)
-	SelectRoomByID(ctx context.Context, hotelRef models.HotelRef, roomID uuid.UUID) (*models.Room, error)
 	SelectRooms(ctx context.Context, hotelRef models.HotelRef, limit, offset uint64) (*models.RoomList, error)
-	UpdateRoomByID(ctx context.Context, hotelRef models.HotelRef, roomID uuid.UUID, room *models.UpdateRoom) error
-	UpdateRoomStatusByID(
-		ctx context.Context, hotelRef models.HotelRef, roomID uuid.UUID, room models.UpdateRoomStatus,
-	) error
-	DeleteRoomByID(ctx context.Context, hotelRef models.HotelRef, roomID uuid.UUID) error
+	SelectRoomByID(ctx context.Context, roomID uuid.UUID) (*models.Room, error)
+	UpdateRoomByID(ctx context.Context, roomID uuid.UUID, room *models.UpdateRoom) error
+	UpdateRoomStatusByID(ctx context.Context, roomID uuid.UUID, room models.UpdateRoomStatus) error
+	DeleteRoomByID(ctx context.Context, roomID uuid.UUID) error
 }
 
 type Repository interface {

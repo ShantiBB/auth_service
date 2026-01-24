@@ -42,18 +42,6 @@ func HotelResponseToProto(resp *models.Hotel) *hotelv1.Hotel {
 	}
 }
 
-func HotelShortResponseToProto(resp *models.HotelShort) *hotelv1.HotelShort {
-	return &hotelv1.HotelShort{
-		Id:        resp.ID.String(),
-		Title:     resp.Title,
-		HotelSlug: resp.HotelSlug,
-		OwnerId:   resp.OwnerID,
-		Rating:    resp.Rating,
-		Address:   resp.Address,
-		Location:  locationResponseToProto(&resp.Location),
-	}
-}
-
 func UpdateHotelResponseToProto(resp models.UpdateHotel) *hotelv1.UpdateHotel {
 	return &hotelv1.UpdateHotel{
 		Description: *resp.Description,
@@ -66,6 +54,18 @@ func UpdateHotelTitleResponseToProto(resp models.UpdateHotelTitle) *hotelv1.Upda
 	return &hotelv1.UpdateHotelTitle{
 		Title:     resp.Title,
 		HotelSlug: resp.HotelSlug,
+	}
+}
+
+func HotelShortResponseToProto(resp *models.HotelShort) *hotelv1.HotelShort {
+	return &hotelv1.HotelShort{
+		Id:        resp.ID.String(),
+		Title:     resp.Title,
+		HotelSlug: resp.HotelSlug,
+		OwnerId:   resp.OwnerID,
+		Rating:    resp.Rating,
+		Address:   resp.Address,
+		Location:  locationResponseToProto(&resp.Location),
 	}
 }
 

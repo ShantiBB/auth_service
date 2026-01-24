@@ -24,17 +24,24 @@ var File_hotel_v1_hotel_service_proto protoreflect.FileDescriptor
 
 const file_hotel_v1_hotel_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1chotel/v1/hotel_service.proto\x12\bhotel.v1\x1a%hotel/v1/rpc/hotel/create_hotel.proto\x1a#hotel/v1/rpc/room/create_room.proto\x1a#hotel/v1/rpc/hotel/get_hotels.proto\x1a\"hotel/v1/rpc/hotel/get_hotel.proto\x1a%hotel/v1/rpc/hotel/update_hotel.proto\x1a+hotel/v1/rpc/hotel/update_hotel_title.proto\x1a%hotel/v1/rpc/hotel/delete_hotel.proto2\xd6\x03\n" +
+	"\x1chotel/v1/hotel_service.proto\x12\bhotel.v1\x1a%hotel/v1/rpc/hotel/create_hotel.proto\x1a#hotel/v1/rpc/room/create_room.proto\x1a#hotel/v1/rpc/hotel/get_hotels.proto\x1a!hotel/v1/rpc/room/get_rooms.proto\x1a\"hotel/v1/rpc/hotel/get_hotel.proto\x1a hotel/v1/rpc/room/get_room.proto\x1a%hotel/v1/rpc/hotel/update_hotel.proto\x1a#hotel/v1/rpc/room/update_room.proto\x1a*hotel/v1/rpc/room/update_room_status.proto\x1a%hotel/v1/rpc/hotel/delete_hotel.proto\x1a#hotel/v1/rpc/room/delete_room.proto\x1a+hotel/v1/rpc/hotel/update_hotel_title.proto2\xd6\x03\n" +
 	"\fHotelService\x12J\n" +
 	"\vCreateHotel\x12\x1c.hotel.v1.CreateHotelRequest\x1a\x1d.hotel.v1.CreateHotelResponse\x12D\n" +
 	"\tGetHotels\x12\x1a.hotel.v1.GetHotelsRequest\x1a\x1b.hotel.v1.GetHotelsResponse\x12A\n" +
 	"\bGetHotel\x12\x19.hotel.v1.GetHotelRequest\x1a\x1a.hotel.v1.GetHotelResponse\x12J\n" +
 	"\vUpdateHotel\x12\x1c.hotel.v1.UpdateHotelRequest\x1a\x1d.hotel.v1.UpdateHotelResponse\x12Y\n" +
 	"\x10UpdateHotelTitle\x12!.hotel.v1.UpdateHotelTitleRequest\x1a\".hotel.v1.UpdateHotelTitleResponse\x12J\n" +
-	"\vDeleteHotel\x12\x1c.hotel.v1.DeleteHotelRequest\x1a\x1d.hotel.v1.DeleteHotelResponse2V\n" +
+	"\vDeleteHotel\x12\x1c.hotel.v1.DeleteHotelRequest\x1a\x1d.hotel.v1.DeleteHotelResponse2\xc6\x03\n" +
 	"\vRoomService\x12G\n" +
 	"\n" +
-	"CreateRoom\x12\x1b.hotel.v1.CreateRoomRequest\x1a\x1c.hotel.v1.CreateRoomResponseB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
+	"CreateRoom\x12\x1b.hotel.v1.CreateRoomRequest\x1a\x1c.hotel.v1.CreateRoomResponse\x12A\n" +
+	"\bGetRooms\x12\x19.hotel.v1.GetRoomsRequest\x1a\x1a.hotel.v1.GetRoomsResponse\x12>\n" +
+	"\aGetRoom\x12\x18.hotel.v1.GetRoomRequest\x1a\x19.hotel.v1.GetRoomResponse\x12G\n" +
+	"\n" +
+	"UpdateRoom\x12\x1b.hotel.v1.UpdateRoomRequest\x1a\x1c.hotel.v1.UpdateRoomResponse\x12Y\n" +
+	"\x10UpdateRoomStatus\x12!.hotel.v1.UpdateRoomStatusRequest\x1a\".hotel.v1.UpdateRoomStatusResponse\x12G\n" +
+	"\n" +
+	"DeleteRoom\x12\x1b.hotel.v1.DeleteRoomRequest\x1a\x1c.hotel.v1.DeleteRoomResponseB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
 
 var file_hotel_v1_hotel_service_proto_goTypes = []any{
 	(*CreateHotelRequest)(nil),       // 0: hotel.v1.CreateHotelRequest
@@ -44,13 +51,23 @@ var file_hotel_v1_hotel_service_proto_goTypes = []any{
 	(*UpdateHotelTitleRequest)(nil),  // 4: hotel.v1.UpdateHotelTitleRequest
 	(*DeleteHotelRequest)(nil),       // 5: hotel.v1.DeleteHotelRequest
 	(*CreateRoomRequest)(nil),        // 6: hotel.v1.CreateRoomRequest
-	(*CreateHotelResponse)(nil),      // 7: hotel.v1.CreateHotelResponse
-	(*GetHotelsResponse)(nil),        // 8: hotel.v1.GetHotelsResponse
-	(*GetHotelResponse)(nil),         // 9: hotel.v1.GetHotelResponse
-	(*UpdateHotelResponse)(nil),      // 10: hotel.v1.UpdateHotelResponse
-	(*UpdateHotelTitleResponse)(nil), // 11: hotel.v1.UpdateHotelTitleResponse
-	(*DeleteHotelResponse)(nil),      // 12: hotel.v1.DeleteHotelResponse
-	(*CreateRoomResponse)(nil),       // 13: hotel.v1.CreateRoomResponse
+	(*GetRoomsRequest)(nil),          // 7: hotel.v1.GetRoomsRequest
+	(*GetRoomRequest)(nil),           // 8: hotel.v1.GetRoomRequest
+	(*UpdateRoomRequest)(nil),        // 9: hotel.v1.UpdateRoomRequest
+	(*UpdateRoomStatusRequest)(nil),  // 10: hotel.v1.UpdateRoomStatusRequest
+	(*DeleteRoomRequest)(nil),        // 11: hotel.v1.DeleteRoomRequest
+	(*CreateHotelResponse)(nil),      // 12: hotel.v1.CreateHotelResponse
+	(*GetHotelsResponse)(nil),        // 13: hotel.v1.GetHotelsResponse
+	(*GetHotelResponse)(nil),         // 14: hotel.v1.GetHotelResponse
+	(*UpdateHotelResponse)(nil),      // 15: hotel.v1.UpdateHotelResponse
+	(*UpdateHotelTitleResponse)(nil), // 16: hotel.v1.UpdateHotelTitleResponse
+	(*DeleteHotelResponse)(nil),      // 17: hotel.v1.DeleteHotelResponse
+	(*CreateRoomResponse)(nil),       // 18: hotel.v1.CreateRoomResponse
+	(*GetRoomsResponse)(nil),         // 19: hotel.v1.GetRoomsResponse
+	(*GetRoomResponse)(nil),          // 20: hotel.v1.GetRoomResponse
+	(*UpdateRoomResponse)(nil),       // 21: hotel.v1.UpdateRoomResponse
+	(*UpdateRoomStatusResponse)(nil), // 22: hotel.v1.UpdateRoomStatusResponse
+	(*DeleteRoomResponse)(nil),       // 23: hotel.v1.DeleteRoomResponse
 }
 var file_hotel_v1_hotel_service_proto_depIdxs = []int32{
 	0,  // 0: hotel.v1.HotelService.CreateHotel:input_type -> hotel.v1.CreateHotelRequest
@@ -60,15 +77,25 @@ var file_hotel_v1_hotel_service_proto_depIdxs = []int32{
 	4,  // 4: hotel.v1.HotelService.UpdateHotelTitle:input_type -> hotel.v1.UpdateHotelTitleRequest
 	5,  // 5: hotel.v1.HotelService.DeleteHotel:input_type -> hotel.v1.DeleteHotelRequest
 	6,  // 6: hotel.v1.RoomService.CreateRoom:input_type -> hotel.v1.CreateRoomRequest
-	7,  // 7: hotel.v1.HotelService.CreateHotel:output_type -> hotel.v1.CreateHotelResponse
-	8,  // 8: hotel.v1.HotelService.GetHotels:output_type -> hotel.v1.GetHotelsResponse
-	9,  // 9: hotel.v1.HotelService.GetHotel:output_type -> hotel.v1.GetHotelResponse
-	10, // 10: hotel.v1.HotelService.UpdateHotel:output_type -> hotel.v1.UpdateHotelResponse
-	11, // 11: hotel.v1.HotelService.UpdateHotelTitle:output_type -> hotel.v1.UpdateHotelTitleResponse
-	12, // 12: hotel.v1.HotelService.DeleteHotel:output_type -> hotel.v1.DeleteHotelResponse
-	13, // 13: hotel.v1.RoomService.CreateRoom:output_type -> hotel.v1.CreateRoomResponse
-	7,  // [7:14] is the sub-list for method output_type
-	0,  // [0:7] is the sub-list for method input_type
+	7,  // 7: hotel.v1.RoomService.GetRooms:input_type -> hotel.v1.GetRoomsRequest
+	8,  // 8: hotel.v1.RoomService.GetRoom:input_type -> hotel.v1.GetRoomRequest
+	9,  // 9: hotel.v1.RoomService.UpdateRoom:input_type -> hotel.v1.UpdateRoomRequest
+	10, // 10: hotel.v1.RoomService.UpdateRoomStatus:input_type -> hotel.v1.UpdateRoomStatusRequest
+	11, // 11: hotel.v1.RoomService.DeleteRoom:input_type -> hotel.v1.DeleteRoomRequest
+	12, // 12: hotel.v1.HotelService.CreateHotel:output_type -> hotel.v1.CreateHotelResponse
+	13, // 13: hotel.v1.HotelService.GetHotels:output_type -> hotel.v1.GetHotelsResponse
+	14, // 14: hotel.v1.HotelService.GetHotel:output_type -> hotel.v1.GetHotelResponse
+	15, // 15: hotel.v1.HotelService.UpdateHotel:output_type -> hotel.v1.UpdateHotelResponse
+	16, // 16: hotel.v1.HotelService.UpdateHotelTitle:output_type -> hotel.v1.UpdateHotelTitleResponse
+	17, // 17: hotel.v1.HotelService.DeleteHotel:output_type -> hotel.v1.DeleteHotelResponse
+	18, // 18: hotel.v1.RoomService.CreateRoom:output_type -> hotel.v1.CreateRoomResponse
+	19, // 19: hotel.v1.RoomService.GetRooms:output_type -> hotel.v1.GetRoomsResponse
+	20, // 20: hotel.v1.RoomService.GetRoom:output_type -> hotel.v1.GetRoomResponse
+	21, // 21: hotel.v1.RoomService.UpdateRoom:output_type -> hotel.v1.UpdateRoomResponse
+	22, // 22: hotel.v1.RoomService.UpdateRoomStatus:output_type -> hotel.v1.UpdateRoomStatusResponse
+	23, // 23: hotel.v1.RoomService.DeleteRoom:output_type -> hotel.v1.DeleteRoomResponse
+	12, // [12:24] is the sub-list for method output_type
+	0,  // [0:12] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -82,10 +109,15 @@ func file_hotel_v1_hotel_service_proto_init() {
 	file_hotel_v1_rpc_hotel_create_hotel_proto_init()
 	file_hotel_v1_rpc_room_create_room_proto_init()
 	file_hotel_v1_rpc_hotel_get_hotels_proto_init()
+	file_hotel_v1_rpc_room_get_rooms_proto_init()
 	file_hotel_v1_rpc_hotel_get_hotel_proto_init()
+	file_hotel_v1_rpc_room_get_room_proto_init()
 	file_hotel_v1_rpc_hotel_update_hotel_proto_init()
-	file_hotel_v1_rpc_hotel_update_hotel_title_proto_init()
+	file_hotel_v1_rpc_room_update_room_proto_init()
+	file_hotel_v1_rpc_room_update_room_status_proto_init()
 	file_hotel_v1_rpc_hotel_delete_hotel_proto_init()
+	file_hotel_v1_rpc_room_delete_room_proto_init()
+	file_hotel_v1_rpc_hotel_update_hotel_title_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

@@ -164,7 +164,7 @@ func (x *CreateRoomRequest) GetImages() []string {
 
 type CreateRoomResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Room          *CreateRoom            `protobuf:"bytes,1,opt,name=room,proto3" json:"room,omitempty"`
+	Room          *Room                  `protobuf:"bytes,1,opt,name=room,proto3" json:"room,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -199,7 +199,7 @@ func (*CreateRoomResponse) Descriptor() ([]byte, []int) {
 	return file_hotel_v1_rpc_room_create_room_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *CreateRoomResponse) GetRoom() *CreateRoom {
+func (x *CreateRoomResponse) GetRoom() *Room {
 	if x != nil {
 		return x.Room
 	}
@@ -229,9 +229,9 @@ const file_hotel_v1_rpc_room_create_room_proto_rawDesc = "" +
 	"\x05floor\x18\v \x01(\x03B\x06\xbaH\x03\xc8\x01\x01R\x05floor\x12\x1c\n" +
 	"\tamenities\x18\f \x03(\tR\tamenities\x12\x16\n" +
 	"\x06images\x18\r \x03(\tR\x06imagesB\x0e\n" +
-	"\f_description\">\n" +
-	"\x12CreateRoomResponse\x12(\n" +
-	"\x04room\x18\x01 \x01(\v2\x14.hotel.v1.CreateRoomR\x04roomB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
+	"\f_description\"8\n" +
+	"\x12CreateRoomResponse\x12\"\n" +
+	"\x04room\x18\x01 \x01(\v2\x0e.hotel.v1.RoomR\x04roomB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
 
 var (
 	file_hotel_v1_rpc_room_create_room_proto_rawDescOnce sync.Once
@@ -250,11 +250,11 @@ var file_hotel_v1_rpc_room_create_room_proto_goTypes = []any{
 	(*CreateRoomRequest)(nil),  // 0: hotel.v1.CreateRoomRequest
 	(*CreateRoomResponse)(nil), // 1: hotel.v1.CreateRoomResponse
 	(RoomType)(0),              // 2: hotel.v1.RoomType
-	(*CreateRoom)(nil),         // 3: hotel.v1.CreateRoom
+	(*Room)(nil),               // 3: hotel.v1.Room
 }
 var file_hotel_v1_rpc_room_create_room_proto_depIdxs = []int32{
 	2, // 0: hotel.v1.CreateRoomRequest.type:type_name -> hotel.v1.RoomType
-	3, // 1: hotel.v1.CreateRoomResponse.room:type_name -> hotel.v1.CreateRoom
+	3, // 1: hotel.v1.CreateRoomResponse.room:type_name -> hotel.v1.Room
 	2, // [2:2] is the sub-list for method output_type
 	2, // [2:2] is the sub-list for method input_type
 	2, // [2:2] is the sub-list for extension type_name

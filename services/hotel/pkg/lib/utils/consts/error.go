@@ -23,6 +23,7 @@ const (
 	MsgUniqueRoomField   = "room number already exists"
 	MsgInvalidHotelID    = "invalid hotel id"
 	MsgInvalidRoomID     = "invalid room id"
+	MsgInvalidPrice      = "invalid price"
 	MsgInvalidQueryParam = "invalid query parameter"
 	MsgInternalServer    = "internal server error"
 	MsgInvalidJSON       = "invalid JSON body"
@@ -35,6 +36,7 @@ var (
 	ErrUniqueRoomField   = errors.New(MsgUniqueRoomField)
 	ErrInvalidHotelID    = errors.New(MsgInvalidHotelID)
 	ErrInvalidRoomID     = errors.New(MsgInvalidRoomID)
+	ErrInvalidPrice      = errors.New(MsgInvalidRoomID)
 	ErrInvalidQueryParam = errors.New(MsgInvalidQueryParam)
 	ErrInternalServer    = errors.New(MsgInternalServer)
 	ErrInvalidJSON       = errors.New(MsgInvalidJSON)
