@@ -5,11 +5,13 @@ package hotel.v1;
 option go_package = "api/hotel/v1;hotelv1";
 
 import "hotel/v1/rpc/hotel/create_hotel.proto";
+import "hotel/v1/rpc/room/create_room.proto";
 import "hotel/v1/rpc/hotel/get_hotels.proto";
 import "hotel/v1/rpc/hotel/get_hotel.proto";
 import "hotel/v1/rpc/hotel/update_hotel.proto";
 import "hotel/v1/rpc/hotel/update_hotel_title.proto";
 import "hotel/v1/rpc/hotel/delete_hotel.proto";
+
 
 service HotelService {
   rpc CreateHotel(CreateHotelRequest) returns (CreateHotelResponse);
@@ -18,4 +20,8 @@ service HotelService {
   rpc UpdateHotel(UpdateHotelRequest) returns (UpdateHotelResponse);
   rpc UpdateHotelTitle(UpdateHotelTitleRequest) returns (UpdateHotelTitleResponse);
   rpc DeleteHotel(DeleteHotelRequest) returns (DeleteHotelResponse);
+}
+
+service RoomService {
+  rpc CreateRoom(CreateRoomRequest) returns (CreateRoomResponse);
 }

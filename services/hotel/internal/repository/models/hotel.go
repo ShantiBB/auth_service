@@ -16,7 +16,7 @@ type CreateHotel struct {
 	CountryCode string
 	CitySlug    string
 	Title       string
-	Slug        string
+	HotelSlug   string
 	Address     string
 	OwnerID     int64
 	Location    Location
@@ -29,18 +29,18 @@ type UpdateHotel struct {
 }
 
 type UpdateHotelTitle struct {
-	Title string
-	Slug  string
+	Title     string
+	HotelSlug string
 }
 
 type HotelShort struct {
-	Rating   *float32
-	Title    string
-	Slug     string
-	Address  string
-	OwnerID  int64
-	Location Location
-	ID       uuid.UUID
+	Rating    *float32
+	Title     string
+	HotelSlug string
+	Address   string
+	OwnerID   int64
+	Location  Location
+	ID        uuid.UUID
 }
 
 type Hotel struct {
@@ -50,7 +50,7 @@ type Hotel struct {
 	Rating      *float32
 	Title       string
 	Address     string
-	Slug        string
+	HotelSlug   string
 	OwnerID     int64
 	Location    Location
 	ID          uuid.UUID
@@ -64,7 +64,7 @@ type HotelList struct {
 func (h *CreateHotel) ToRead() *Hotel {
 	return &Hotel{
 		Title:       h.Title,
-		Slug:        h.Slug,
+		HotelSlug:   h.HotelSlug,
 		OwnerID:     h.OwnerID,
 		Description: h.Description,
 		Address:     h.Address,

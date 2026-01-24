@@ -46,7 +46,7 @@ func HotelCreateEntityToResponse(req models.Hotel) response.HotelCreate {
 	return response.HotelCreate{
 		ID:          req.ID,
 		Title:       req.Title,
-		Slug:        req.Slug,
+		Slug:        req.HotelSlug,
 		OwnerID:     req.OwnerID,
 		Description: req.Description,
 		Address:     req.Address,
@@ -81,7 +81,7 @@ func HotelShortEntityToShortResponse(req models.HotelShort) response.HotelShort 
 	return response.HotelShort{
 		ID:       req.ID,
 		Title:    req.Title,
-		Slug:     req.Slug,
+		Slug:     req.HotelSlug,
 		OwnerID:  req.OwnerID,
 		Address:  req.Address,
 		Rating:   req.Rating,
@@ -104,7 +104,7 @@ func HotelUpdateEntityToResponse(req models.UpdateHotel) response.HotelUpdate {
 func HotelTitleUpdateEntityToResponse(req models.UpdateHotelTitle) response.HotelTitleUpdate {
 	return response.HotelTitleUpdate{
 		Title: req.Title,
-		Slug:  req.Slug,
+		Slug:  req.HotelSlug,
 	}
 }
 

@@ -12,14 +12,14 @@ import (
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
-func (r *Repository) CreateHotel(ctx context.Context, h *models.CreateHotel) (*models.Hotel, error) {
+func (r *Repository) InsertHotel(ctx context.Context, h *models.CreateHotel) (*models.Hotel, error) {
 	newHotel := h.ToRead()
 	err := r.db.QueryRow(
 		ctx, query.CreateHotelQuery,
 		h.CountryCode,
 		h.CitySlug,
 		h.Title,
-		h.Slug,
+		h.HotelSlug,
 		h.OwnerID,
 		h.Description,
 		h.Address,
@@ -41,7 +41,7 @@ func (r *Repository) CreateHotel(ctx context.Context, h *models.CreateHotel) (*m
 	return newHotel, nil
 }
 
-func (r *Repository) GetHotels(
+func (r *Repository) SelectHotels(
 	ctx context.Context,
 	ref models.HotelRef,
 	sortField string,
@@ -69,7 +69,7 @@ func (r *Repository) GetHotels(
 		err = rows.Scan(
 			&h.ID,
 			&h.Title,
-			&h.Slug,
+			&h.HotelSlug,
 			&h.OwnerID,
 			&h.Address,
 			&h.Rating,
@@ -101,7 +101,7 @@ func (r *Repository) GetHotels(
 	return hotelList, nil
 }
 
-func (r *Repository) GetHotelBySlug(ctx context.Context, ref models.HotelRef) (*models.Hotel, error) {
+func (r *Repository) SelectHotelBySlug(ctx context.Context, ref models.HotelRef) (*models.Hotel, error) {
 	var h models.Hotel
 	err := r.db.QueryRow(
 		ctx, query.GetHotelBySlug,
@@ -163,7 +163,7 @@ func (r *Repository) UpdateHotelTitleBySlug(
 	row, err := r.db.Exec(
 		ctx, query.UpdateHotelTitleBySlug,
 		h.Title,
-		h.Slug,
+		h.HotelSlug,
 		ref.CountryCode,
 		ref.CitySlug,
 		ref.HotelSlug,

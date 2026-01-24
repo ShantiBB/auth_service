@@ -26,7 +26,7 @@ type UpdateHotelTitleRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CountryCode   string                 `protobuf:"bytes,1,opt,name=country_code,json=countryCode,proto3" json:"country_code,omitempty"`
 	CitySlug      string                 `protobuf:"bytes,2,opt,name=city_slug,json=citySlug,proto3" json:"city_slug,omitempty"`
-	Slug          string                 `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
+	HotelSlug     string                 `protobuf:"bytes,3,opt,name=hotel_slug,json=hotelSlug,proto3" json:"hotel_slug,omitempty"`
 	Title         string                 `protobuf:"bytes,4,opt,name=title,proto3" json:"title,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -76,9 +76,9 @@ func (x *UpdateHotelTitleRequest) GetCitySlug() string {
 	return ""
 }
 
-func (x *UpdateHotelTitleRequest) GetSlug() string {
+func (x *UpdateHotelTitleRequest) GetHotelSlug() string {
 	if x != nil {
-		return x.Slug
+		return x.HotelSlug
 	}
 	return ""
 }
@@ -138,12 +138,13 @@ var File_hotel_v1_rpc_hotel_update_hotel_title_proto protoreflect.FileDescriptor
 
 const file_hotel_v1_rpc_hotel_update_hotel_title_proto_rawDesc = "" +
 	"\n" +
-	"+hotel/v1/rpc/hotel/update_hotel_title.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bhotel/v1/models/hotel.proto\"\xe0\x01\n" +
+	"+hotel/v1/rpc/hotel/update_hotel_title.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bhotel/v1/models/hotel.proto\"\xeb\x01\n" +
 	"\x17UpdateHotelTitleRequest\x124\n" +
 	"\fcountry_code\x18\x01 \x01(\tB\x11\xbaH\x0er\f2\n" +
 	"^[a-z]{2}$R\vcountryCode\x12<\n" +
-	"\tcity_slug\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\bcitySlug\x123\n" +
-	"\x04slug\x18\x03 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\x04slug\x12\x1c\n" +
+	"\tcity_slug\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\bcitySlug\x12>\n" +
+	"\n" +
+	"hotel_slug\x18\x03 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\thotelSlug\x12\x1c\n" +
 	"\x05title\x18\x04 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\x05title\"L\n" +
 	"\x18UpdateHotelTitleResponse\x120\n" +
 	"\x05hotel\x18\x01 \x01(\v2\x1a.hotel.v1.UpdateHotelTitleR\x05hotelB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"

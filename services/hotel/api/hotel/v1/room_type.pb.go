@@ -24,31 +24,34 @@ const (
 type RoomType int32
 
 const (
-	RoomType_ROOM_TYPE_SINGLE       RoomType = 0
-	RoomType_ROOM_TYPE_DOUBLE       RoomType = 1
-	RoomType_ROOM_TYPE_SUITE        RoomType = 2
-	RoomType_ROOM_TYPE_DELUXE       RoomType = 3
-	RoomType_ROOM_TYPE_FAMILY       RoomType = 4
-	RoomType_ROOM_TYPE_PRESIDENTIAL RoomType = 5
+	RoomType_ROOM_TYPE_UNSPECIFIED  RoomType = 0
+	RoomType_ROOM_TYPE_SINGLE       RoomType = 1
+	RoomType_ROOM_TYPE_DOUBLE       RoomType = 2
+	RoomType_ROOM_TYPE_SUITE        RoomType = 3
+	RoomType_ROOM_TYPE_DELUXE       RoomType = 4
+	RoomType_ROOM_TYPE_FAMILY       RoomType = 5
+	RoomType_ROOM_TYPE_PRESIDENTIAL RoomType = 6
 )
 
 // Enum value maps for RoomType.
 var (
 	RoomType_name = map[int32]string{
-		0: "ROOM_TYPE_SINGLE",
-		1: "ROOM_TYPE_DOUBLE",
-		2: "ROOM_TYPE_SUITE",
-		3: "ROOM_TYPE_DELUXE",
-		4: "ROOM_TYPE_FAMILY",
-		5: "ROOM_TYPE_PRESIDENTIAL",
+		0: "ROOM_TYPE_UNSPECIFIED",
+		1: "ROOM_TYPE_SINGLE",
+		2: "ROOM_TYPE_DOUBLE",
+		3: "ROOM_TYPE_SUITE",
+		4: "ROOM_TYPE_DELUXE",
+		5: "ROOM_TYPE_FAMILY",
+		6: "ROOM_TYPE_PRESIDENTIAL",
 	}
 	RoomType_value = map[string]int32{
-		"ROOM_TYPE_SINGLE":       0,
-		"ROOM_TYPE_DOUBLE":       1,
-		"ROOM_TYPE_SUITE":        2,
-		"ROOM_TYPE_DELUXE":       3,
-		"ROOM_TYPE_FAMILY":       4,
-		"ROOM_TYPE_PRESIDENTIAL": 5,
+		"ROOM_TYPE_UNSPECIFIED":  0,
+		"ROOM_TYPE_SINGLE":       1,
+		"ROOM_TYPE_DOUBLE":       2,
+		"ROOM_TYPE_SUITE":        3,
+		"ROOM_TYPE_DELUXE":       4,
+		"ROOM_TYPE_FAMILY":       5,
+		"ROOM_TYPE_PRESIDENTIAL": 6,
 	}
 )
 
@@ -83,14 +86,15 @@ var File_hotel_v1_enums_room_type_proto protoreflect.FileDescriptor
 
 const file_hotel_v1_enums_room_type_proto_rawDesc = "" +
 	"\n" +
-	"\x1ehotel/v1/enums/room_type.proto\x12\bhotel.v1*\x93\x01\n" +
-	"\bRoomType\x12\x14\n" +
-	"\x10ROOM_TYPE_SINGLE\x10\x00\x12\x14\n" +
-	"\x10ROOM_TYPE_DOUBLE\x10\x01\x12\x13\n" +
-	"\x0fROOM_TYPE_SUITE\x10\x02\x12\x14\n" +
-	"\x10ROOM_TYPE_DELUXE\x10\x03\x12\x14\n" +
-	"\x10ROOM_TYPE_FAMILY\x10\x04\x12\x1a\n" +
-	"\x16ROOM_TYPE_PRESIDENTIAL\x10\x05B\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
+	"\x1ehotel/v1/enums/room_type.proto\x12\bhotel.v1*\xae\x01\n" +
+	"\bRoomType\x12\x19\n" +
+	"\x15ROOM_TYPE_UNSPECIFIED\x10\x00\x12\x14\n" +
+	"\x10ROOM_TYPE_SINGLE\x10\x01\x12\x14\n" +
+	"\x10ROOM_TYPE_DOUBLE\x10\x02\x12\x13\n" +
+	"\x0fROOM_TYPE_SUITE\x10\x03\x12\x14\n" +
+	"\x10ROOM_TYPE_DELUXE\x10\x04\x12\x14\n" +
+	"\x10ROOM_TYPE_FAMILY\x10\x05\x12\x1a\n" +
+	"\x16ROOM_TYPE_PRESIDENTIAL\x10\x06B\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
 
 var (
 	file_hotel_v1_enums_room_type_proto_rawDescOnce sync.Once

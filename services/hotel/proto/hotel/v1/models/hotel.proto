@@ -13,32 +13,32 @@ message Location {
 
 message CreateHotel {
   string id = 1;
-  string slug = 3;
   string title = 2;
+  string hotel_slug = 3;
   int64 owner_id = 4;
   string description = 5;
-  string address = 7;
-  Location location = 8;
-  google.protobuf.Timestamp created_at = 9;
-  google.protobuf.Timestamp updated_at = 10;
+  string address = 6;
+  Location location = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
 }
 
 message Hotel {
   string id = 1;
   string title = 2;
-  int64 owner_id = 4;
-  string description = 5;
-  optional float rating = 6;
-  string address = 7;
-  Location location = 8;
-  google.protobuf.Timestamp created_at = 9;
-  google.protobuf.Timestamp updated_at = 10;
+  int64 owner_id = 3;
+  string description = 4;
+  optional float rating = 5;
+  string address = 6;
+  Location location = 7;
+  google.protobuf.Timestamp created_at = 8;
+  google.protobuf.Timestamp updated_at = 9;
 }
 
 message HotelShort {
   string id = 1;
   string title = 2;
-  string slug = 3;
+  string hotel_slug = 3;
   int64 owner_id = 4;
   optional float rating = 5;
   string address = 6;
@@ -53,5 +53,5 @@ message UpdateHotel {
 
 message UpdateHotelTitle {
   string title = 1;
-  string slug = 2;
+  string hotel_slug = 2;
 }

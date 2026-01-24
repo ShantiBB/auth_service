@@ -17,7 +17,7 @@ func locationResponseToProto(l *models.Location) *hotelv1.Location {
 func CreateHotelResponseToProto(resp *models.Hotel) *hotelv1.CreateHotel {
 	return &hotelv1.CreateHotel{
 		Id:          resp.ID.String(),
-		Slug:        resp.Slug,
+		HotelSlug:   resp.HotelSlug,
 		Title:       resp.Title,
 		OwnerId:     resp.OwnerID,
 		Description: *resp.Description,
@@ -44,13 +44,13 @@ func HotelResponseToProto(resp *models.Hotel) *hotelv1.Hotel {
 
 func HotelShortResponseToProto(resp *models.HotelShort) *hotelv1.HotelShort {
 	return &hotelv1.HotelShort{
-		Id:       resp.ID.String(),
-		Title:    resp.Title,
-		Slug:     resp.Slug,
-		OwnerId:  resp.OwnerID,
-		Rating:   resp.Rating,
-		Address:  resp.Address,
-		Location: locationResponseToProto(&resp.Location),
+		Id:        resp.ID.String(),
+		Title:     resp.Title,
+		HotelSlug: resp.HotelSlug,
+		OwnerId:   resp.OwnerID,
+		Rating:    resp.Rating,
+		Address:   resp.Address,
+		Location:  locationResponseToProto(&resp.Location),
 	}
 }
 
@@ -64,8 +64,8 @@ func UpdateHotelResponseToProto(resp models.UpdateHotel) *hotelv1.UpdateHotel {
 
 func UpdateHotelTitleResponseToProto(resp models.UpdateHotelTitle) *hotelv1.UpdateHotelTitle {
 	return &hotelv1.UpdateHotelTitle{
-		Title: resp.Title,
-		Slug:  resp.Slug,
+		Title:     resp.Title,
+		HotelSlug: resp.HotelSlug,
 	}
 }
 

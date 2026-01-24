@@ -77,14 +77,14 @@ func (x *Location) GetLongitude() float32 {
 type CreateHotel struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
-	Slug          string                 `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	HotelSlug     string                 `protobuf:"bytes,3,opt,name=hotel_slug,json=hotelSlug,proto3" json:"hotel_slug,omitempty"`
 	OwnerId       int64                  `protobuf:"varint,4,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	Address       string                 `protobuf:"bytes,7,opt,name=address,proto3" json:"address,omitempty"`
-	Location      *Location              `protobuf:"bytes,8,opt,name=location,proto3" json:"location,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	Address       string                 `protobuf:"bytes,6,opt,name=address,proto3" json:"address,omitempty"`
+	Location      *Location              `protobuf:"bytes,7,opt,name=location,proto3" json:"location,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -126,16 +126,16 @@ func (x *CreateHotel) GetId() string {
 	return ""
 }
 
-func (x *CreateHotel) GetSlug() string {
+func (x *CreateHotel) GetTitle() string {
 	if x != nil {
-		return x.Slug
+		return x.Title
 	}
 	return ""
 }
 
-func (x *CreateHotel) GetTitle() string {
+func (x *CreateHotel) GetHotelSlug() string {
 	if x != nil {
-		return x.Title
+		return x.HotelSlug
 	}
 	return ""
 }
@@ -186,13 +186,13 @@ type Hotel struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	OwnerId       int64                  `protobuf:"varint,4,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
-	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
-	Rating        *float32               `protobuf:"fixed32,6,opt,name=rating,proto3,oneof" json:"rating,omitempty"`
-	Address       string                 `protobuf:"bytes,7,opt,name=address,proto3" json:"address,omitempty"`
-	Location      *Location              `protobuf:"bytes,8,opt,name=location,proto3" json:"location,omitempty"`
-	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,3,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	Description   string                 `protobuf:"bytes,4,opt,name=description,proto3" json:"description,omitempty"`
+	Rating        *float32               `protobuf:"fixed32,5,opt,name=rating,proto3,oneof" json:"rating,omitempty"`
+	Address       string                 `protobuf:"bytes,6,opt,name=address,proto3" json:"address,omitempty"`
+	Location      *Location              `protobuf:"bytes,7,opt,name=location,proto3" json:"location,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,8,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -294,7 +294,7 @@ type HotelShort struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	Slug          string                 `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
+	HotelSlug     string                 `protobuf:"bytes,3,opt,name=hotel_slug,json=hotelSlug,proto3" json:"hotel_slug,omitempty"`
 	OwnerId       int64                  `protobuf:"varint,4,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	Rating        *float32               `protobuf:"fixed32,5,opt,name=rating,proto3,oneof" json:"rating,omitempty"`
 	Address       string                 `protobuf:"bytes,6,opt,name=address,proto3" json:"address,omitempty"`
@@ -347,9 +347,9 @@ func (x *HotelShort) GetTitle() string {
 	return ""
 }
 
-func (x *HotelShort) GetSlug() string {
+func (x *HotelShort) GetHotelSlug() string {
 	if x != nil {
-		return x.Slug
+		return x.HotelSlug
 	}
 	return ""
 }
@@ -445,7 +445,7 @@ func (x *UpdateHotel) GetLocation() *Location {
 type UpdateHotelTitle struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Title         string                 `protobuf:"bytes,1,opt,name=title,proto3" json:"title,omitempty"`
-	Slug          string                 `protobuf:"bytes,2,opt,name=slug,proto3" json:"slug,omitempty"`
+	HotelSlug     string                 `protobuf:"bytes,2,opt,name=hotel_slug,json=hotelSlug,proto3" json:"hotel_slug,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -487,9 +487,9 @@ func (x *UpdateHotelTitle) GetTitle() string {
 	return ""
 }
 
-func (x *UpdateHotelTitle) GetSlug() string {
+func (x *UpdateHotelTitle) GetHotelSlug() string {
 	if x != nil {
-		return x.Slug
+		return x.HotelSlug
 	}
 	return ""
 }
@@ -501,39 +501,39 @@ const file_hotel_v1_models_hotel_proto_rawDesc = "" +
 	"\x1bhotel/v1/models/hotel.proto\x12\bhotel.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"D\n" +
 	"\bLocation\x12\x1a\n" +
 	"\blatitude\x18\x01 \x01(\x02R\blatitude\x12\x1c\n" +
-	"\tlongitude\x18\x02 \x01(\x02R\tlongitude\"\xc4\x02\n" +
+	"\tlongitude\x18\x02 \x01(\x02R\tlongitude\"\xcf\x02\n" +
 	"\vCreateHotel\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
-	"\x04slug\x18\x03 \x01(\tR\x04slug\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x19\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1d\n" +
+	"\n" +
+	"hotel_slug\x18\x03 \x01(\tR\thotelSlug\x12\x19\n" +
 	"\bowner_id\x18\x04 \x01(\x03R\aownerId\x12 \n" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x18\n" +
-	"\aaddress\x18\a \x01(\tR\aaddress\x12.\n" +
-	"\blocation\x18\b \x01(\v2\x12.hotel.v1.LocationR\blocation\x129\n" +
+	"\aaddress\x18\x06 \x01(\tR\aaddress\x12.\n" +
+	"\blocation\x18\a \x01(\v2\x12.hotel.v1.LocationR\blocation\x129\n" +
 	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xd2\x02\n" +
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xd2\x02\n" +
 	"\x05Hotel\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
 	"\x05title\x18\x02 \x01(\tR\x05title\x12\x19\n" +
-	"\bowner_id\x18\x04 \x01(\x03R\aownerId\x12 \n" +
-	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x1b\n" +
-	"\x06rating\x18\x06 \x01(\x02H\x00R\x06rating\x88\x01\x01\x12\x18\n" +
-	"\aaddress\x18\a \x01(\tR\aaddress\x12.\n" +
-	"\blocation\x18\b \x01(\v2\x12.hotel.v1.LocationR\blocation\x129\n" +
+	"\bowner_id\x18\x03 \x01(\x03R\aownerId\x12 \n" +
+	"\vdescription\x18\x04 \x01(\tR\vdescription\x12\x1b\n" +
+	"\x06rating\x18\x05 \x01(\x02H\x00R\x06rating\x88\x01\x01\x12\x18\n" +
+	"\aaddress\x18\x06 \x01(\tR\aaddress\x12.\n" +
+	"\blocation\x18\a \x01(\v2\x12.hotel.v1.LocationR\blocation\x129\n" +
 	"\n" +
-	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"created_at\x18\b \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\n" +
-	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\t\n" +
-	"\a_rating\"\xd3\x01\n" +
+	"updated_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\t\n" +
+	"\a_rating\"\xde\x01\n" +
 	"\n" +
 	"HotelShort\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
-	"\x04slug\x18\x03 \x01(\tR\x04slug\x12\x19\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x1d\n" +
+	"\n" +
+	"hotel_slug\x18\x03 \x01(\tR\thotelSlug\x12\x19\n" +
 	"\bowner_id\x18\x04 \x01(\x03R\aownerId\x12\x1b\n" +
 	"\x06rating\x18\x05 \x01(\x02H\x00R\x06rating\x88\x01\x01\x12\x18\n" +
 	"\aaddress\x18\x06 \x01(\tR\aaddress\x12.\n" +
@@ -542,10 +542,11 @@ const file_hotel_v1_models_hotel_proto_rawDesc = "" +
 	"\vUpdateHotel\x12 \n" +
 	"\vdescription\x18\x01 \x01(\tR\vdescription\x12\x18\n" +
 	"\aaddress\x18\x02 \x01(\tR\aaddress\x12.\n" +
-	"\blocation\x18\x03 \x01(\v2\x12.hotel.v1.LocationR\blocation\"<\n" +
+	"\blocation\x18\x03 \x01(\v2\x12.hotel.v1.LocationR\blocation\"G\n" +
 	"\x10UpdateHotelTitle\x12\x14\n" +
-	"\x05title\x18\x01 \x01(\tR\x05title\x12\x12\n" +
-	"\x04slug\x18\x02 \x01(\tR\x04slugB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
+	"\x05title\x18\x01 \x01(\tR\x05title\x12\x1d\n" +
+	"\n" +
+	"hotel_slug\x18\x02 \x01(\tR\thotelSlugB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
 
 var (
 	file_hotel_v1_models_hotel_proto_rawDescOnce sync.Once

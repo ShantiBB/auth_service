@@ -13,7 +13,7 @@ type locationGetter interface {
 type hotelRefGetter interface {
 	GetCountryCode() string
 	GetCitySlug() string
-	GetSlug() string
+	GetHotelSlug() string
 }
 
 func locationRequestToDomain[T locationGetter](req T) models.Location {
@@ -27,7 +27,7 @@ func GetHotelRefRequestToDomain[T hotelRefGetter](req T) models.HotelRef {
 	return models.HotelRef{
 		CountryCode: req.GetCountryCode(),
 		CitySlug:    req.GetCitySlug(),
-		HotelSlug:   req.GetSlug(),
+		HotelSlug:   req.GetHotelSlug(),
 	}
 }
 

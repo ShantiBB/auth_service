@@ -1,7 +1,7 @@
 package query
 
 const (
-	RoomCreateQuery = `
+	InsertRoomQuery = `
 		INSERT INTO room (
 			hotel_id,
 			title,
@@ -20,7 +20,7 @@ const (
 		WHERE h.country_code = $1 AND h.city_slug = $2 AND h.slug = $3
 		RETURNING id, status, created_at, updated_at;`
 
-	RoomGetAll = `
+	SelectRooms = `
 		SELECT r.id,
 			   r.title,
 			   r.room_number,
@@ -30,14 +30,15 @@ const (
 			   r.capacity,
 			   r.area_sqm,
 			   r.amenities,
-			   r.images
+			   r.images,
+			   COUNT(*) OVER() as total_count
 		FROM room r
 		JOIN hotel h ON h.id = r.hotel_id
 		WHERE h.country_code = $1 AND h.city_slug = $2 AND h.slug = $3
 		ORDER BY r.room_number
 		LIMIT $4 OFFSET $5;`
 
-	RoomGetByID = `
+	SelectRoomByID = `
 		SELECT r.title,
 			   r.description,
 			   r.room_number,
@@ -55,7 +56,7 @@ const (
 		JOIN hotel h ON h.id = r.hotel_id
 		WHERE h.country_code = $1 AND h.city_slug = $2 AND h.slug = $3 AND r.id = $4;`
 
-	RoomUpdateByID = `
+	UpdateRoomByID = `
 		UPDATE room r
 		SET title       = $5,
 		    description = $6,
@@ -70,20 +71,14 @@ const (
 		FROM hotel h
 		WHERE h.id = r.hotel_id AND h.country_code = $1 AND h.city_slug = $2 AND h.slug = $3 AND r.id = $4;`
 
-	RoomStatusUpdateByID = `
+	UpdateRoomStatusByID = `
 		UPDATE room r
 		SET status = $5
 		FROM hotel h
 		WHERE h.id = r.hotel_id AND h.country_code = $1 AND h.city_slug = $2 AND h.slug = $3 AND r.id = $4;`
 
-	RoomDeleteByID = `
+	DeleteRoomByID = `
 		DELETE FROM room r
 		USING hotel h
 		WHERE h.id = r.hotel_id AND h.country_code = $1 AND h.city_slug = $2 AND h.slug = $3 AND r.id = $4;`
-
-	RoomGetCountRows = `
-		SELECT COUNT(*)
-		FROM room r
-		JOIN hotel h ON h.id = r.hotel_id
-		WHERE h.country_code = $1 AND h.city_slug = $2 AND h.slug = $3;`
 )

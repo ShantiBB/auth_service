@@ -24,25 +24,28 @@ const (
 type RoomStatus int32
 
 const (
-	RoomStatus_ROOM_STATUS_AVAILABLE   RoomStatus = 0
-	RoomStatus_ROOM_STATUS_OCCUPIED    RoomStatus = 1
-	RoomStatus_ROOM_STATUS_MAINTENANCE RoomStatus = 2
-	RoomStatus_ROOM_STATUS_CLEANING    RoomStatus = 3
+	RoomStatus_ROOM_STATUS_UNSPECIFIED RoomStatus = 0
+	RoomStatus_ROOM_STATUS_AVAILABLE   RoomStatus = 1
+	RoomStatus_ROOM_STATUS_OCCUPIED    RoomStatus = 2
+	RoomStatus_ROOM_STATUS_MAINTENANCE RoomStatus = 3
+	RoomStatus_ROOM_STATUS_CLEANING    RoomStatus = 4
 )
 
 // Enum value maps for RoomStatus.
 var (
 	RoomStatus_name = map[int32]string{
-		0: "ROOM_STATUS_AVAILABLE",
-		1: "ROOM_STATUS_OCCUPIED",
-		2: "ROOM_STATUS_MAINTENANCE",
-		3: "ROOM_STATUS_CLEANING",
+		0: "ROOM_STATUS_UNSPECIFIED",
+		1: "ROOM_STATUS_AVAILABLE",
+		2: "ROOM_STATUS_OCCUPIED",
+		3: "ROOM_STATUS_MAINTENANCE",
+		4: "ROOM_STATUS_CLEANING",
 	}
 	RoomStatus_value = map[string]int32{
-		"ROOM_STATUS_AVAILABLE":   0,
-		"ROOM_STATUS_OCCUPIED":    1,
-		"ROOM_STATUS_MAINTENANCE": 2,
-		"ROOM_STATUS_CLEANING":    3,
+		"ROOM_STATUS_UNSPECIFIED": 0,
+		"ROOM_STATUS_AVAILABLE":   1,
+		"ROOM_STATUS_OCCUPIED":    2,
+		"ROOM_STATUS_MAINTENANCE": 3,
+		"ROOM_STATUS_CLEANING":    4,
 	}
 )
 
@@ -77,13 +80,14 @@ var File_hotel_v1_enums_room_status_proto protoreflect.FileDescriptor
 
 const file_hotel_v1_enums_room_status_proto_rawDesc = "" +
 	"\n" +
-	" hotel/v1/enums/room_status.proto\x12\bhotel.v1*x\n" +
+	" hotel/v1/enums/room_status.proto\x12\bhotel.v1*\x95\x01\n" +
 	"\n" +
-	"RoomStatus\x12\x19\n" +
-	"\x15ROOM_STATUS_AVAILABLE\x10\x00\x12\x18\n" +
-	"\x14ROOM_STATUS_OCCUPIED\x10\x01\x12\x1b\n" +
-	"\x17ROOM_STATUS_MAINTENANCE\x10\x02\x12\x18\n" +
-	"\x14ROOM_STATUS_CLEANING\x10\x03B\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
+	"RoomStatus\x12\x1b\n" +
+	"\x17ROOM_STATUS_UNSPECIFIED\x10\x00\x12\x19\n" +
+	"\x15ROOM_STATUS_AVAILABLE\x10\x01\x12\x18\n" +
+	"\x14ROOM_STATUS_OCCUPIED\x10\x02\x12\x1b\n" +
+	"\x17ROOM_STATUS_MAINTENANCE\x10\x03\x12\x18\n" +
+	"\x14ROOM_STATUS_CLEANING\x10\x04B\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
 
 var (
 	file_hotel_v1_enums_room_status_proto_rawDescOnce sync.Once

@@ -9,9 +9,9 @@ import (
 )
 
 func (s *Service) CreateHotel(ctx context.Context, h *models.CreateHotel) (*models.Hotel, error) {
-	h.Slug = slug.Make(h.Title)
+	h.HotelSlug = slug.Make(h.Title)
 
-	newHotel, err := s.repo.CreateHotel(ctx, h)
+	newHotel, err := s.repo.InsertHotel(ctx, h)
 	if err != nil {
 		return nil, err
 	}
@@ -27,7 +27,7 @@ func (s *Service) GetHotels(
 	limit uint64,
 ) (*models.HotelList, error) {
 	offset := (page - 1) * limit
-	hotelList, err := s.repo.GetHotels(ctx, ref, sort, limit, offset)
+	hotelList, err := s.repo.SelectHotels(ctx, ref, sort, limit, offset)
 	if err != nil {
 		return nil, err
 	}
@@ -36,7 +36,7 @@ func (s *Service) GetHotels(
 }
 
 func (s *Service) GetHotelBySlug(ctx context.Context, ref models.HotelRef) (*models.Hotel, error) {
-	h, err := s.repo.GetHotelBySlug(ctx, ref)
+	h, err := s.repo.SelectHotelBySlug(ctx, ref)
 	if err != nil {
 		return nil, err
 	}
@@ -57,7 +57,7 @@ func (s *Service) UpdateHotelTitleBySlug(
 	ref models.HotelRef,
 	h models.UpdateHotelTitle,
 ) (models.UpdateHotelTitle, error) {
-	h.Slug = slug.Make(h.Title)
+	h.HotelSlug = slug.Make(h.Title)
 	if err := s.repo.UpdateHotelTitleBySlug(ctx, ref, h); err != nil {
 		return models.UpdateHotelTitle{}, err
 	}

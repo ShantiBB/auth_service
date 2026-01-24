@@ -7,7 +7,7 @@ import (
 	"github.com/shopspring/decimal"
 )
 
-type RoomCreate struct {
+type CreateRoom struct {
 	Description *string
 	Title       string
 	RoomNumber  string
@@ -20,7 +20,7 @@ type RoomCreate struct {
 	Floor       int
 }
 
-type RoomUpdate struct {
+type UpdateRoom struct {
 	Description *string
 	Title       string
 	RoomNumber  string
@@ -33,7 +33,7 @@ type RoomUpdate struct {
 	Floor       int
 }
 
-type RoomStatusUpdate struct {
+type UpdateRoomStatus struct {
 	Status RoomStatus
 }
 
@@ -67,12 +67,12 @@ type RoomShort struct {
 	ID         uuid.UUID
 }
 type RoomList struct {
-	Rooms      []RoomShort
+	Rooms      []*RoomShort
 	TotalCount uint64
 }
 
-func (r *RoomCreate) ToRead() Room {
-	return Room{
+func (r *CreateRoom) ToRead() *Room {
+	return &Room{
 		Title:       r.Title,
 		Description: r.Description,
 		RoomNumber:  r.RoomNumber,

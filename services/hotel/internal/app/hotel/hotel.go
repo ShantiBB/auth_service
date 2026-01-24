@@ -45,6 +45,7 @@ func (app *App) MustLoadGRPC() {
 	grpcServer := newGRPCServer(app.Logger)
 
 	hotelv1.RegisterHotelServiceServer(grpcServer, h)
+	hotelv1.RegisterRoomServiceServer(grpcServer, h)
 	reflection.Register(grpcServer)
 
 	go func() {

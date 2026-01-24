@@ -26,7 +26,7 @@ type DeleteHotelRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CountryCode   string                 `protobuf:"bytes,1,opt,name=country_code,json=countryCode,proto3" json:"country_code,omitempty"`
 	CitySlug      string                 `protobuf:"bytes,2,opt,name=city_slug,json=citySlug,proto3" json:"city_slug,omitempty"`
-	Slug          string                 `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
+	HotelSlug     string                 `protobuf:"bytes,3,opt,name=hotel_slug,json=hotelSlug,proto3" json:"hotel_slug,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -75,9 +75,9 @@ func (x *DeleteHotelRequest) GetCitySlug() string {
 	return ""
 }
 
-func (x *DeleteHotelRequest) GetSlug() string {
+func (x *DeleteHotelRequest) GetHotelSlug() string {
 	if x != nil {
-		return x.Slug
+		return x.HotelSlug
 	}
 	return ""
 }
@@ -130,12 +130,13 @@ var File_hotel_v1_rpc_hotel_delete_hotel_proto protoreflect.FileDescriptor
 
 const file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDesc = "" +
 	"\n" +
-	"%hotel/v1/rpc/hotel/delete_hotel.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\"\xbd\x01\n" +
+	"%hotel/v1/rpc/hotel/delete_hotel.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\"\xc8\x01\n" +
 	"\x12DeleteHotelRequest\x124\n" +
 	"\fcountry_code\x18\x01 \x01(\tB\x11\xbaH\x0er\f2\n" +
 	"^[a-z]{2}$R\vcountryCode\x12<\n" +
-	"\tcity_slug\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\bcitySlug\x123\n" +
-	"\x04slug\x18\x03 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\x04slug\"/\n" +
+	"\tcity_slug\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\bcitySlug\x12>\n" +
+	"\n" +
+	"hotel_slug\x18\x03 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\thotelSlug\"/\n" +
 	"\x13DeleteHotelResponse\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessageB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
 

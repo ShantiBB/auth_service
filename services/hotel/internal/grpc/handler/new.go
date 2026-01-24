@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"buf.build/go/protovalidate"
+	"github.com/google/uuid"
 
 	hotelv1 "hotel/api/hotel/v1"
 	"hotel/internal/repository/models"
@@ -20,12 +21,25 @@ type HotelService interface {
 	DeleteHotelBySlug(ctx context.Context, ref models.HotelRef) error
 }
 
+type RoomService interface {
+	CreateRoom(ctx context.Context, hotelRef models.HotelRef, room *models.CreateRoom) (*models.Room, error)
+	GetRoomByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) (*models.Room, error)
+	GetRooms(ctx context.Context, hotel models.HotelRef, limit, offset uint64) (*models.RoomList, error)
+	UpdateRoomByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room *models.UpdateRoom) error
+	UpdateRoomStatusByID(
+		ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.UpdateRoomStatus,
+	) error
+	DeleteRoomByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) error
+}
+
 type Service interface {
 	HotelService
+	RoomService
 }
 
 type Handler struct {
 	hotelv1.UnimplementedHotelServiceServer
+	hotelv1.UnimplementedRoomServiceServer
 	svc       Service
 	validator protovalidate.Validator
 }

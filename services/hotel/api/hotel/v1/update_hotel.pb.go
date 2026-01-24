@@ -78,7 +78,7 @@ type UpdateHotelRequest struct {
 	state         protoimpl.MessageState      `protogen:"open.v1"`
 	CountryCode   string                      `protobuf:"bytes,1,opt,name=country_code,json=countryCode,proto3" json:"country_code,omitempty"`
 	CitySlug      string                      `protobuf:"bytes,2,opt,name=city_slug,json=citySlug,proto3" json:"city_slug,omitempty"`
-	Slug          string                      `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
+	HotelSlug     string                      `protobuf:"bytes,3,opt,name=hotel_slug,json=hotelSlug,proto3" json:"hotel_slug,omitempty"`
 	Description   *string                     `protobuf:"bytes,5,opt,name=description,proto3,oneof" json:"description,omitempty"`
 	Address       string                      `protobuf:"bytes,6,opt,name=address,proto3" json:"address,omitempty"`
 	Location      *UpdateHotelLocationRequest `protobuf:"bytes,7,opt,name=location,proto3" json:"location,omitempty"`
@@ -130,9 +130,9 @@ func (x *UpdateHotelRequest) GetCitySlug() string {
 	return ""
 }
 
-func (x *UpdateHotelRequest) GetSlug() string {
+func (x *UpdateHotelRequest) GetHotelSlug() string {
 	if x != nil {
-		return x.Slug
+		return x.HotelSlug
 	}
 	return ""
 }
@@ -213,12 +213,13 @@ const file_hotel_v1_rpc_hotel_update_hotel_proto_rawDesc = "" +
 	"\x1d\x00\x00\xb4B-\x00\x00\xb4\xc2R\blatitude\x12-\n" +
 	"\tlongitude\x18\x02 \x01(\x02B\x0f\xbaH\f\n" +
 	"\n" +
-	"\x1d\x00\x004C-\x00\x004\xc3R\tlongitude\"\xe0\x02\n" +
+	"\x1d\x00\x004C-\x00\x004\xc3R\tlongitude\"\xeb\x02\n" +
 	"\x12UpdateHotelRequest\x124\n" +
 	"\fcountry_code\x18\x01 \x01(\tB\x11\xbaH\x0er\f2\n" +
 	"^[a-z]{2}$R\vcountryCode\x12<\n" +
-	"\tcity_slug\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\bcitySlug\x123\n" +
-	"\x04slug\x18\x03 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\x04slug\x12%\n" +
+	"\tcity_slug\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\bcitySlug\x12>\n" +
+	"\n" +
+	"hotel_slug\x18\x03 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\thotelSlug\x12%\n" +
 	"\vdescription\x18\x05 \x01(\tH\x00R\vdescription\x88\x01\x01\x12 \n" +
 	"\aaddress\x18\x06 \x01(\tB\x06\xbaH\x03\xc8\x01\x01R\aaddress\x12H\n" +
 	"\blocation\x18\a \x01(\v2$.hotel.v1.UpdateHotelLocationRequestB\x06\xbaH\x03\xc8\x01\x01R\blocationB\x0e\n" +
