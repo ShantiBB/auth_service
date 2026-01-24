@@ -57,7 +57,7 @@ func (h *Handler) HotelCreate(w http.ResponseWriter, r *http.Request) {
 
 	newHotel := mapper.HotelCreateRequestToEntity(req)
 	createdHotel, err := h.svc.HotelCreate(ctx, hotelRef, newHotel)
-	errHandler := &helper.ErrorHandler{Conflict: consts.UniqueHotelField}
+	errHandler := &helper.ErrorHandler{Conflict: consts.ErrUniqueHotelField}
 	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
@@ -141,7 +141,7 @@ func (h *Handler) HotelGetBySlug(w http.ResponseWriter, r *http.Request) {
 	hotelRef := middleware.GetHotelRef(ctx)
 
 	hotel, err := h.svc.HotelGetBySlug(ctx, hotelRef)
-	errHandler := &helper.ErrorHandler{NotFound: consts.HotelNotFound}
+	errHandler := &helper.ErrorHandler{NotFound: consts.ErrHotelNotFound}
 	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
@@ -179,7 +179,7 @@ func (h *Handler) HotelUpdateBySlug(w http.ResponseWriter, r *http.Request) {
 
 	hotelUpdate := mapper.HotelUpdateRequestToEntity(req)
 	err := h.svc.HotelUpdateBySlug(ctx, hotelRef, hotelUpdate)
-	errHandler := &helper.ErrorHandler{NotFound: consts.HotelNotFound}
+	errHandler := &helper.ErrorHandler{NotFound: consts.ErrHotelNotFound}
 	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
@@ -216,7 +216,7 @@ func (h *Handler) HotelTitleUpdateBySlug(w http.ResponseWriter, r *http.Request)
 	}
 
 	hotelUpdated, err := h.svc.HotelTitleUpdateBySlug(ctx, hotelRef, mapper.HotelTitleUpdateRequestToEntity(req))
-	errHandler := &helper.ErrorHandler{NotFound: consts.HotelNotFound}
+	errHandler := &helper.ErrorHandler{NotFound: consts.ErrHotelNotFound}
 	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}
@@ -247,7 +247,7 @@ func (h *Handler) HotelDeleteBySlug(w http.ResponseWriter, r *http.Request) {
 	hotelRef := middleware.GetHotelRef(ctx)
 
 	err := h.svc.HotelDeleteBySlug(ctx, hotelRef)
-	errHandler := &helper.ErrorHandler{NotFound: consts.HotelNotFound}
+	errHandler := &helper.ErrorHandler{NotFound: consts.ErrHotelNotFound}
 	if err = errHandler.Handle(w, r, err); err != nil {
 		return
 	}

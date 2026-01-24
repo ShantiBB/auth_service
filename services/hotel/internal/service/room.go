@@ -8,15 +8,6 @@ import (
 	"github.com/google/uuid"
 )
 
-type RoomRepository interface {
-	RoomCreate(ctx context.Context, hotel models.HotelRef, room models.RoomCreate) (models.Room, error)
-	RoomGetByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) (models.Room, error)
-	RoomGetAll(ctx context.Context, hotel models.HotelRef, limit, offset uint64) (models.RoomList, error)
-	RoomUpdateByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomUpdate) error
-	RoomStatusUpdateByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID, room models.RoomStatusUpdate) error
-	RoomDeleteByID(ctx context.Context, hotel models.HotelRef, roomID uuid.UUID) error
-}
-
 func (s *Service) RoomCreate(ctx context.Context, hotel models.HotelRef, room models.RoomCreate) (models.Room, error) {
 	newRoom, err := s.repo.RoomCreate(ctx, hotel, room)
 	if err != nil {

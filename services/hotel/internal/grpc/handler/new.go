@@ -11,15 +11,13 @@ import (
 
 type HotelService interface {
 	CreateHotel(ctx context.Context, h *models.CreateHotel) (*models.Hotel, error)
-	HotelGetBySlug(ctx context.Context, hotel models.HotelRef) (models.Hotel, error)
-	GetHotels(ctx context.Context, hotelInfo *models.HotelList, sortField string, page, limit uint64) (
-		*models.HotelList, error,
-	)
-	HotelUpdateBySlug(ctx context.Context, hotel models.HotelRef, h models.UpdateHotel) error
-	HotelTitleUpdateBySlug(
-		ctx context.Context, hotel models.HotelRef, h models.UpdateHotelTitle,
+	GetHotels(ctx context.Context, ref models.HotelRef, sort string, page, limit uint64) (*models.HotelList, error)
+	GetHotelBySlug(ctx context.Context, hotel models.HotelRef) (*models.Hotel, error)
+	UpdateHotelBySlug(ctx context.Context, ref models.HotelRef, h models.UpdateHotel) error
+	UpdateHotelTitleBySlug(
+		ctx context.Context, ref models.HotelRef, h models.UpdateHotelTitle,
 	) (models.UpdateHotelTitle, error)
-	HotelDeleteBySlug(ctx context.Context, hotel models.HotelRef) error
+	DeleteHotelBySlug(ctx context.Context, ref models.HotelRef) error
 }
 
 type Service interface {

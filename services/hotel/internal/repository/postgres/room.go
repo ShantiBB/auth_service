@@ -44,7 +44,7 @@ func (r *Repository) RoomCreate(
 	if err := r.db.QueryRow(ctx, query.RoomCreateQuery, insertArgs...).Scan(scanArgs...); err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
-			return models.Room{}, consts.UniqueRoomField
+			return models.Room{}, consts.ErrUniqueRoomField
 		}
 		return models.Room{}, err
 	}
@@ -138,7 +138,7 @@ func (r *Repository) RoomGetByID(
 
 	if err := r.db.QueryRow(ctx, query.RoomGetByID, insertArgs...).Scan(scanArgs...); err != nil {
 		if errors.Is(err, pgx.ErrNoRows) {
-			return models.Room{}, consts.RoomNotFound
+			return models.Room{}, consts.ErrRoomNotFound
 		}
 		return models.Room{}, err
 	}
@@ -172,12 +172,12 @@ func (r *Repository) RoomUpdateByID(
 	if err != nil {
 		var pgErr *pgconn.PgError
 		if errors.As(err, &pgErr) && pgErr.Code == "23505" {
-			return consts.UniqueRoomField
+			return consts.ErrUniqueRoomField
 		}
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
-		return consts.RoomNotFound
+		return consts.ErrRoomNotFound
 	}
 
 	return nil
@@ -201,7 +201,7 @@ func (r *Repository) RoomStatusUpdateByID(
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
-		return consts.RoomNotFound
+		return consts.ErrRoomNotFound
 	}
 
 	return nil
@@ -220,7 +220,7 @@ func (r *Repository) RoomDeleteByID(ctx context.Context, hotel models.HotelRef, 
 		return err
 	}
 	if rowAffected := row.RowsAffected(); rowAffected == 0 {
-		return consts.RoomNotFound
+		return consts.ErrRoomNotFound
 	}
 
 	return nil

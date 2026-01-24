@@ -45,22 +45,20 @@ type HotelShort struct {
 
 type Hotel struct {
 	ID          uuid.UUID
+	CreatedAt   time.Time
 	Title       string
-	Slug        string
 	OwnerID     int64
 	Description *string
 	Address     string
 	Rating      *float32
+	Slug        string
 	Location    Location
-	CreatedAt   time.Time
 	UpdatedAt   time.Time
 }
 
 type HotelList struct {
-	CountryCode string
-	CitySlug    string
-	Hotels      []*HotelShort
-	TotalCount  uint64
+	Hotels     []*HotelShort
+	TotalCount uint64
 }
 
 func (h *CreateHotel) ToRead() Hotel {

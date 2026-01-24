@@ -2,19 +2,6 @@ package consts
 
 import "errors"
 
-// Hotel
-var (
-	HotelNotFound    = errors.New("hotel not found")
-	UniqueHotelField = errors.New("hotel title already exists")
-)
-
-// Room
-var (
-	RoomNotFound    = errors.New("room not found")
-	UniqueRoomField = errors.New("room number already exists")
-)
-
-// Field
 const (
 	ValidationUnregister = "failed to register validation"
 	FieldRequired        = "field is required"
@@ -29,11 +16,26 @@ const (
 	FieldDatetime        = "field must be in the format %s"
 	FieldEnum            = "field must be one of: %s"
 	FieldSlug            = "must contain only lowercase letters, numbers and hyphens (e.g., 'my-hotel-slug')"
+
+	MsgHotelNotFound     = "hotel not found"
+	MsgUniqueHotelField  = "hotel title already exists"
+	MsgRoomNotFound      = "room not found"
+	MsgUniqueRoomField   = "room number already exists"
+	MsgInvalidHotelID    = "invalid hotel id"
+	MsgInvalidRoomID     = "invalid room id"
+	MsgInvalidQueryParam = "invalid query parameter"
+	MsgInternalServer    = "internal server error"
+	MsgInvalidJSON       = "invalid JSON body"
 )
 
 var (
-	ErrInvalidID         = errors.New("invalid ID")
-	ErrInvalidQueryParam = errors.New("invalid query parameter")
-	ErrInternalServer    = errors.New("internal server error")
-	InvalidJSON          = errors.New("invalid JSON body")
+	ErrHotelNotFound     = errors.New(MsgHotelNotFound)
+	ErrUniqueHotelField  = errors.New(MsgUniqueHotelField)
+	ErrRoomNotFound      = errors.New(MsgRoomNotFound)
+	ErrUniqueRoomField   = errors.New(MsgUniqueRoomField)
+	ErrInvalidHotelID    = errors.New(MsgInvalidHotelID)
+	ErrInvalidRoomID     = errors.New(MsgInvalidRoomID)
+	ErrInvalidQueryParam = errors.New(MsgInvalidQueryParam)
+	ErrInternalServer    = errors.New(MsgInternalServer)
+	ErrInvalidJSON       = errors.New(MsgInvalidJSON)
 )

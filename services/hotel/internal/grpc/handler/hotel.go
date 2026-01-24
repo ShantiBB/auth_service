@@ -10,6 +10,7 @@ import (
 	hotelv1 "hotel/api/hotel/v1"
 	"hotel/internal/grpc/utils/helper"
 	"hotel/internal/grpc/utils/mapper"
+	"hotel/internal/repository/models"
 )
 
 func (h *Handler) CreateHotel(
@@ -41,9 +42,9 @@ func (h *Handler) GetHotels(
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	page, limit, hotelInfo := mapper.GetHotelsRequestToDomain(req)
+	page, limit, ref := mapper.GetHotelsRequestToDomain(req)
 
-	bookingList, err := h.svc.GetHotels(ctx, hotelInfo, "title", page, limit)
+	bookingList, err := h.svc.GetHotels(ctx, ref, "title", page, limit)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
 		return nil, helper.DomainError(err)
@@ -54,5 +55,29 @@ func (h *Handler) GetHotels(
 		TotalCount: bookingList.TotalCount,
 		Page:       req.Page,
 		Limit:      req.Limit,
+	}, nil
+}
+
+func (h *Handler) GetHotel(
+	ctx context.Context,
+	req *hotelv1.GetHotelRequest,
+) (*hotelv1.GetHotelResponse, error) {
+	if err := h.validator.Validate(req); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	ref := models.HotelRef{
+		CountryCode: req.CountryCode,
+		CitySlug:    req.CitySlug,
+		HotelSlug:   req.Slug,
+	}
+	hotel, err := h.svc.GetHotelBySlug(ctx, ref)
+	if err != nil {
+		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
+		return nil, helper.DomainError(err)
+	}
+
+	return &hotelv1.GetHotelResponse{
+		Hotel: mapper.HotelResponseToProto(hotel),
 	}, nil
 }
