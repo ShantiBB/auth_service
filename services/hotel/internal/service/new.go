@@ -13,10 +13,10 @@ type HotelRepository interface {
 	GetHotels(
 		ctx context.Context, hotelRef models.HotelRef, sortField string, limit, offset uint64,
 	) (*models.HotelList, error)
-	GetHotelBySlug(ctx context.Context, hotelRef models.HotelRef) (*models.Hotel, error)
-	UpdateHotelBySlug(ctx context.Context, hotelRef models.HotelRef, h models.UpdateHotel) error
-	UpdateHotelTitleBySlug(ctx context.Context, hotelRef models.HotelRef, h models.UpdateHotelTitle) error
-	DeleteHotelBySlug(ctx context.Context, hotelRef models.HotelRef) error
+	GetHotelBySlug(ctx context.Context, ref models.HotelRef) (*models.Hotel, error)
+	UpdateHotelBySlug(ctx context.Context, ref models.HotelRef, h models.UpdateHotel) error
+	UpdateHotelTitleBySlug(ctx context.Context, ref models.HotelRef, h models.UpdateHotelTitle) error
+	DeleteHotelBySlug(ctx context.Context, ref models.HotelRef) error
 }
 
 type RoomRepository interface {

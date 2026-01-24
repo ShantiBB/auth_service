@@ -43,7 +43,7 @@ func (r *Repository) CreateHotel(ctx context.Context, h models.CreateHotel) (mod
 
 func (r *Repository) GetHotels(
 	ctx context.Context,
-	hotelRef models.HotelRef,
+	ref models.HotelRef,
 	sortField string,
 	limit uint64,
 	offset uint64,
@@ -51,8 +51,8 @@ func (r *Repository) GetHotels(
 	rows, err := r.db.Query(
 		ctx,
 		query.GetHotels,
-		hotelRef.CountryCode,
-		hotelRef.CitySlug,
+		ref.CountryCode,
+		ref.CitySlug,
 		sortField,
 		limit,
 		offset,
@@ -101,13 +101,13 @@ func (r *Repository) GetHotels(
 	return hotelList, nil
 }
 
-func (r *Repository) GetHotelBySlug(ctx context.Context, hotelRef models.HotelRef) (*models.Hotel, error) {
+func (r *Repository) GetHotelBySlug(ctx context.Context, ref models.HotelRef) (*models.Hotel, error) {
 	var h models.Hotel
 	err := r.db.QueryRow(
 		ctx, query.GetHotelBySlug,
-		hotelRef.CountryCode,
-		hotelRef.CitySlug,
-		hotelRef.HotelSlug,
+		ref.CountryCode,
+		ref.CitySlug,
+		ref.HotelSlug,
 	).Scan(
 		&h.ID,
 		&h.Title,
@@ -130,16 +130,16 @@ func (r *Repository) GetHotelBySlug(ctx context.Context, hotelRef models.HotelRe
 	return &h, nil
 }
 
-func (r *Repository) UpdateHotelBySlug(ctx context.Context, hotelRef models.HotelRef, h models.UpdateHotel) error {
+func (r *Repository) UpdateHotelBySlug(ctx context.Context, ref models.HotelRef, h models.UpdateHotel) error {
 	row, err := r.db.Exec(
 		ctx, query.UpdateHotelBySlug,
 		h.Description,
 		h.Address,
 		h.Location.Longitude,
 		h.Location.Latitude,
-		hotelRef.CountryCode,
-		hotelRef.CitySlug,
-		hotelRef.HotelSlug,
+		ref.CountryCode,
+		ref.CitySlug,
+		ref.HotelSlug,
 	)
 	if err != nil {
 		var pgErr *pgconn.PgError
@@ -157,16 +157,16 @@ func (r *Repository) UpdateHotelBySlug(ctx context.Context, hotelRef models.Hote
 
 func (r *Repository) UpdateHotelTitleBySlug(
 	ctx context.Context,
-	hotelRef models.HotelRef,
+	ref models.HotelRef,
 	h models.UpdateHotelTitle,
 ) error {
 	row, err := r.db.Exec(
 		ctx, query.UpdateHotelTitleBySlug,
 		h.Title,
 		h.Slug,
-		hotelRef.CountryCode,
-		hotelRef.CitySlug,
-		hotelRef.HotelSlug,
+		ref.CountryCode,
+		ref.CitySlug,
+		ref.HotelSlug,
 	)
 	if err != nil {
 		var pgErr *pgconn.PgError
@@ -182,8 +182,8 @@ func (r *Repository) UpdateHotelTitleBySlug(
 	return nil
 }
 
-func (r *Repository) DeleteHotelBySlug(ctx context.Context, hotelRef models.HotelRef) error {
-	row, err := r.db.Exec(ctx, query.DeleteHotelBySlug, hotelRef.CountryCode, hotelRef.CitySlug, hotelRef.HotelSlug)
+func (r *Repository) DeleteHotelBySlug(ctx context.Context, ref models.HotelRef) error {
+	row, err := r.db.Exec(ctx, query.DeleteHotelBySlug, ref.CountryCode, ref.CitySlug, ref.HotelSlug)
 	if err != nil {
 		return err
 	}

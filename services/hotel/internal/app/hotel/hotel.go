@@ -62,7 +62,7 @@ func (app *App) gracefulShutdown(grpcServer *grpc.Server) {
 	signal.Notify(quit, os.Interrupt, syscall.SIGTERM)
 	<-quit
 
-	slog.Info("Shutting down gRPC server...")
+	slog.Info("Shutting down gRPC server")
 	grpcServer.GracefulStop()
 	slog.Info("gRPC server stopped")
 }

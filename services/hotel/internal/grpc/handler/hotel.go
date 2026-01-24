@@ -10,7 +10,6 @@ import (
 	hotelv1 "hotel/api/hotel/v1"
 	"hotel/internal/grpc/utils/helper"
 	"hotel/internal/grpc/utils/mapper"
-	"hotel/internal/repository/models"
 )
 
 func (h *Handler) CreateHotel(
@@ -22,7 +21,6 @@ func (h *Handler) CreateHotel(
 	}
 
 	hotel := mapper.CreateHotelRequestToDomain(req)
-
 	created, err := h.svc.CreateHotel(ctx, hotel)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
@@ -43,7 +41,6 @@ func (h *Handler) GetHotels(
 	}
 
 	page, limit, ref := mapper.GetHotelsRequestToDomain(req)
-
 	bookingList, err := h.svc.GetHotels(ctx, ref, "title", page, limit)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
@@ -66,11 +63,7 @@ func (h *Handler) GetHotel(
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	ref := models.HotelRef{
-		CountryCode: req.CountryCode,
-		CitySlug:    req.CitySlug,
-		HotelSlug:   req.Slug,
-	}
+	ref := mapper.GetHotelRefRequestToDomain(req)
 	hotel, err := h.svc.GetHotelBySlug(ctx, ref)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
@@ -90,20 +83,37 @@ func (h *Handler) UpdateHotel(
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	ref := models.HotelRef{
-		CountryCode: req.CountryCode,
-		CitySlug:    req.CitySlug,
-		HotelSlug:   req.Slug,
-	}
+	ref := mapper.GetHotelRefRequestToDomain(req)
 	hotel := mapper.UpdateHotelRequestToDomain(req)
-
 	if err := h.svc.UpdateHotelBySlug(ctx, ref, hotel); err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
 		return nil, helper.DomainError(err)
 	}
 
 	return &hotelv1.UpdateHotelResponse{
-		Hotel: mapper.HotelUpdateResponseToProto(hotel),
+		Hotel: mapper.UpdateHotelResponseToProto(hotel),
+	}, nil
+}
+
+func (h *Handler) UpdateHotelTitle(
+	ctx context.Context,
+	req *hotelv1.UpdateHotelTitleRequest,
+) (*hotelv1.UpdateHotelTitleResponse, error) {
+	if err := h.validator.Validate(req); err != nil {
+		return nil, status.Error(codes.InvalidArgument, err.Error())
+	}
+
+	ref := mapper.GetHotelRefRequestToDomain(req)
+	hotel := mapper.UpdateHotelTitleRequestToDomain(req)
+
+	updated, err := h.svc.UpdateHotelTitleBySlug(ctx, ref, hotel)
+	if err != nil {
+		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
+		return nil, helper.DomainError(err)
+	}
+
+	return &hotelv1.UpdateHotelTitleResponse{
+		Hotel: mapper.UpdateHotelTitleResponseToProto(updated),
 	}, nil
 }
 
@@ -115,11 +125,7 @@ func (h *Handler) DeleteHotel(
 		return nil, status.Error(codes.InvalidArgument, err.Error())
 	}
 
-	ref := models.HotelRef{
-		CountryCode: req.CountryCode,
-		CitySlug:    req.CitySlug,
-		HotelSlug:   req.Slug,
-	}
+	ref := mapper.GetHotelRefRequestToDomain(req)
 	if err := h.svc.DeleteHotelBySlug(ctx, ref); err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
 		return nil, helper.DomainError(err)
