@@ -27,17 +27,13 @@ type App struct {
 func (app *App) MustLoadGRPC() {
 	slog.SetDefault(app.Logger)
 
-	repo, err := postgres.NewRepository(app.Config)
-	if err != nil {
-		panic(err.Error())
-	}
+	repo := postgres.New(app.Config)
+	svc := service.New(repo)
 
 	validator, err := protovalidate.New()
 	if err != nil {
 		panic(err.Error())
 	}
-
-	svc := service.New(repo)
 	h := handler.New(svc, validator)
 
 	addr := fmt.Sprintf("%s:%d", app.Config.Server.Host, app.Config.Server.Port)

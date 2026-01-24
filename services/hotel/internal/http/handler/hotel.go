@@ -101,7 +101,7 @@ func (h *Handler) HotelGetAll(w http.ResponseWriter, r *http.Request) {
 
 	hotels := make([]response.HotelShort, 0, len(hotelList.Hotels))
 	for _, hotel := range hotelList.Hotels {
-		hotelResponse := mapper.HotelShortEntityToShortResponse(hotel)
+		hotelResponse := mapper.HotelShortEntityToShortResponse(*hotel)
 		hotels = append(hotels, hotelResponse)
 	}
 

@@ -12,13 +12,13 @@ type Location struct {
 }
 
 type CreateHotel struct {
+	Description *string
 	CountryCode string
 	CitySlug    string
 	Title       string
 	Slug        string
-	OwnerID     int64
-	Description *string
 	Address     string
+	OwnerID     int64
 	Location    Location
 }
 
@@ -34,26 +34,26 @@ type UpdateHotelTitle struct {
 }
 
 type HotelShort struct {
-	ID       uuid.UUID
+	Rating   *float32
 	Title    string
 	Slug     string
-	OwnerID  int64
 	Address  string
-	Rating   *float32
+	OwnerID  int64
 	Location Location
+	ID       uuid.UUID
 }
 
 type Hotel struct {
-	ID          uuid.UUID
 	CreatedAt   time.Time
-	Title       string
-	OwnerID     int64
-	Description *string
-	Address     string
-	Rating      *float32
-	Slug        string
-	Location    Location
 	UpdatedAt   time.Time
+	Description *string
+	Rating      *float32
+	Title       string
+	Address     string
+	Slug        string
+	OwnerID     int64
+	Location    Location
+	ID          uuid.UUID
 }
 
 type HotelList struct {

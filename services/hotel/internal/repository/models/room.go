@@ -8,29 +8,29 @@ import (
 )
 
 type RoomCreate struct {
-	Title       string
 	Description *string
+	Title       string
 	RoomNumber  string
 	Type        RoomType
 	Price       decimal.Decimal
+	Amenities   []string
+	Images      []string
 	Capacity    int
 	AreaSqm     float64
 	Floor       int
-	Amenities   []string
-	Images      []string
 }
 
 type RoomUpdate struct {
-	Title       string
 	Description *string
+	Title       string
 	RoomNumber  string
 	Type        RoomType
 	Price       decimal.Decimal
+	Amenities   []string
+	Images      []string
 	Capacity    int
 	AreaSqm     float64
 	Floor       int
-	Amenities   []string
-	Images      []string
 }
 
 type RoomStatusUpdate struct {
@@ -38,33 +38,33 @@ type RoomStatusUpdate struct {
 }
 
 type Room struct {
-	ID          uuid.UUID
-	Title       string
+	CreatedAt   time.Time
+	UpdatedAt   time.Time
 	Description *string
-	RoomNumber  string
+	Price       decimal.Decimal
 	Type        RoomType
 	Status      RoomStatus
-	Price       decimal.Decimal
+	RoomNumber  string
+	Title       string
+	Amenities   []string
+	Images      []string
 	Capacity    int
 	AreaSqm     float64
 	Floor       int
-	Amenities   []string
-	Images      []string
-	CreatedAt   time.Time
-	UpdatedAt   time.Time
+	ID          uuid.UUID
 }
 
 type RoomShort struct {
-	ID         uuid.UUID
 	Title      string
 	RoomNumber string
 	Type       RoomType
 	Status     RoomStatus
 	Price      decimal.Decimal
-	Capacity   int
-	AreaSqm    float64
 	Amenities  []string
 	Images     []string
+	Capacity   int
+	AreaSqm    float64
+	ID         uuid.UUID
 }
 type RoomList struct {
 	Rooms      []RoomShort

@@ -11,18 +11,18 @@ type ServerConfig struct {
 
 type PostgresConfig struct {
 	Host     string `yaml:"host"`
-	Port     int    `yaml:"port"`
 	User     string `yaml:"user"`
 	Password string `yaml:"password"`
 	DB       string `yaml:"db"`
 	SSLMode  string `yaml:"sslmode"`
+	Port     int    `yaml:"port"`
 }
 
 type Config struct {
+	Postgres PostgresConfig `yaml:"postgres"`
 	Env      string         `yaml:"env"`
 	LogLevel string         `yaml:"log_level"`
 	Server   ServerConfig   `yaml:"server"`
-	Postgres PostgresConfig `yaml:"postgres"`
 }
 
 func New(configPath string) (*Config, error) {
