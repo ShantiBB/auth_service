@@ -24,7 +24,7 @@ var File_hotel_v1_hotel_service_proto protoreflect.FileDescriptor
 
 const file_hotel_v1_hotel_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1chotel/v1/hotel_service.proto\x12\bhotel.v1\x1a\x1fhotel/v1/rpc/create_hotel.proto\x1a\x1dhotel/v1/rpc/get_hotels.proto\x1a\x1chotel/v1/rpc/get_hotel.proto\x1a\x1fhotel/v1/rpc/update_hotel.proto\x1a%hotel/v1/rpc/update_hotel_title.proto\x1a\x1fhotel/v1/rpc/delete_hotel.proto2\xd6\x03\n" +
+	"\x1chotel/v1/hotel_service.proto\x12\bhotel.v1\x1a%hotel/v1/rpc/hotel/create_hotel.proto\x1a#hotel/v1/rpc/hotel/get_hotels.proto\x1a\"hotel/v1/rpc/hotel/get_hotel.proto\x1a%hotel/v1/rpc/hotel/update_hotel.proto\x1a+hotel/v1/rpc/hotel/update_hotel_title.proto\x1a%hotel/v1/rpc/hotel/delete_hotel.proto2\xd6\x03\n" +
 	"\fHotelService\x12J\n" +
 	"\vCreateHotel\x12\x1c.hotel.v1.CreateHotelRequest\x1a\x1d.hotel.v1.CreateHotelResponse\x12D\n" +
 	"\tGetHotels\x12\x1a.hotel.v1.GetHotelsRequest\x1a\x1b.hotel.v1.GetHotelsResponse\x12A\n" +
@@ -72,12 +72,12 @@ func file_hotel_v1_hotel_service_proto_init() {
 	if File_hotel_v1_hotel_service_proto != nil {
 		return
 	}
-	file_hotel_v1_rpc_create_hotel_proto_init()
-	file_hotel_v1_rpc_get_hotels_proto_init()
-	file_hotel_v1_rpc_get_hotel_proto_init()
-	file_hotel_v1_rpc_update_hotel_proto_init()
-	file_hotel_v1_rpc_update_hotel_title_proto_init()
-	file_hotel_v1_rpc_delete_hotel_proto_init()
+	file_hotel_v1_rpc_hotel_create_hotel_proto_init()
+	file_hotel_v1_rpc_hotel_get_hotels_proto_init()
+	file_hotel_v1_rpc_hotel_get_hotel_proto_init()
+	file_hotel_v1_rpc_hotel_update_hotel_proto_init()
+	file_hotel_v1_rpc_hotel_update_hotel_title_proto_init()
+	file_hotel_v1_rpc_hotel_delete_hotel_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

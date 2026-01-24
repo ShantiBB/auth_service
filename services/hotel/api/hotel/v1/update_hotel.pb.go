@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: hotel/v1/rpc/update_hotel.proto
+// source: hotel/v1/rpc/hotel/update_hotel.proto
 
 package hotelv1
 
@@ -32,7 +32,7 @@ type UpdateHotelLocationRequest struct {
 
 func (x *UpdateHotelLocationRequest) Reset() {
 	*x = UpdateHotelLocationRequest{}
-	mi := &file_hotel_v1_rpc_update_hotel_proto_msgTypes[0]
+	mi := &file_hotel_v1_rpc_hotel_update_hotel_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -44,7 +44,7 @@ func (x *UpdateHotelLocationRequest) String() string {
 func (*UpdateHotelLocationRequest) ProtoMessage() {}
 
 func (x *UpdateHotelLocationRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hotel_v1_rpc_update_hotel_proto_msgTypes[0]
+	mi := &file_hotel_v1_rpc_hotel_update_hotel_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -57,7 +57,7 @@ func (x *UpdateHotelLocationRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateHotelLocationRequest.ProtoReflect.Descriptor instead.
 func (*UpdateHotelLocationRequest) Descriptor() ([]byte, []int) {
-	return file_hotel_v1_rpc_update_hotel_proto_rawDescGZIP(), []int{0}
+	return file_hotel_v1_rpc_hotel_update_hotel_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *UpdateHotelLocationRequest) GetLatitude() float32 {
@@ -88,7 +88,7 @@ type UpdateHotelRequest struct {
 
 func (x *UpdateHotelRequest) Reset() {
 	*x = UpdateHotelRequest{}
-	mi := &file_hotel_v1_rpc_update_hotel_proto_msgTypes[1]
+	mi := &file_hotel_v1_rpc_hotel_update_hotel_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -100,7 +100,7 @@ func (x *UpdateHotelRequest) String() string {
 func (*UpdateHotelRequest) ProtoMessage() {}
 
 func (x *UpdateHotelRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hotel_v1_rpc_update_hotel_proto_msgTypes[1]
+	mi := &file_hotel_v1_rpc_hotel_update_hotel_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -113,7 +113,7 @@ func (x *UpdateHotelRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateHotelRequest.ProtoReflect.Descriptor instead.
 func (*UpdateHotelRequest) Descriptor() ([]byte, []int) {
-	return file_hotel_v1_rpc_update_hotel_proto_rawDescGZIP(), []int{1}
+	return file_hotel_v1_rpc_hotel_update_hotel_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *UpdateHotelRequest) GetCountryCode() string {
@@ -167,7 +167,7 @@ type UpdateHotelResponse struct {
 
 func (x *UpdateHotelResponse) Reset() {
 	*x = UpdateHotelResponse{}
-	mi := &file_hotel_v1_rpc_update_hotel_proto_msgTypes[2]
+	mi := &file_hotel_v1_rpc_hotel_update_hotel_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -179,7 +179,7 @@ func (x *UpdateHotelResponse) String() string {
 func (*UpdateHotelResponse) ProtoMessage() {}
 
 func (x *UpdateHotelResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_hotel_v1_rpc_update_hotel_proto_msgTypes[2]
+	mi := &file_hotel_v1_rpc_hotel_update_hotel_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -192,7 +192,7 @@ func (x *UpdateHotelResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateHotelResponse.ProtoReflect.Descriptor instead.
 func (*UpdateHotelResponse) Descriptor() ([]byte, []int) {
-	return file_hotel_v1_rpc_update_hotel_proto_rawDescGZIP(), []int{2}
+	return file_hotel_v1_rpc_hotel_update_hotel_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *UpdateHotelResponse) GetHotel() *UpdateHotel {
@@ -202,11 +202,11 @@ func (x *UpdateHotelResponse) GetHotel() *UpdateHotel {
 	return nil
 }
 
-var File_hotel_v1_rpc_update_hotel_proto protoreflect.FileDescriptor
+var File_hotel_v1_rpc_hotel_update_hotel_proto protoreflect.FileDescriptor
 
-const file_hotel_v1_rpc_update_hotel_proto_rawDesc = "" +
+const file_hotel_v1_rpc_hotel_update_hotel_proto_rawDesc = "" +
 	"\n" +
-	"\x1fhotel/v1/rpc/update_hotel.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bhotel/v1/models/hotel.proto\"x\n" +
+	"%hotel/v1/rpc/hotel/update_hotel.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bhotel/v1/models/hotel.proto\"x\n" +
 	"\x1aUpdateHotelLocationRequest\x12+\n" +
 	"\blatitude\x18\x01 \x01(\x02B\x0f\xbaH\f\n" +
 	"\n" +
@@ -227,25 +227,25 @@ const file_hotel_v1_rpc_update_hotel_proto_rawDesc = "" +
 	"\x05hotel\x18\x01 \x01(\v2\x15.hotel.v1.UpdateHotelR\x05hotelB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
 
 var (
-	file_hotel_v1_rpc_update_hotel_proto_rawDescOnce sync.Once
-	file_hotel_v1_rpc_update_hotel_proto_rawDescData []byte
+	file_hotel_v1_rpc_hotel_update_hotel_proto_rawDescOnce sync.Once
+	file_hotel_v1_rpc_hotel_update_hotel_proto_rawDescData []byte
 )
 
-func file_hotel_v1_rpc_update_hotel_proto_rawDescGZIP() []byte {
-	file_hotel_v1_rpc_update_hotel_proto_rawDescOnce.Do(func() {
-		file_hotel_v1_rpc_update_hotel_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_hotel_v1_rpc_update_hotel_proto_rawDesc), len(file_hotel_v1_rpc_update_hotel_proto_rawDesc)))
+func file_hotel_v1_rpc_hotel_update_hotel_proto_rawDescGZIP() []byte {
+	file_hotel_v1_rpc_hotel_update_hotel_proto_rawDescOnce.Do(func() {
+		file_hotel_v1_rpc_hotel_update_hotel_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_hotel_v1_rpc_hotel_update_hotel_proto_rawDesc), len(file_hotel_v1_rpc_hotel_update_hotel_proto_rawDesc)))
 	})
-	return file_hotel_v1_rpc_update_hotel_proto_rawDescData
+	return file_hotel_v1_rpc_hotel_update_hotel_proto_rawDescData
 }
 
-var file_hotel_v1_rpc_update_hotel_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
-var file_hotel_v1_rpc_update_hotel_proto_goTypes = []any{
+var file_hotel_v1_rpc_hotel_update_hotel_proto_msgTypes = make([]protoimpl.MessageInfo, 3)
+var file_hotel_v1_rpc_hotel_update_hotel_proto_goTypes = []any{
 	(*UpdateHotelLocationRequest)(nil), // 0: hotel.v1.UpdateHotelLocationRequest
 	(*UpdateHotelRequest)(nil),         // 1: hotel.v1.UpdateHotelRequest
 	(*UpdateHotelResponse)(nil),        // 2: hotel.v1.UpdateHotelResponse
 	(*UpdateHotel)(nil),                // 3: hotel.v1.UpdateHotel
 }
-var file_hotel_v1_rpc_update_hotel_proto_depIdxs = []int32{
+var file_hotel_v1_rpc_hotel_update_hotel_proto_depIdxs = []int32{
 	0, // 0: hotel.v1.UpdateHotelRequest.location:type_name -> hotel.v1.UpdateHotelLocationRequest
 	3, // 1: hotel.v1.UpdateHotelResponse.hotel:type_name -> hotel.v1.UpdateHotel
 	2, // [2:2] is the sub-list for method output_type
@@ -255,28 +255,28 @@ var file_hotel_v1_rpc_update_hotel_proto_depIdxs = []int32{
 	0, // [0:2] is the sub-list for field type_name
 }
 
-func init() { file_hotel_v1_rpc_update_hotel_proto_init() }
-func file_hotel_v1_rpc_update_hotel_proto_init() {
-	if File_hotel_v1_rpc_update_hotel_proto != nil {
+func init() { file_hotel_v1_rpc_hotel_update_hotel_proto_init() }
+func file_hotel_v1_rpc_hotel_update_hotel_proto_init() {
+	if File_hotel_v1_rpc_hotel_update_hotel_proto != nil {
 		return
 	}
 	file_hotel_v1_models_hotel_proto_init()
-	file_hotel_v1_rpc_update_hotel_proto_msgTypes[1].OneofWrappers = []any{}
+	file_hotel_v1_rpc_hotel_update_hotel_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_hotel_v1_rpc_update_hotel_proto_rawDesc), len(file_hotel_v1_rpc_update_hotel_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_hotel_v1_rpc_hotel_update_hotel_proto_rawDesc), len(file_hotel_v1_rpc_hotel_update_hotel_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   3,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_hotel_v1_rpc_update_hotel_proto_goTypes,
-		DependencyIndexes: file_hotel_v1_rpc_update_hotel_proto_depIdxs,
-		MessageInfos:      file_hotel_v1_rpc_update_hotel_proto_msgTypes,
+		GoTypes:           file_hotel_v1_rpc_hotel_update_hotel_proto_goTypes,
+		DependencyIndexes: file_hotel_v1_rpc_hotel_update_hotel_proto_depIdxs,
+		MessageInfos:      file_hotel_v1_rpc_hotel_update_hotel_proto_msgTypes,
 	}.Build()
-	File_hotel_v1_rpc_update_hotel_proto = out.File
-	file_hotel_v1_rpc_update_hotel_proto_goTypes = nil
-	file_hotel_v1_rpc_update_hotel_proto_depIdxs = nil
+	File_hotel_v1_rpc_hotel_update_hotel_proto = out.File
+	file_hotel_v1_rpc_hotel_update_hotel_proto_goTypes = nil
+	file_hotel_v1_rpc_hotel_update_hotel_proto_depIdxs = nil
 }

@@ -74,11 +74,118 @@ func (x *Location) GetLongitude() float32 {
 	return 0
 }
 
+type CreateHotel struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Slug          string                 `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
+	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
+	OwnerId       int64                  `protobuf:"varint,4,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
+	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
+	Address       string                 `protobuf:"bytes,7,opt,name=address,proto3" json:"address,omitempty"`
+	Location      *Location              `protobuf:"bytes,8,opt,name=location,proto3" json:"location,omitempty"`
+	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,9,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
+	UpdatedAt     *timestamppb.Timestamp `protobuf:"bytes,10,opt,name=updated_at,json=updatedAt,proto3" json:"updated_at,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *CreateHotel) Reset() {
+	*x = CreateHotel{}
+	mi := &file_hotel_v1_models_hotel_proto_msgTypes[1]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *CreateHotel) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*CreateHotel) ProtoMessage() {}
+
+func (x *CreateHotel) ProtoReflect() protoreflect.Message {
+	mi := &file_hotel_v1_models_hotel_proto_msgTypes[1]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use CreateHotel.ProtoReflect.Descriptor instead.
+func (*CreateHotel) Descriptor() ([]byte, []int) {
+	return file_hotel_v1_models_hotel_proto_rawDescGZIP(), []int{1}
+}
+
+func (x *CreateHotel) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *CreateHotel) GetSlug() string {
+	if x != nil {
+		return x.Slug
+	}
+	return ""
+}
+
+func (x *CreateHotel) GetTitle() string {
+	if x != nil {
+		return x.Title
+	}
+	return ""
+}
+
+func (x *CreateHotel) GetOwnerId() int64 {
+	if x != nil {
+		return x.OwnerId
+	}
+	return 0
+}
+
+func (x *CreateHotel) GetDescription() string {
+	if x != nil {
+		return x.Description
+	}
+	return ""
+}
+
+func (x *CreateHotel) GetAddress() string {
+	if x != nil {
+		return x.Address
+	}
+	return ""
+}
+
+func (x *CreateHotel) GetLocation() *Location {
+	if x != nil {
+		return x.Location
+	}
+	return nil
+}
+
+func (x *CreateHotel) GetCreatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.CreatedAt
+	}
+	return nil
+}
+
+func (x *CreateHotel) GetUpdatedAt() *timestamppb.Timestamp {
+	if x != nil {
+		return x.UpdatedAt
+	}
+	return nil
+}
+
 type Hotel struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	Title         string                 `protobuf:"bytes,2,opt,name=title,proto3" json:"title,omitempty"`
-	Slug          string                 `protobuf:"bytes,3,opt,name=slug,proto3" json:"slug,omitempty"`
 	OwnerId       int64                  `protobuf:"varint,4,opt,name=owner_id,json=ownerId,proto3" json:"owner_id,omitempty"`
 	Description   string                 `protobuf:"bytes,5,opt,name=description,proto3" json:"description,omitempty"`
 	Rating        *float32               `protobuf:"fixed32,6,opt,name=rating,proto3,oneof" json:"rating,omitempty"`
@@ -92,7 +199,7 @@ type Hotel struct {
 
 func (x *Hotel) Reset() {
 	*x = Hotel{}
-	mi := &file_hotel_v1_models_hotel_proto_msgTypes[1]
+	mi := &file_hotel_v1_models_hotel_proto_msgTypes[2]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -104,7 +211,7 @@ func (x *Hotel) String() string {
 func (*Hotel) ProtoMessage() {}
 
 func (x *Hotel) ProtoReflect() protoreflect.Message {
-	mi := &file_hotel_v1_models_hotel_proto_msgTypes[1]
+	mi := &file_hotel_v1_models_hotel_proto_msgTypes[2]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -117,7 +224,7 @@ func (x *Hotel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Hotel.ProtoReflect.Descriptor instead.
 func (*Hotel) Descriptor() ([]byte, []int) {
-	return file_hotel_v1_models_hotel_proto_rawDescGZIP(), []int{1}
+	return file_hotel_v1_models_hotel_proto_rawDescGZIP(), []int{2}
 }
 
 func (x *Hotel) GetId() string {
@@ -130,13 +237,6 @@ func (x *Hotel) GetId() string {
 func (x *Hotel) GetTitle() string {
 	if x != nil {
 		return x.Title
-	}
-	return ""
-}
-
-func (x *Hotel) GetSlug() string {
-	if x != nil {
-		return x.Slug
 	}
 	return ""
 }
@@ -205,7 +305,7 @@ type HotelShort struct {
 
 func (x *HotelShort) Reset() {
 	*x = HotelShort{}
-	mi := &file_hotel_v1_models_hotel_proto_msgTypes[2]
+	mi := &file_hotel_v1_models_hotel_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -217,7 +317,7 @@ func (x *HotelShort) String() string {
 func (*HotelShort) ProtoMessage() {}
 
 func (x *HotelShort) ProtoReflect() protoreflect.Message {
-	mi := &file_hotel_v1_models_hotel_proto_msgTypes[2]
+	mi := &file_hotel_v1_models_hotel_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -230,7 +330,7 @@ func (x *HotelShort) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use HotelShort.ProtoReflect.Descriptor instead.
 func (*HotelShort) Descriptor() ([]byte, []int) {
-	return file_hotel_v1_models_hotel_proto_rawDescGZIP(), []int{2}
+	return file_hotel_v1_models_hotel_proto_rawDescGZIP(), []int{3}
 }
 
 func (x *HotelShort) GetId() string {
@@ -293,7 +393,7 @@ type UpdateHotel struct {
 
 func (x *UpdateHotel) Reset() {
 	*x = UpdateHotel{}
-	mi := &file_hotel_v1_models_hotel_proto_msgTypes[3]
+	mi := &file_hotel_v1_models_hotel_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -305,7 +405,7 @@ func (x *UpdateHotel) String() string {
 func (*UpdateHotel) ProtoMessage() {}
 
 func (x *UpdateHotel) ProtoReflect() protoreflect.Message {
-	mi := &file_hotel_v1_models_hotel_proto_msgTypes[3]
+	mi := &file_hotel_v1_models_hotel_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -318,7 +418,7 @@ func (x *UpdateHotel) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateHotel.ProtoReflect.Descriptor instead.
 func (*UpdateHotel) Descriptor() ([]byte, []int) {
-	return file_hotel_v1_models_hotel_proto_rawDescGZIP(), []int{3}
+	return file_hotel_v1_models_hotel_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *UpdateHotel) GetDescription() string {
@@ -352,7 +452,7 @@ type UpdateHotelTitle struct {
 
 func (x *UpdateHotelTitle) Reset() {
 	*x = UpdateHotelTitle{}
-	mi := &file_hotel_v1_models_hotel_proto_msgTypes[4]
+	mi := &file_hotel_v1_models_hotel_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -364,7 +464,7 @@ func (x *UpdateHotelTitle) String() string {
 func (*UpdateHotelTitle) ProtoMessage() {}
 
 func (x *UpdateHotelTitle) ProtoReflect() protoreflect.Message {
-	mi := &file_hotel_v1_models_hotel_proto_msgTypes[4]
+	mi := &file_hotel_v1_models_hotel_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -377,7 +477,7 @@ func (x *UpdateHotelTitle) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use UpdateHotelTitle.ProtoReflect.Descriptor instead.
 func (*UpdateHotelTitle) Descriptor() ([]byte, []int) {
-	return file_hotel_v1_models_hotel_proto_rawDescGZIP(), []int{4}
+	return file_hotel_v1_models_hotel_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *UpdateHotelTitle) GetTitle() string {
@@ -401,11 +501,23 @@ const file_hotel_v1_models_hotel_proto_rawDesc = "" +
 	"\x1bhotel/v1/models/hotel.proto\x12\bhotel.v1\x1a\x1fgoogle/protobuf/timestamp.proto\"D\n" +
 	"\bLocation\x12\x1a\n" +
 	"\blatitude\x18\x01 \x01(\x02R\blatitude\x12\x1c\n" +
-	"\tlongitude\x18\x02 \x01(\x02R\tlongitude\"\xe6\x02\n" +
+	"\tlongitude\x18\x02 \x01(\x02R\tlongitude\"\xc4\x02\n" +
+	"\vCreateHotel\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04slug\x18\x03 \x01(\tR\x04slug\x12\x14\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x19\n" +
+	"\bowner_id\x18\x04 \x01(\x03R\aownerId\x12 \n" +
+	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x18\n" +
+	"\aaddress\x18\a \x01(\tR\aaddress\x12.\n" +
+	"\blocation\x18\b \x01(\v2\x12.hotel.v1.LocationR\blocation\x129\n" +
+	"\n" +
+	"created_at\x18\t \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
+	"\n" +
+	"updated_at\x18\n" +
+	" \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\xd2\x02\n" +
 	"\x05Hotel\x12\x0e\n" +
 	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05title\x18\x02 \x01(\tR\x05title\x12\x12\n" +
-	"\x04slug\x18\x03 \x01(\tR\x04slug\x12\x19\n" +
+	"\x05title\x18\x02 \x01(\tR\x05title\x12\x19\n" +
 	"\bowner_id\x18\x04 \x01(\x03R\aownerId\x12 \n" +
 	"\vdescription\x18\x05 \x01(\tR\vdescription\x12\x1b\n" +
 	"\x06rating\x18\x06 \x01(\x02H\x00R\x06rating\x88\x01\x01\x12\x18\n" +
@@ -447,26 +559,30 @@ func file_hotel_v1_models_hotel_proto_rawDescGZIP() []byte {
 	return file_hotel_v1_models_hotel_proto_rawDescData
 }
 
-var file_hotel_v1_models_hotel_proto_msgTypes = make([]protoimpl.MessageInfo, 5)
+var file_hotel_v1_models_hotel_proto_msgTypes = make([]protoimpl.MessageInfo, 6)
 var file_hotel_v1_models_hotel_proto_goTypes = []any{
 	(*Location)(nil),              // 0: hotel.v1.Location
-	(*Hotel)(nil),                 // 1: hotel.v1.Hotel
-	(*HotelShort)(nil),            // 2: hotel.v1.HotelShort
-	(*UpdateHotel)(nil),           // 3: hotel.v1.UpdateHotel
-	(*UpdateHotelTitle)(nil),      // 4: hotel.v1.UpdateHotelTitle
-	(*timestamppb.Timestamp)(nil), // 5: google.protobuf.Timestamp
+	(*CreateHotel)(nil),           // 1: hotel.v1.CreateHotel
+	(*Hotel)(nil),                 // 2: hotel.v1.Hotel
+	(*HotelShort)(nil),            // 3: hotel.v1.HotelShort
+	(*UpdateHotel)(nil),           // 4: hotel.v1.UpdateHotel
+	(*UpdateHotelTitle)(nil),      // 5: hotel.v1.UpdateHotelTitle
+	(*timestamppb.Timestamp)(nil), // 6: google.protobuf.Timestamp
 }
 var file_hotel_v1_models_hotel_proto_depIdxs = []int32{
-	0, // 0: hotel.v1.Hotel.location:type_name -> hotel.v1.Location
-	5, // 1: hotel.v1.Hotel.created_at:type_name -> google.protobuf.Timestamp
-	5, // 2: hotel.v1.Hotel.updated_at:type_name -> google.protobuf.Timestamp
-	0, // 3: hotel.v1.HotelShort.location:type_name -> hotel.v1.Location
-	0, // 4: hotel.v1.UpdateHotel.location:type_name -> hotel.v1.Location
-	5, // [5:5] is the sub-list for method output_type
-	5, // [5:5] is the sub-list for method input_type
-	5, // [5:5] is the sub-list for extension type_name
-	5, // [5:5] is the sub-list for extension extendee
-	0, // [0:5] is the sub-list for field type_name
+	0, // 0: hotel.v1.CreateHotel.location:type_name -> hotel.v1.Location
+	6, // 1: hotel.v1.CreateHotel.created_at:type_name -> google.protobuf.Timestamp
+	6, // 2: hotel.v1.CreateHotel.updated_at:type_name -> google.protobuf.Timestamp
+	0, // 3: hotel.v1.Hotel.location:type_name -> hotel.v1.Location
+	6, // 4: hotel.v1.Hotel.created_at:type_name -> google.protobuf.Timestamp
+	6, // 5: hotel.v1.Hotel.updated_at:type_name -> google.protobuf.Timestamp
+	0, // 6: hotel.v1.HotelShort.location:type_name -> hotel.v1.Location
+	0, // 7: hotel.v1.UpdateHotel.location:type_name -> hotel.v1.Location
+	8, // [8:8] is the sub-list for method output_type
+	8, // [8:8] is the sub-list for method input_type
+	8, // [8:8] is the sub-list for extension type_name
+	8, // [8:8] is the sub-list for extension extendee
+	0, // [0:8] is the sub-list for field type_name
 }
 
 func init() { file_hotel_v1_models_hotel_proto_init() }
@@ -474,15 +590,15 @@ func file_hotel_v1_models_hotel_proto_init() {
 	if File_hotel_v1_models_hotel_proto != nil {
 		return
 	}
-	file_hotel_v1_models_hotel_proto_msgTypes[1].OneofWrappers = []any{}
 	file_hotel_v1_models_hotel_proto_msgTypes[2].OneofWrappers = []any{}
+	file_hotel_v1_models_hotel_proto_msgTypes[3].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_hotel_v1_models_hotel_proto_rawDesc), len(file_hotel_v1_models_hotel_proto_rawDesc)),
 			NumEnums:      0,
-			NumMessages:   5,
+			NumMessages:   6,
 			NumExtensions: 0,
 			NumServices:   0,
 		},

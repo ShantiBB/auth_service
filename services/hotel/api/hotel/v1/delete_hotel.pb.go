@@ -2,7 +2,7 @@
 // versions:
 // 	protoc-gen-go v1.36.11
 // 	protoc        (unknown)
-// source: hotel/v1/rpc/delete_hotel.proto
+// source: hotel/v1/rpc/hotel/delete_hotel.proto
 
 package hotelv1
 
@@ -33,7 +33,7 @@ type DeleteHotelRequest struct {
 
 func (x *DeleteHotelRequest) Reset() {
 	*x = DeleteHotelRequest{}
-	mi := &file_hotel_v1_rpc_delete_hotel_proto_msgTypes[0]
+	mi := &file_hotel_v1_rpc_hotel_delete_hotel_proto_msgTypes[0]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -45,7 +45,7 @@ func (x *DeleteHotelRequest) String() string {
 func (*DeleteHotelRequest) ProtoMessage() {}
 
 func (x *DeleteHotelRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_hotel_v1_rpc_delete_hotel_proto_msgTypes[0]
+	mi := &file_hotel_v1_rpc_hotel_delete_hotel_proto_msgTypes[0]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -58,7 +58,7 @@ func (x *DeleteHotelRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteHotelRequest.ProtoReflect.Descriptor instead.
 func (*DeleteHotelRequest) Descriptor() ([]byte, []int) {
-	return file_hotel_v1_rpc_delete_hotel_proto_rawDescGZIP(), []int{0}
+	return file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDescGZIP(), []int{0}
 }
 
 func (x *DeleteHotelRequest) GetCountryCode() string {
@@ -91,7 +91,7 @@ type DeleteHotelResponse struct {
 
 func (x *DeleteHotelResponse) Reset() {
 	*x = DeleteHotelResponse{}
-	mi := &file_hotel_v1_rpc_delete_hotel_proto_msgTypes[1]
+	mi := &file_hotel_v1_rpc_hotel_delete_hotel_proto_msgTypes[1]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -103,7 +103,7 @@ func (x *DeleteHotelResponse) String() string {
 func (*DeleteHotelResponse) ProtoMessage() {}
 
 func (x *DeleteHotelResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_hotel_v1_rpc_delete_hotel_proto_msgTypes[1]
+	mi := &file_hotel_v1_rpc_hotel_delete_hotel_proto_msgTypes[1]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -116,7 +116,7 @@ func (x *DeleteHotelResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use DeleteHotelResponse.ProtoReflect.Descriptor instead.
 func (*DeleteHotelResponse) Descriptor() ([]byte, []int) {
-	return file_hotel_v1_rpc_delete_hotel_proto_rawDescGZIP(), []int{1}
+	return file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDescGZIP(), []int{1}
 }
 
 func (x *DeleteHotelResponse) GetMessage() string {
@@ -126,11 +126,11 @@ func (x *DeleteHotelResponse) GetMessage() string {
 	return ""
 }
 
-var File_hotel_v1_rpc_delete_hotel_proto protoreflect.FileDescriptor
+var File_hotel_v1_rpc_hotel_delete_hotel_proto protoreflect.FileDescriptor
 
-const file_hotel_v1_rpc_delete_hotel_proto_rawDesc = "" +
+const file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDesc = "" +
 	"\n" +
-	"\x1fhotel/v1/rpc/delete_hotel.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\"\xbd\x01\n" +
+	"%hotel/v1/rpc/hotel/delete_hotel.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\"\xbd\x01\n" +
 	"\x12DeleteHotelRequest\x124\n" +
 	"\fcountry_code\x18\x01 \x01(\tB\x11\xbaH\x0er\f2\n" +
 	"^[a-z]{2}$R\vcountryCode\x12<\n" +
@@ -140,23 +140,23 @@ const file_hotel_v1_rpc_delete_hotel_proto_rawDesc = "" +
 	"\amessage\x18\x01 \x01(\tR\amessageB\x16Z\x14api/hotel/v1;hotelv1b\x06proto3"
 
 var (
-	file_hotel_v1_rpc_delete_hotel_proto_rawDescOnce sync.Once
-	file_hotel_v1_rpc_delete_hotel_proto_rawDescData []byte
+	file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDescOnce sync.Once
+	file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDescData []byte
 )
 
-func file_hotel_v1_rpc_delete_hotel_proto_rawDescGZIP() []byte {
-	file_hotel_v1_rpc_delete_hotel_proto_rawDescOnce.Do(func() {
-		file_hotel_v1_rpc_delete_hotel_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_hotel_v1_rpc_delete_hotel_proto_rawDesc), len(file_hotel_v1_rpc_delete_hotel_proto_rawDesc)))
+func file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDescGZIP() []byte {
+	file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDescOnce.Do(func() {
+		file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDescData = protoimpl.X.CompressGZIP(unsafe.Slice(unsafe.StringData(file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDesc), len(file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDesc)))
 	})
-	return file_hotel_v1_rpc_delete_hotel_proto_rawDescData
+	return file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDescData
 }
 
-var file_hotel_v1_rpc_delete_hotel_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
-var file_hotel_v1_rpc_delete_hotel_proto_goTypes = []any{
+var file_hotel_v1_rpc_hotel_delete_hotel_proto_msgTypes = make([]protoimpl.MessageInfo, 2)
+var file_hotel_v1_rpc_hotel_delete_hotel_proto_goTypes = []any{
 	(*DeleteHotelRequest)(nil),  // 0: hotel.v1.DeleteHotelRequest
 	(*DeleteHotelResponse)(nil), // 1: hotel.v1.DeleteHotelResponse
 }
-var file_hotel_v1_rpc_delete_hotel_proto_depIdxs = []int32{
+var file_hotel_v1_rpc_hotel_delete_hotel_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for method output_type
 	0, // [0:0] is the sub-list for method input_type
 	0, // [0:0] is the sub-list for extension type_name
@@ -164,26 +164,26 @@ var file_hotel_v1_rpc_delete_hotel_proto_depIdxs = []int32{
 	0, // [0:0] is the sub-list for field type_name
 }
 
-func init() { file_hotel_v1_rpc_delete_hotel_proto_init() }
-func file_hotel_v1_rpc_delete_hotel_proto_init() {
-	if File_hotel_v1_rpc_delete_hotel_proto != nil {
+func init() { file_hotel_v1_rpc_hotel_delete_hotel_proto_init() }
+func file_hotel_v1_rpc_hotel_delete_hotel_proto_init() {
+	if File_hotel_v1_rpc_hotel_delete_hotel_proto != nil {
 		return
 	}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
-			RawDescriptor: unsafe.Slice(unsafe.StringData(file_hotel_v1_rpc_delete_hotel_proto_rawDesc), len(file_hotel_v1_rpc_delete_hotel_proto_rawDesc)),
+			RawDescriptor: unsafe.Slice(unsafe.StringData(file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDesc), len(file_hotel_v1_rpc_hotel_delete_hotel_proto_rawDesc)),
 			NumEnums:      0,
 			NumMessages:   2,
 			NumExtensions: 0,
 			NumServices:   0,
 		},
-		GoTypes:           file_hotel_v1_rpc_delete_hotel_proto_goTypes,
-		DependencyIndexes: file_hotel_v1_rpc_delete_hotel_proto_depIdxs,
-		MessageInfos:      file_hotel_v1_rpc_delete_hotel_proto_msgTypes,
+		GoTypes:           file_hotel_v1_rpc_hotel_delete_hotel_proto_goTypes,
+		DependencyIndexes: file_hotel_v1_rpc_hotel_delete_hotel_proto_depIdxs,
+		MessageInfos:      file_hotel_v1_rpc_hotel_delete_hotel_proto_msgTypes,
 	}.Build()
-	File_hotel_v1_rpc_delete_hotel_proto = out.File
-	file_hotel_v1_rpc_delete_hotel_proto_goTypes = nil
-	file_hotel_v1_rpc_delete_hotel_proto_depIdxs = nil
+	File_hotel_v1_rpc_hotel_delete_hotel_proto = out.File
+	file_hotel_v1_rpc_hotel_delete_hotel_proto_goTypes = nil
+	file_hotel_v1_rpc_hotel_delete_hotel_proto_depIdxs = nil
 }
