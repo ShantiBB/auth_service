@@ -1,19 +1,14 @@
 version: "2"
 linters:
   enable:
-    # Базовые
     - errcheck
     - govet
     - staticcheck
     - ineffassign
-
-    # Безопасность и качество
     - gosec
     - revive
     - misspell
     - unconvert
-
-    # Дополнительные
     - bodyclose
     - prealloc
     - errorlint
