@@ -9,6 +9,9 @@ import "user/v1/rpc/user/delete_user.proto";
 import "user/v1/rpc/user/get_user.proto";
 import "user/v1/rpc/user/get_users.proto";
 import "user/v1/rpc/user/update_user.proto";
+import "user/v1/rpc/token/register_user.proto";
+import "user/v1/rpc/token/login_user.proto";
+import "user/v1/rpc/token/refresh_token.proto";
 
 
 service UserService {
@@ -17,4 +20,10 @@ service UserService {
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+service TokenService {
+  rpc RegisterUser(RegisterUserRequest) returns (RegisterUserResponse);
+  rpc LoginUser(LoginUserRequest) returns (LoginUserResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (RefreshTokenResponse);
 }

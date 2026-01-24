@@ -24,7 +24,7 @@ const (
 
 type DeleteUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,11 +59,11 @@ func (*DeleteUserRequest) Descriptor() ([]byte, []int) {
 	return file_user_v1_rpc_user_delete_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *DeleteUserRequest) GetId() string {
+func (x *DeleteUserRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type DeleteUserResponse struct {
@@ -116,8 +116,8 @@ const file_user_v1_rpc_user_delete_user_proto_rawDesc = "" +
 	"\n" +
 	"\"user/v1/rpc/user/delete_user.proto\x12\auser.v1\x1a\x1bbuf/validate/validate.proto\"/\n" +
 	"\x11DeleteUserRequest\x12\x1a\n" +
-	"\x02id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x012\x02(\x01R\x02id\".\n" +
+	"\x02id\x18\x01 \x01(\x03B\n" +
+	"\xbaH\a\xc8\x01\x01\"\x02(\x01R\x02id\".\n" +
 	"\x12DeleteUserResponse\x12\x18\n" +
 	"\amessage\x18\x01 \x01(\tR\amessageB\x14Z\x12api/user/v1;userv1b\x06proto3"
 

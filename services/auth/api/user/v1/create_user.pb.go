@@ -25,7 +25,8 @@ const (
 type CreateUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Email         string                 `protobuf:"bytes,1,opt,name=email,proto3" json:"email,omitempty"`
-	Password      string                 `protobuf:"bytes,2,opt,name=password,proto3" json:"password,omitempty"`
+	Username      *string                `protobuf:"bytes,2,opt,name=username,proto3,oneof" json:"username,omitempty"`
+	Password      string                 `protobuf:"bytes,3,opt,name=password,proto3" json:"password,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -63,6 +64,13 @@ func (*CreateUserRequest) Descriptor() ([]byte, []int) {
 func (x *CreateUserRequest) GetEmail() string {
 	if x != nil {
 		return x.Email
+	}
+	return ""
+}
+
+func (x *CreateUserRequest) GetUsername() string {
+	if x != nil && x.Username != nil {
+		return *x.Username
 	}
 	return ""
 }
@@ -122,10 +130,12 @@ var File_user_v1_rpc_user_create_user_proto protoreflect.FileDescriptor
 
 const file_user_v1_rpc_user_create_user_proto_rawDesc = "" +
 	"\n" +
-	"\"user/v1/rpc/user/create_user.proto\x12\auser.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19user/v1/models/user.proto\"c\n" +
+	"\"user/v1/rpc/user/create_user.proto\x12\auser.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19user/v1/models/user.proto\"\x9a\x01\n" +
 	"\x11CreateUserRequest\x12$\n" +
 	"\x05email\x18\x01 \x01(\tB\x0e\xbaH\v\xc8\x01\x01r\x06\x10\x05\x18d`\x01R\x05email\x12(\n" +
-	"\bpassword\x18\x02 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\b\x18dR\bpassword\"7\n" +
+	"\busername\x18\x02 \x01(\tB\a\xbaH\x04r\x02\x18dH\x00R\busername\x88\x01\x01\x12(\n" +
+	"\bpassword\x18\x03 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\b\x18dR\bpasswordB\v\n" +
+	"\t_username\"7\n" +
 	"\x12CreateUserResponse\x12!\n" +
 	"\x04user\x18\x01 \x01(\v2\r.user.v1.UserR\x04userB\x14Z\x12api/user/v1;userv1b\x06proto3"
 
@@ -162,6 +172,7 @@ func file_user_v1_rpc_user_create_user_proto_init() {
 		return
 	}
 	file_user_v1_models_user_proto_init()
+	file_user_v1_rpc_user_create_user_proto_msgTypes[0].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

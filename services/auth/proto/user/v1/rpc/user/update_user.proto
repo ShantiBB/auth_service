@@ -8,9 +8,9 @@ import "buf/validate/validate.proto";
 import "user/v1/models/user.proto";
 
 message UpdateUserRequest {
-  string id = 1 [
+  int64 id = 1 [
     (buf.validate.field).required = true,
-    (buf.validate.field).uint64.gte = 1
+    (buf.validate.field).int64.gte = 1
   ];
   string email = 2 [
     (buf.validate.field).required = true,

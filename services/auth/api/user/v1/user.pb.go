@@ -24,9 +24,9 @@ const (
 
 type User struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Username      string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	Username      *string                `protobuf:"bytes,3,opt,name=username,proto3,oneof" json:"username,omitempty"`
 	Role          UserRole               `protobuf:"varint,4,opt,name=role,proto3,enum=user.v1.UserRole" json:"role,omitempty"`
 	IsActive      bool                   `protobuf:"varint,5,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	CreatedAt     *timestamppb.Timestamp `protobuf:"bytes,6,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
@@ -65,11 +65,11 @@ func (*User) Descriptor() ([]byte, []int) {
 	return file_user_v1_models_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *User) GetId() string {
+func (x *User) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *User) GetEmail() string {
@@ -80,8 +80,8 @@ func (x *User) GetEmail() string {
 }
 
 func (x *User) GetUsername() string {
-	if x != nil {
-		return x.Username
+	if x != nil && x.Username != nil {
+		return *x.Username
 	}
 	return ""
 }
@@ -90,7 +90,7 @@ func (x *User) GetRole() UserRole {
 	if x != nil {
 		return x.Role
 	}
-	return UserRole_USER_ROLE_USER
+	return UserRole_USER_ROLE_UNSPECIFIED
 }
 
 func (x *User) GetIsActive() bool {
@@ -116,9 +116,9 @@ func (x *User) GetUpdatedAt() *timestamppb.Timestamp {
 
 type UserShort struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
-	Username      string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
+	Username      *string                `protobuf:"bytes,3,opt,name=username,proto3,oneof" json:"username,omitempty"`
 	Role          UserRole               `protobuf:"varint,4,opt,name=role,proto3,enum=user.v1.UserRole" json:"role,omitempty"`
 	IsActive      bool                   `protobuf:"varint,5,opt,name=is_active,json=isActive,proto3" json:"is_active,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -155,11 +155,11 @@ func (*UserShort) Descriptor() ([]byte, []int) {
 	return file_user_v1_models_user_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *UserShort) GetId() string {
+func (x *UserShort) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *UserShort) GetEmail() string {
@@ -170,8 +170,8 @@ func (x *UserShort) GetEmail() string {
 }
 
 func (x *UserShort) GetUsername() string {
-	if x != nil {
-		return x.Username
+	if x != nil && x.Username != nil {
+		return *x.Username
 	}
 	return ""
 }
@@ -180,7 +180,7 @@ func (x *UserShort) GetRole() UserRole {
 	if x != nil {
 		return x.Role
 	}
-	return UserRole_USER_ROLE_USER
+	return UserRole_USER_ROLE_UNSPECIFIED
 }
 
 func (x *UserShort) GetIsActive() bool {
@@ -298,23 +298,25 @@ var File_user_v1_models_user_proto protoreflect.FileDescriptor
 
 const file_user_v1_models_user_proto_rawDesc = "" +
 	"\n" +
-	"\x19user/v1/models/user.proto\x12\auser.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1duser/v1/enums/user_role.proto\"\x82\x02\n" +
+	"\x19user/v1/models/user.proto\x12\auser.v1\x1a\x1fgoogle/protobuf/timestamp.proto\x1a\x1duser/v1/enums/user_role.proto\"\x94\x02\n" +
 	"\x04User\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
-	"\busername\x18\x03 \x01(\tR\busername\x12%\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1f\n" +
+	"\busername\x18\x03 \x01(\tH\x00R\busername\x88\x01\x01\x12%\n" +
 	"\x04role\x18\x04 \x01(\x0e2\x11.user.v1.UserRoleR\x04role\x12\x1b\n" +
 	"\tis_active\x18\x05 \x01(\bR\bisActive\x129\n" +
 	"\n" +
 	"created_at\x18\x06 \x01(\v2\x1a.google.protobuf.TimestampR\tcreatedAt\x129\n" +
 	"\n" +
-	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAt\"\x91\x01\n" +
+	"updated_at\x18\a \x01(\v2\x1a.google.protobuf.TimestampR\tupdatedAtB\v\n" +
+	"\t_username\"\xa3\x01\n" +
 	"\tUserShort\x12\x0e\n" +
-	"\x02id\x18\x01 \x01(\tR\x02id\x12\x14\n" +
-	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1a\n" +
-	"\busername\x18\x03 \x01(\tR\busername\x12%\n" +
+	"\x02id\x18\x01 \x01(\x03R\x02id\x12\x14\n" +
+	"\x05email\x18\x02 \x01(\tR\x05email\x12\x1f\n" +
+	"\busername\x18\x03 \x01(\tH\x00R\busername\x88\x01\x01\x12%\n" +
 	"\x04role\x18\x04 \x01(\x0e2\x11.user.v1.UserRoleR\x04role\x12\x1b\n" +
-	"\tis_active\x18\x05 \x01(\bR\bisActive\">\n" +
+	"\tis_active\x18\x05 \x01(\bR\bisActiveB\v\n" +
+	"\t_username\">\n" +
 	"\n" +
 	"UpdateUser\x12\x14\n" +
 	"\x05email\x18\x01 \x01(\tR\x05email\x12\x1a\n" +
@@ -363,6 +365,8 @@ func file_user_v1_models_user_proto_init() {
 		return
 	}
 	file_user_v1_enums_user_role_proto_init()
+	file_user_v1_models_user_proto_msgTypes[0].OneofWrappers = []any{}
+	file_user_v1_models_user_proto_msgTypes[1].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{

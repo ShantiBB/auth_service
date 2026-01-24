@@ -24,7 +24,7 @@ const (
 
 type UpdateUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	Email         string                 `protobuf:"bytes,2,opt,name=email,proto3" json:"email,omitempty"`
 	Username      string                 `protobuf:"bytes,3,opt,name=username,proto3" json:"username,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -61,11 +61,11 @@ func (*UpdateUserRequest) Descriptor() ([]byte, []int) {
 	return file_user_v1_rpc_user_update_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *UpdateUserRequest) GetId() string {
+func (x *UpdateUserRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 func (x *UpdateUserRequest) GetEmail() string {
@@ -132,8 +132,8 @@ const file_user_v1_rpc_user_update_user_proto_rawDesc = "" +
 	"\n" +
 	"\"user/v1/rpc/user/update_user.proto\x12\auser.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19user/v1/models/user.proto\"\x7f\n" +
 	"\x11UpdateUserRequest\x12\x1a\n" +
-	"\x02id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x012\x02(\x01R\x02id\x12$\n" +
+	"\x02id\x18\x01 \x01(\x03B\n" +
+	"\xbaH\a\xc8\x01\x01\"\x02(\x01R\x02id\x12$\n" +
 	"\x05email\x18\x02 \x01(\tB\x0e\xbaH\v\xc8\x01\x01r\x06\x10\x05\x18d`\x01R\x05email\x12(\n" +
 	"\busername\x18\x03 \x01(\tB\f\xbaH\t\xc8\x01\x01r\x04\x10\x01\x18dR\busername\"=\n" +
 	"\x12UpdateUserResponse\x12'\n" +

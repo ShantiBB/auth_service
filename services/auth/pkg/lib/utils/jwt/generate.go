@@ -4,9 +4,11 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
+
+	"auth/internal/repository/models"
 )
 
-func GenerateToken(sub int64, role string, ttl time.Duration, secret []byte) (string, error) {
+func GenerateToken(sub int64, role models.UserRole, ttl time.Duration, secret []byte) (string, error) {
 	claims := Claims{
 		Sub:  sub,
 		Role: role,
@@ -20,15 +22,15 @@ func GenerateToken(sub int64, role string, ttl time.Duration, secret []byte) (st
 	return token.SignedString(secret)
 }
 
-func GenerateAccessToken(sub int64, role string, t *TokenCredentials) (string, error) {
+func GenerateAccessToken(sub int64, role models.UserRole, t *TokenCredentials) (string, error) {
 	return GenerateToken(sub, role, t.AccessTTL, []byte(t.AccessSecret))
 }
 
-func GenerateRefreshToken(sub int64, role string, t *TokenCredentials) (string, error) {
+func GenerateRefreshToken(sub int64, role models.UserRole, t *TokenCredentials) (string, error) {
 	return GenerateToken(sub, role, t.RefreshTTL, []byte(t.RefreshSecret))
 }
 
-func GenerateAllTokens(sub int64, role string, t *TokenCredentials) (*Token, error) {
+func GenerateAllTokens(sub int64, role models.UserRole, t *TokenCredentials) (*Token, error) {
 	var err error
 	tokens := &Token{}
 	tokens.Access, err = GenerateAccessToken(sub, role, t)

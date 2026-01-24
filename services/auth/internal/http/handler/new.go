@@ -19,8 +19,8 @@ func New(svc Service) *Handler {
 	return &Handler{svc: svc}
 }
 
-func (h *Handler) UserCreateRequestToEntity(req *request.UserCreate, hash string) *models.UserCreate {
-	return &models.UserCreate{
+func (h *Handler) UserCreateRequestToEntity(req *request.UserCreate, hash string) *models.CreateUser {
+	return &models.CreateUser{
 		Email:    req.Email,
 		Password: hash,
 	}

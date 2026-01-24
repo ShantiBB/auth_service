@@ -15,7 +15,7 @@ type Repository struct {
 	db *pgxpool.Pool
 }
 
-func NewRepository(config *config.Config) (*Repository, error) {
+func New(config *config.Config) *Repository {
 	url := fmt.Sprintf(
 		"postgres://%s:%s@%s:%d/%s?sslmode=%s",
 		config.Postgres.User,
@@ -28,7 +28,7 @@ func NewRepository(config *config.Config) (*Repository, error) {
 
 	cfg, err := pgxpool.ParseConfig(url)
 	if err != nil {
-		return nil, err
+		panic(err.Error())
 	}
 
 	cfg.MaxConns = 20
@@ -40,7 +40,14 @@ func NewRepository(config *config.Config) (*Repository, error) {
 
 	cfg.ConnConfig.ConnectTimeout = 10 * time.Second
 
-	db, err := pgxpool.NewWithConfig(context.Background(), cfg)
+	ctx := context.Background()
+	db, err := pgxpool.NewWithConfig(ctx, cfg)
+	if err != nil {
+		panic(err.Error())
+	}
+	if err = db.Ping(ctx); err != nil {
+		panic(err.Error())
+	}
 
-	return &Repository{db: db}, nil
+	return &Repository{db: db}
 }

@@ -28,6 +28,8 @@ type JWTConfig struct {
 }
 
 type Config struct {
+	Env      string         `yaml:"env"`
+	LogLevel string         `yaml:"log_level"`
 	Server   ServerConfig   `yaml:"server" env-prefix:"SERVER_"`
 	Postgres PostgresConfig `yaml:"postgres" env-prefix:"POSTGRES_"`
 	JWT      JWTConfig      `yaml:"jwt" env-prefix:"JWT_"`

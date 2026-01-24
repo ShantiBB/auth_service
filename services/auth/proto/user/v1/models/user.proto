@@ -9,9 +9,9 @@ import "user/v1/enums/user_role.proto";
 
 
 message User {
-  string id = 1;
+  int64 id = 1;
   string email = 2;
-  string username = 3;
+  optional string username = 3;
   UserRole role = 4;
   bool is_active = 5;
   google.protobuf.Timestamp created_at = 6;
@@ -19,9 +19,9 @@ message User {
 }
 
 message UserShort {
-  string id = 1;
+  int64 id = 1;
   string email = 2;
-  string username = 3;
+  optional string username = 3;
   UserRole role = 4;
   bool is_active = 5;
 }

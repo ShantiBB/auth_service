@@ -5,7 +5,7 @@ import (
 
 	"auth/internal/http/dto/request"
 	"auth/internal/repository/models"
-	"auth/pkg/utils/jwt"
+	"auth/pkg/lib/utils/jwt"
 )
 
 var (

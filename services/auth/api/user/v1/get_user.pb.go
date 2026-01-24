@@ -24,7 +24,7 @@ const (
 
 type GetUserRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Id            int64                  `protobuf:"varint,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -59,11 +59,11 @@ func (*GetUserRequest) Descriptor() ([]byte, []int) {
 	return file_user_v1_rpc_user_get_user_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *GetUserRequest) GetId() string {
+func (x *GetUserRequest) GetId() int64 {
 	if x != nil {
 		return x.Id
 	}
-	return ""
+	return 0
 }
 
 type GetUserResponse struct {
@@ -116,8 +116,8 @@ const file_user_v1_rpc_user_get_user_proto_rawDesc = "" +
 	"\n" +
 	"\x1fuser/v1/rpc/user/get_user.proto\x12\auser.v1\x1a\x1bbuf/validate/validate.proto\x1a\x19user/v1/models/user.proto\",\n" +
 	"\x0eGetUserRequest\x12\x1a\n" +
-	"\x02id\x18\x01 \x01(\tB\n" +
-	"\xbaH\a\xc8\x01\x012\x02(\x01R\x02id\"4\n" +
+	"\x02id\x18\x01 \x01(\x03B\n" +
+	"\xbaH\a\xc8\x01\x01\"\x02(\x01R\x02id\"4\n" +
 	"\x0fGetUserResponse\x12!\n" +
 	"\x04user\x18\x01 \x01(\v2\r.user.v1.UserR\x04userB\x14Z\x12api/user/v1;userv1b\x06proto3"
 

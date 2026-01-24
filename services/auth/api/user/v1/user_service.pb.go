@@ -24,7 +24,7 @@ var File_user_v1_user_service_proto protoreflect.FileDescriptor
 
 const file_user_v1_user_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1auser/v1/user_service.proto\x12\auser.v1\x1a\"user/v1/rpc/user/create_user.proto\x1a\"user/v1/rpc/user/delete_user.proto\x1a\x1fuser/v1/rpc/user/get_user.proto\x1a user/v1/rpc/user/get_users.proto\x1a\"user/v1/rpc/user/update_user.proto2\xe1\x02\n" +
+	"\x1auser/v1/user_service.proto\x12\auser.v1\x1a\"user/v1/rpc/user/create_user.proto\x1a\"user/v1/rpc/user/delete_user.proto\x1a\x1fuser/v1/rpc/user/get_user.proto\x1a user/v1/rpc/user/get_users.proto\x1a\"user/v1/rpc/user/update_user.proto\x1a%user/v1/rpc/token/register_user.proto\x1a\"user/v1/rpc/token/login_user.proto\x1a%user/v1/rpc/token/refresh_token.proto2\xe1\x02\n" +
 	"\vUserService\x12E\n" +
 	"\n" +
 	"CreateUser\x12\x1a.user.v1.CreateUserRequest\x1a\x1b.user.v1.CreateUserResponse\x12?\n" +
@@ -33,36 +33,52 @@ const file_user_v1_user_service_proto_rawDesc = "" +
 	"\n" +
 	"UpdateUser\x12\x1a.user.v1.UpdateUserRequest\x1a\x1b.user.v1.UpdateUserResponse\x12E\n" +
 	"\n" +
-	"DeleteUser\x12\x1a.user.v1.DeleteUserRequest\x1a\x1b.user.v1.DeleteUserResponseB\x14Z\x12api/user/v1;userv1b\x06proto3"
+	"DeleteUser\x12\x1a.user.v1.DeleteUserRequest\x1a\x1b.user.v1.DeleteUserResponse2\xec\x01\n" +
+	"\fTokenService\x12K\n" +
+	"\fRegisterUser\x12\x1c.user.v1.RegisterUserRequest\x1a\x1d.user.v1.RegisterUserResponse\x12B\n" +
+	"\tLoginUser\x12\x19.user.v1.LoginUserRequest\x1a\x1a.user.v1.LoginUserResponse\x12K\n" +
+	"\fRefreshToken\x12\x1c.user.v1.RefreshTokenRequest\x1a\x1d.user.v1.RefreshTokenResponseB\x14Z\x12api/user/v1;userv1b\x06proto3"
 
 var file_user_v1_user_service_proto_goTypes = []any{
-	(*CreateUserRequest)(nil),  // 0: user.v1.CreateUserRequest
-	(*GetUsersRequest)(nil),    // 1: user.v1.GetUsersRequest
-	(*GetUserRequest)(nil),     // 2: user.v1.GetUserRequest
-	(*UpdateUserRequest)(nil),  // 3: user.v1.UpdateUserRequest
-	(*DeleteUserRequest)(nil),  // 4: user.v1.DeleteUserRequest
-	(*CreateUserResponse)(nil), // 5: user.v1.CreateUserResponse
-	(*GetUsersResponse)(nil),   // 6: user.v1.GetUsersResponse
-	(*GetUserResponse)(nil),    // 7: user.v1.GetUserResponse
-	(*UpdateUserResponse)(nil), // 8: user.v1.UpdateUserResponse
-	(*DeleteUserResponse)(nil), // 9: user.v1.DeleteUserResponse
+	(*CreateUserRequest)(nil),    // 0: user.v1.CreateUserRequest
+	(*GetUsersRequest)(nil),      // 1: user.v1.GetUsersRequest
+	(*GetUserRequest)(nil),       // 2: user.v1.GetUserRequest
+	(*UpdateUserRequest)(nil),    // 3: user.v1.UpdateUserRequest
+	(*DeleteUserRequest)(nil),    // 4: user.v1.DeleteUserRequest
+	(*RegisterUserRequest)(nil),  // 5: user.v1.RegisterUserRequest
+	(*LoginUserRequest)(nil),     // 6: user.v1.LoginUserRequest
+	(*RefreshTokenRequest)(nil),  // 7: user.v1.RefreshTokenRequest
+	(*CreateUserResponse)(nil),   // 8: user.v1.CreateUserResponse
+	(*GetUsersResponse)(nil),     // 9: user.v1.GetUsersResponse
+	(*GetUserResponse)(nil),      // 10: user.v1.GetUserResponse
+	(*UpdateUserResponse)(nil),   // 11: user.v1.UpdateUserResponse
+	(*DeleteUserResponse)(nil),   // 12: user.v1.DeleteUserResponse
+	(*RegisterUserResponse)(nil), // 13: user.v1.RegisterUserResponse
+	(*LoginUserResponse)(nil),    // 14: user.v1.LoginUserResponse
+	(*RefreshTokenResponse)(nil), // 15: user.v1.RefreshTokenResponse
 }
 var file_user_v1_user_service_proto_depIdxs = []int32{
-	0, // 0: user.v1.UserService.CreateUser:input_type -> user.v1.CreateUserRequest
-	1, // 1: user.v1.UserService.GetUsers:input_type -> user.v1.GetUsersRequest
-	2, // 2: user.v1.UserService.GetUser:input_type -> user.v1.GetUserRequest
-	3, // 3: user.v1.UserService.UpdateUser:input_type -> user.v1.UpdateUserRequest
-	4, // 4: user.v1.UserService.DeleteUser:input_type -> user.v1.DeleteUserRequest
-	5, // 5: user.v1.UserService.CreateUser:output_type -> user.v1.CreateUserResponse
-	6, // 6: user.v1.UserService.GetUsers:output_type -> user.v1.GetUsersResponse
-	7, // 7: user.v1.UserService.GetUser:output_type -> user.v1.GetUserResponse
-	8, // 8: user.v1.UserService.UpdateUser:output_type -> user.v1.UpdateUserResponse
-	9, // 9: user.v1.UserService.DeleteUser:output_type -> user.v1.DeleteUserResponse
-	5, // [5:10] is the sub-list for method output_type
-	0, // [0:5] is the sub-list for method input_type
-	0, // [0:0] is the sub-list for extension type_name
-	0, // [0:0] is the sub-list for extension extendee
-	0, // [0:0] is the sub-list for field type_name
+	0,  // 0: user.v1.UserService.CreateUser:input_type -> user.v1.CreateUserRequest
+	1,  // 1: user.v1.UserService.GetUsers:input_type -> user.v1.GetUsersRequest
+	2,  // 2: user.v1.UserService.GetUser:input_type -> user.v1.GetUserRequest
+	3,  // 3: user.v1.UserService.UpdateUser:input_type -> user.v1.UpdateUserRequest
+	4,  // 4: user.v1.UserService.DeleteUser:input_type -> user.v1.DeleteUserRequest
+	5,  // 5: user.v1.TokenService.RegisterUser:input_type -> user.v1.RegisterUserRequest
+	6,  // 6: user.v1.TokenService.LoginUser:input_type -> user.v1.LoginUserRequest
+	7,  // 7: user.v1.TokenService.RefreshToken:input_type -> user.v1.RefreshTokenRequest
+	8,  // 8: user.v1.UserService.CreateUser:output_type -> user.v1.CreateUserResponse
+	9,  // 9: user.v1.UserService.GetUsers:output_type -> user.v1.GetUsersResponse
+	10, // 10: user.v1.UserService.GetUser:output_type -> user.v1.GetUserResponse
+	11, // 11: user.v1.UserService.UpdateUser:output_type -> user.v1.UpdateUserResponse
+	12, // 12: user.v1.UserService.DeleteUser:output_type -> user.v1.DeleteUserResponse
+	13, // 13: user.v1.TokenService.RegisterUser:output_type -> user.v1.RegisterUserResponse
+	14, // 14: user.v1.TokenService.LoginUser:output_type -> user.v1.LoginUserResponse
+	15, // 15: user.v1.TokenService.RefreshToken:output_type -> user.v1.RefreshTokenResponse
+	8,  // [8:16] is the sub-list for method output_type
+	0,  // [0:8] is the sub-list for method input_type
+	0,  // [0:0] is the sub-list for extension type_name
+	0,  // [0:0] is the sub-list for extension extendee
+	0,  // [0:0] is the sub-list for field type_name
 }
 
 func init() { file_user_v1_user_service_proto_init() }
@@ -75,6 +91,9 @@ func file_user_v1_user_service_proto_init() {
 	file_user_v1_rpc_user_get_user_proto_init()
 	file_user_v1_rpc_user_get_users_proto_init()
 	file_user_v1_rpc_user_update_user_proto_init()
+	file_user_v1_rpc_token_register_user_proto_init()
+	file_user_v1_rpc_token_login_user_proto_init()
+	file_user_v1_rpc_token_refresh_token_proto_init()
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
@@ -83,7 +102,7 @@ func file_user_v1_user_service_proto_init() {
 			NumEnums:      0,
 			NumMessages:   0,
 			NumExtensions: 0,
-			NumServices:   1,
+			NumServices:   2,
 		},
 		GoTypes:           file_user_v1_user_service_proto_goTypes,
 		DependencyIndexes: file_user_v1_user_service_proto_depIdxs,

@@ -24,22 +24,25 @@ const (
 type UserRole int32
 
 const (
-	UserRole_USER_ROLE_USER      UserRole = 0
-	UserRole_USER_ROLE_MODERATOR UserRole = 1
-	UserRole_USER_ROLE_ADMIN     UserRole = 2
+	UserRole_USER_ROLE_UNSPECIFIED UserRole = 0
+	UserRole_USER_ROLE_USER        UserRole = 1
+	UserRole_USER_ROLE_MODERATOR   UserRole = 2
+	UserRole_USER_ROLE_ADMIN       UserRole = 3
 )
 
 // Enum value maps for UserRole.
 var (
 	UserRole_name = map[int32]string{
-		0: "USER_ROLE_USER",
-		1: "USER_ROLE_MODERATOR",
-		2: "USER_ROLE_ADMIN",
+		0: "USER_ROLE_UNSPECIFIED",
+		1: "USER_ROLE_USER",
+		2: "USER_ROLE_MODERATOR",
+		3: "USER_ROLE_ADMIN",
 	}
 	UserRole_value = map[string]int32{
-		"USER_ROLE_USER":      0,
-		"USER_ROLE_MODERATOR": 1,
-		"USER_ROLE_ADMIN":     2,
+		"USER_ROLE_UNSPECIFIED": 0,
+		"USER_ROLE_USER":        1,
+		"USER_ROLE_MODERATOR":   2,
+		"USER_ROLE_ADMIN":       3,
 	}
 )
 
@@ -74,11 +77,12 @@ var File_user_v1_enums_user_role_proto protoreflect.FileDescriptor
 
 const file_user_v1_enums_user_role_proto_rawDesc = "" +
 	"\n" +
-	"\x1duser/v1/enums/user_role.proto\x12\auser.v1*L\n" +
-	"\bUserRole\x12\x12\n" +
-	"\x0eUSER_ROLE_USER\x10\x00\x12\x17\n" +
-	"\x13USER_ROLE_MODERATOR\x10\x01\x12\x13\n" +
-	"\x0fUSER_ROLE_ADMIN\x10\x02B\x14Z\x12api/user/v1;userv1b\x06proto3"
+	"\x1duser/v1/enums/user_role.proto\x12\auser.v1*g\n" +
+	"\bUserRole\x12\x19\n" +
+	"\x15USER_ROLE_UNSPECIFIED\x10\x00\x12\x12\n" +
+	"\x0eUSER_ROLE_USER\x10\x01\x12\x17\n" +
+	"\x13USER_ROLE_MODERATOR\x10\x02\x12\x13\n" +
+	"\x0fUSER_ROLE_ADMIN\x10\x03B\x14Z\x12api/user/v1;userv1b\x06proto3"
 
 var (
 	file_user_v1_enums_user_role_proto_rawDescOnce sync.Once

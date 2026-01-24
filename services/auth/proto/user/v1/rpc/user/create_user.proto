@@ -14,7 +14,10 @@ message CreateUserRequest {
     (buf.validate.field).string.min_len = 5,
     (buf.validate.field).string.max_len = 100
   ];
-  string password = 2 [
+  optional string username = 2 [
+    (buf.validate.field).string.max_len = 100
+  ];
+  string password = 3 [
     (buf.validate.field).required = true,
     (buf.validate.field).string.min_len = 8,
     (buf.validate.field).string.max_len = 100
