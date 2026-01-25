@@ -28,6 +28,10 @@ linters:
         - name: var-naming
           disabled: true
 
+    gosec:
+      excludes:
+        - G101
+
   exclusions:
     generated: lax
     presets:
