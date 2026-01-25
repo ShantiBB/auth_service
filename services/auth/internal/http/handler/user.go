@@ -101,7 +101,7 @@ func (h *Handler) UserGetAll(w http.ResponseWriter, r *http.Request) {
 
 	users := make([]response.UserShort, 0, len(userList.Users))
 	for _, user := range userList.Users {
-		userResponse := h.UserShortEntityToResponse(&user)
+		userResponse := h.UserShortEntityToResponse(user)
 		users = append(users, *userResponse)
 	}
 

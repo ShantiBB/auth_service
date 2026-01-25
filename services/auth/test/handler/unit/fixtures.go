@@ -26,7 +26,7 @@ var (
 	}
 
 	usernameShortMock = "test-user-short"
-	UserShortMock     = models.UserShort{
+	UserShortMock     = &models.UserShort{
 		ID:       2,
 		Email:    "testshort@example.com",
 		Username: &usernameShortMock,

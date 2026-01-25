@@ -31,7 +31,7 @@ var (
 			mock.Anything,
 		).Return(
 			&models.UserList{
-				Users:      []models.UserShort{UserShortMock},
+				Users:      []*models.UserShort{UserShortMock},
 				TotalCount: 1,
 			}, nil,
 		)

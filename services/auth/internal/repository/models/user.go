@@ -9,26 +9,26 @@ type CreateUser struct {
 }
 
 type UpdateUser struct {
-	ID       int64
 	Username string
 	Email    string
+	ID       int64
 }
 
 type User struct {
-	ID        int64
+	CreatedAt time.Time
+	UpdatedAt time.Time
 	Username  *string
 	Email     string
 	Role      UserRole
+	ID        int64
 	IsActive  bool
-	CreatedAt time.Time
-	UpdatedAt time.Time
 }
 
 type UserShort struct {
-	ID       int64
 	Username *string
 	Email    string
 	Role     UserRole
+	ID       int64
 	IsActive bool
 }
 
@@ -38,16 +38,16 @@ type UserList struct {
 }
 
 type UpdateUserPassword struct {
-	ID          int64
 	Password    string
 	NewPassword string
+	ID          int64
 }
 
 type UserCredentials struct {
-	ID       int64
 	Email    string
 	Role     UserRole
 	Password string
+	ID       int64
 }
 
 func (u CreateUser) ToUserRead() *User {
