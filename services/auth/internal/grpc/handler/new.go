@@ -15,7 +15,7 @@ type UserService interface {
 	GetUsers(ctx context.Context, page, limit uint64) (*models.UserList, error)
 	GetUserByID(ctx context.Context, id int64) (*models.User, error)
 	UpdateUserByID(ctx context.Context, user *models.UpdateUser) error
-	UpdateUserRoleStatus(ctx context.Context, id int64, role string) error
+	UpdateUserRoleStatus(ctx context.Context, id int64, role models.UserRole) error
 	UpdateUserActiveStatus(ctx context.Context, id int64, status bool) error
 	DeleteUserByID(ctx context.Context, id int64) error
 }

@@ -5,10 +5,12 @@ package user.v1;
 option go_package = "api/user/v1;userv1";
 
 import "user/v1/rpc/user/create_user.proto";
-import "user/v1/rpc/user/delete_user.proto";
-import "user/v1/rpc/user/get_user.proto";
 import "user/v1/rpc/user/get_users.proto";
+import "user/v1/rpc/user/get_user.proto";
 import "user/v1/rpc/user/update_user.proto";
+import "user/v1/rpc/user/update_user_activity.proto";
+import "user/v1/rpc/user/update_user_role.proto";
+import "user/v1/rpc/user/delete_user.proto";
 import "user/v1/rpc/token/register_user.proto";
 import "user/v1/rpc/token/login_user.proto";
 import "user/v1/rpc/token/refresh_token.proto";
@@ -19,6 +21,8 @@ service UserService {
   rpc GetUsers(GetUsersRequest) returns (GetUsersResponse);
   rpc GetUser(GetUserRequest) returns (GetUserResponse);
   rpc UpdateUser(UpdateUserRequest) returns (UpdateUserResponse);
+  rpc UpdateUserActivity(UpdateUserActivityRequest) returns (UpdateUserActivityResponse);
+  rpc UpdateUserRole(UpdateUserRoleRequest) returns (UpdateUserRoleResponse);
   rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
 }
 

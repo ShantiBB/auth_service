@@ -5,11 +5,13 @@ import (
 )
 
 const (
-	methodCreateUser = "/user.v1.UserService/CreateUser"
-	methodGetUsers   = "/user.v1.UserService/GetUsers"
-	methodGetUser    = "/user.v1.UserService/GetUser"
-	methodUpdateUser = "/user.v1.UserService/UpdateUser"
-	methodDeleteUser = "/user.v1.UserService/DeleteUser"
+	methodCreateUser         = "/user.v1.UserService/CreateUser"
+	methodGetUsers           = "/user.v1.UserService/GetUsers"
+	methodGetUser            = "/user.v1.UserService/GetUser"
+	methodUpdateUser         = "/user.v1.UserService/UpdateUser"
+	methodUpdateUserActivity = "/user.v1.UserService/UpdateUserActivity"
+	methodUpdateUserRole     = "/user.v1.UserService/UpdateUserRole"
+	methodDeleteUser         = "/user.v1.UserService/DeleteUser"
 )
 
 var (
@@ -19,15 +21,18 @@ var (
 		methodDeleteUser: {},
 	}
 	moderatorOnly = map[string]struct{}{
-		methodGetUsers: {},
-		methodGetUser:  {},
+		methodGetUsers:           {},
+		methodGetUser:            {},
+		methodUpdateUserActivity: {},
 	}
 	adminOnly = map[string]struct{}{
-		methodCreateUser: {},
-		methodGetUsers:   {},
-		methodGetUser:    {},
-		methodUpdateUser: {},
-		methodDeleteUser: {},
+		methodCreateUser:         {},
+		methodGetUsers:           {},
+		methodGetUser:            {},
+		methodUpdateUser:         {},
+		methodUpdateUserActivity: {},
+		methodUpdateUserRole:     {},
+		methodDeleteUser:         {},
 	}
 )
 

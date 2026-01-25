@@ -24,14 +24,16 @@ var File_user_v1_user_service_proto protoreflect.FileDescriptor
 
 const file_user_v1_user_service_proto_rawDesc = "" +
 	"\n" +
-	"\x1auser/v1/user_service.proto\x12\auser.v1\x1a\"user/v1/rpc/user/create_user.proto\x1a\"user/v1/rpc/user/delete_user.proto\x1a\x1fuser/v1/rpc/user/get_user.proto\x1a user/v1/rpc/user/get_users.proto\x1a\"user/v1/rpc/user/update_user.proto\x1a%user/v1/rpc/token/register_user.proto\x1a\"user/v1/rpc/token/login_user.proto\x1a%user/v1/rpc/token/refresh_token.proto2\xe1\x02\n" +
+	"\x1auser/v1/user_service.proto\x12\auser.v1\x1a\"user/v1/rpc/user/create_user.proto\x1a user/v1/rpc/user/get_users.proto\x1a\x1fuser/v1/rpc/user/get_user.proto\x1a\"user/v1/rpc/user/update_user.proto\x1a+user/v1/rpc/user/update_user_activity.proto\x1a'user/v1/rpc/user/update_user_role.proto\x1a\"user/v1/rpc/user/delete_user.proto\x1a%user/v1/rpc/token/register_user.proto\x1a\"user/v1/rpc/token/login_user.proto\x1a%user/v1/rpc/token/refresh_token.proto2\x93\x04\n" +
 	"\vUserService\x12E\n" +
 	"\n" +
 	"CreateUser\x12\x1a.user.v1.CreateUserRequest\x1a\x1b.user.v1.CreateUserResponse\x12?\n" +
 	"\bGetUsers\x12\x18.user.v1.GetUsersRequest\x1a\x19.user.v1.GetUsersResponse\x12<\n" +
 	"\aGetUser\x12\x17.user.v1.GetUserRequest\x1a\x18.user.v1.GetUserResponse\x12E\n" +
 	"\n" +
-	"UpdateUser\x12\x1a.user.v1.UpdateUserRequest\x1a\x1b.user.v1.UpdateUserResponse\x12E\n" +
+	"UpdateUser\x12\x1a.user.v1.UpdateUserRequest\x1a\x1b.user.v1.UpdateUserResponse\x12]\n" +
+	"\x12UpdateUserActivity\x12\".user.v1.UpdateUserActivityRequest\x1a#.user.v1.UpdateUserActivityResponse\x12Q\n" +
+	"\x0eUpdateUserRole\x12\x1e.user.v1.UpdateUserRoleRequest\x1a\x1f.user.v1.UpdateUserRoleResponse\x12E\n" +
 	"\n" +
 	"DeleteUser\x12\x1a.user.v1.DeleteUserRequest\x1a\x1b.user.v1.DeleteUserResponse2\xec\x01\n" +
 	"\fTokenService\x12K\n" +
@@ -40,42 +42,50 @@ const file_user_v1_user_service_proto_rawDesc = "" +
 	"\fRefreshToken\x12\x1c.user.v1.RefreshTokenRequest\x1a\x1d.user.v1.RefreshTokenResponseB\x14Z\x12api/user/v1;userv1b\x06proto3"
 
 var file_user_v1_user_service_proto_goTypes = []any{
-	(*CreateUserRequest)(nil),    // 0: user.v1.CreateUserRequest
-	(*GetUsersRequest)(nil),      // 1: user.v1.GetUsersRequest
-	(*GetUserRequest)(nil),       // 2: user.v1.GetUserRequest
-	(*UpdateUserRequest)(nil),    // 3: user.v1.UpdateUserRequest
-	(*DeleteUserRequest)(nil),    // 4: user.v1.DeleteUserRequest
-	(*RegisterUserRequest)(nil),  // 5: user.v1.RegisterUserRequest
-	(*LoginUserRequest)(nil),     // 6: user.v1.LoginUserRequest
-	(*RefreshTokenRequest)(nil),  // 7: user.v1.RefreshTokenRequest
-	(*CreateUserResponse)(nil),   // 8: user.v1.CreateUserResponse
-	(*GetUsersResponse)(nil),     // 9: user.v1.GetUsersResponse
-	(*GetUserResponse)(nil),      // 10: user.v1.GetUserResponse
-	(*UpdateUserResponse)(nil),   // 11: user.v1.UpdateUserResponse
-	(*DeleteUserResponse)(nil),   // 12: user.v1.DeleteUserResponse
-	(*RegisterUserResponse)(nil), // 13: user.v1.RegisterUserResponse
-	(*LoginUserResponse)(nil),    // 14: user.v1.LoginUserResponse
-	(*RefreshTokenResponse)(nil), // 15: user.v1.RefreshTokenResponse
+	(*CreateUserRequest)(nil),          // 0: user.v1.CreateUserRequest
+	(*GetUsersRequest)(nil),            // 1: user.v1.GetUsersRequest
+	(*GetUserRequest)(nil),             // 2: user.v1.GetUserRequest
+	(*UpdateUserRequest)(nil),          // 3: user.v1.UpdateUserRequest
+	(*UpdateUserActivityRequest)(nil),  // 4: user.v1.UpdateUserActivityRequest
+	(*UpdateUserRoleRequest)(nil),      // 5: user.v1.UpdateUserRoleRequest
+	(*DeleteUserRequest)(nil),          // 6: user.v1.DeleteUserRequest
+	(*RegisterUserRequest)(nil),        // 7: user.v1.RegisterUserRequest
+	(*LoginUserRequest)(nil),           // 8: user.v1.LoginUserRequest
+	(*RefreshTokenRequest)(nil),        // 9: user.v1.RefreshTokenRequest
+	(*CreateUserResponse)(nil),         // 10: user.v1.CreateUserResponse
+	(*GetUsersResponse)(nil),           // 11: user.v1.GetUsersResponse
+	(*GetUserResponse)(nil),            // 12: user.v1.GetUserResponse
+	(*UpdateUserResponse)(nil),         // 13: user.v1.UpdateUserResponse
+	(*UpdateUserActivityResponse)(nil), // 14: user.v1.UpdateUserActivityResponse
+	(*UpdateUserRoleResponse)(nil),     // 15: user.v1.UpdateUserRoleResponse
+	(*DeleteUserResponse)(nil),         // 16: user.v1.DeleteUserResponse
+	(*RegisterUserResponse)(nil),       // 17: user.v1.RegisterUserResponse
+	(*LoginUserResponse)(nil),          // 18: user.v1.LoginUserResponse
+	(*RefreshTokenResponse)(nil),       // 19: user.v1.RefreshTokenResponse
 }
 var file_user_v1_user_service_proto_depIdxs = []int32{
 	0,  // 0: user.v1.UserService.CreateUser:input_type -> user.v1.CreateUserRequest
 	1,  // 1: user.v1.UserService.GetUsers:input_type -> user.v1.GetUsersRequest
 	2,  // 2: user.v1.UserService.GetUser:input_type -> user.v1.GetUserRequest
 	3,  // 3: user.v1.UserService.UpdateUser:input_type -> user.v1.UpdateUserRequest
-	4,  // 4: user.v1.UserService.DeleteUser:input_type -> user.v1.DeleteUserRequest
-	5,  // 5: user.v1.TokenService.RegisterUser:input_type -> user.v1.RegisterUserRequest
-	6,  // 6: user.v1.TokenService.LoginUser:input_type -> user.v1.LoginUserRequest
-	7,  // 7: user.v1.TokenService.RefreshToken:input_type -> user.v1.RefreshTokenRequest
-	8,  // 8: user.v1.UserService.CreateUser:output_type -> user.v1.CreateUserResponse
-	9,  // 9: user.v1.UserService.GetUsers:output_type -> user.v1.GetUsersResponse
-	10, // 10: user.v1.UserService.GetUser:output_type -> user.v1.GetUserResponse
-	11, // 11: user.v1.UserService.UpdateUser:output_type -> user.v1.UpdateUserResponse
-	12, // 12: user.v1.UserService.DeleteUser:output_type -> user.v1.DeleteUserResponse
-	13, // 13: user.v1.TokenService.RegisterUser:output_type -> user.v1.RegisterUserResponse
-	14, // 14: user.v1.TokenService.LoginUser:output_type -> user.v1.LoginUserResponse
-	15, // 15: user.v1.TokenService.RefreshToken:output_type -> user.v1.RefreshTokenResponse
-	8,  // [8:16] is the sub-list for method output_type
-	0,  // [0:8] is the sub-list for method input_type
+	4,  // 4: user.v1.UserService.UpdateUserActivity:input_type -> user.v1.UpdateUserActivityRequest
+	5,  // 5: user.v1.UserService.UpdateUserRole:input_type -> user.v1.UpdateUserRoleRequest
+	6,  // 6: user.v1.UserService.DeleteUser:input_type -> user.v1.DeleteUserRequest
+	7,  // 7: user.v1.TokenService.RegisterUser:input_type -> user.v1.RegisterUserRequest
+	8,  // 8: user.v1.TokenService.LoginUser:input_type -> user.v1.LoginUserRequest
+	9,  // 9: user.v1.TokenService.RefreshToken:input_type -> user.v1.RefreshTokenRequest
+	10, // 10: user.v1.UserService.CreateUser:output_type -> user.v1.CreateUserResponse
+	11, // 11: user.v1.UserService.GetUsers:output_type -> user.v1.GetUsersResponse
+	12, // 12: user.v1.UserService.GetUser:output_type -> user.v1.GetUserResponse
+	13, // 13: user.v1.UserService.UpdateUser:output_type -> user.v1.UpdateUserResponse
+	14, // 14: user.v1.UserService.UpdateUserActivity:output_type -> user.v1.UpdateUserActivityResponse
+	15, // 15: user.v1.UserService.UpdateUserRole:output_type -> user.v1.UpdateUserRoleResponse
+	16, // 16: user.v1.UserService.DeleteUser:output_type -> user.v1.DeleteUserResponse
+	17, // 17: user.v1.TokenService.RegisterUser:output_type -> user.v1.RegisterUserResponse
+	18, // 18: user.v1.TokenService.LoginUser:output_type -> user.v1.LoginUserResponse
+	19, // 19: user.v1.TokenService.RefreshToken:output_type -> user.v1.RefreshTokenResponse
+	10, // [10:20] is the sub-list for method output_type
+	0,  // [0:10] is the sub-list for method input_type
 	0,  // [0:0] is the sub-list for extension type_name
 	0,  // [0:0] is the sub-list for extension extendee
 	0,  // [0:0] is the sub-list for field type_name
@@ -87,10 +97,12 @@ func file_user_v1_user_service_proto_init() {
 		return
 	}
 	file_user_v1_rpc_user_create_user_proto_init()
-	file_user_v1_rpc_user_delete_user_proto_init()
-	file_user_v1_rpc_user_get_user_proto_init()
 	file_user_v1_rpc_user_get_users_proto_init()
+	file_user_v1_rpc_user_get_user_proto_init()
 	file_user_v1_rpc_user_update_user_proto_init()
+	file_user_v1_rpc_user_update_user_activity_proto_init()
+	file_user_v1_rpc_user_update_user_role_proto_init()
+	file_user_v1_rpc_user_delete_user_proto_init()
 	file_user_v1_rpc_token_register_user_proto_init()
 	file_user_v1_rpc_token_login_user_proto_init()
 	file_user_v1_rpc_token_refresh_token_proto_init()

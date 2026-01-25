@@ -107,7 +107,7 @@ func (r *Repository) UpdateUserByID(ctx context.Context, u *models.UpdateUser) e
 	return nil
 }
 
-func (r *Repository) UpdateUserRoleStatus(ctx context.Context, id int64, role string) error {
+func (r *Repository) UpdateUserRoleStatus(ctx context.Context, id int64, role models.UserRole) error {
 	row, err := r.db.Exec(ctx, UpdateUserRoleStatus, id, role)
 	if err != nil {
 		var pgErr *pgconn.PgError

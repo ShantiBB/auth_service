@@ -7,9 +7,9 @@ import (
 	"auth/pkg/lib/utils/consts"
 )
 
-func userRoleToDomain(status userv1.UserRole) models.UserRole {
+func userRoleToDomain(role userv1.UserRole) models.UserRole {
 	var s models.UserRole
-	switch status {
+	switch role {
 	case userv1.UserRole_USER_ROLE_USER:
 		s = models.UserRoleUser
 	case userv1.UserRole_USER_ROLE_MODERATOR:
@@ -40,6 +40,10 @@ func UpdateUserRequestToDomain(req *userv1.UpdateUserRequest) *models.UpdateUser
 		Username: req.Username,
 		Email:    req.Email,
 	}
+}
+
+func UpdateUserRoleRequestToDomain(req *userv1.UpdateUserRoleRequest) models.UserRole {
+	return userRoleToDomain(req.Role)
 }
 
 func RegisterUserRequestToDomain(req *userv1.RegisterUserRequest) (*models.CreateUser, error) {

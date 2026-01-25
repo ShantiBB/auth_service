@@ -42,7 +42,7 @@ func (s *Service) UpdateUserByID(ctx context.Context, user *models.UpdateUser) e
 	return nil
 }
 
-func (s *Service) UpdateUserRoleStatus(ctx context.Context, id int64, role string) error {
+func (s *Service) UpdateUserRoleStatus(ctx context.Context, id int64, role models.UserRole) error {
 	if err := s.repo.UpdateUserRoleStatus(ctx, id, role); err != nil {
 		return err
 	}
