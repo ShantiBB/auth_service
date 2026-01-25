@@ -22,7 +22,7 @@ func (h *Handler) CreateRoom(
 	created, err := h.svc.CreateRoom(ctx, ref, room)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.CreateRoomResponse{
@@ -42,7 +42,7 @@ func (h *Handler) GetRooms(
 	roomList, err := h.svc.GetRooms(ctx, ref, req.Page, req.Limit)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.GetRoomsResponse{
@@ -63,13 +63,13 @@ func (h *Handler) GetRoom(
 
 	roomID, err := helper.ParseRoomID(req.Id)
 	if err != nil {
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	hotel, err := h.svc.GetRoomByID(ctx, roomID)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.GetRoomResponse{
@@ -87,17 +87,17 @@ func (h *Handler) UpdateRoom(
 
 	roomID, err := helper.ParseRoomID(req.Id)
 	if err != nil {
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	updated, err := mapper.UpdateRoomRequestToDomain(req)
 	if err != nil {
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	if err = h.svc.UpdateRoomByID(ctx, roomID, updated); err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.UpdateRoomResponse{
@@ -115,14 +115,14 @@ func (h *Handler) UpdateRoomStatus(
 
 	roomID, err := helper.ParseRoomID(req.Id)
 	if err != nil {
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	room := mapper.UpdateRoomStatusRequestToDomain(req)
 
 	if err = h.svc.UpdateRoomStatusByID(ctx, roomID, room); err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.UpdateRoomStatusResponse{
@@ -140,12 +140,12 @@ func (h *Handler) DeleteRoom(
 
 	roomID, err := helper.ParseRoomID(req.Id)
 	if err != nil {
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	if err = h.svc.DeleteRoomByID(ctx, roomID); err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.DeleteRoomResponse{

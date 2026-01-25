@@ -3,36 +3,51 @@ package helper
 import (
 	"errors"
 
+	"google.golang.org/genproto/googleapis/rpc/errdetails"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
 	"hotel/pkg/lib/utils/consts"
 )
 
+type domainErr struct {
+	message string
+	code    codes.Code
+}
+
 var (
-	errHotelNotFound    = status.Error(codes.NotFound, consts.MsgHotelNotFound)
-	errRoomNotFound     = status.Error(codes.NotFound, consts.MsgRoomNotFound)
-	errUniqueHotelField = status.Error(codes.NotFound, consts.MsgUniqueHotelField)
-	errUniqueRoomField  = status.Error(codes.NotFound, consts.MsgUniqueRoomField)
-	errInternalServer   = status.Error(codes.Internal, consts.MsgInternalServer)
+	errHotelNotFound    = domainErr{consts.MsgHotelNotFound, codes.NotFound}
+	errRoomNotFound     = domainErr{consts.MsgRoomNotFound, codes.NotFound}
+	errUniqueHotelField = domainErr{consts.MsgUniqueHotelField, codes.NotFound}
+	errUniqueRoomField  = domainErr{consts.MsgUniqueRoomField, codes.NotFound}
+	errInternalServer   = domainErr{consts.MsgInternalServer, codes.Internal}
 )
 
-func DomainErr(err error) error {
+func HandleDomainErr(err error) error {
 	if err == nil {
 		return nil
 	}
 
+	var domErr domainErr
 	switch {
 	case errors.Is(err, consts.ErrHotelNotFound):
-		return errHotelNotFound
+		domErr = errHotelNotFound
 	case errors.Is(err, consts.ErrRoomNotFound):
-		return errRoomNotFound
+		domErr = errRoomNotFound
 	case errors.Is(err, consts.ErrUniqueHotelField):
-		return errUniqueHotelField
+		domErr = errUniqueHotelField
 	case errors.Is(err, consts.ErrUniqueRoomField):
-		return errUniqueRoomField
+		domErr = errUniqueRoomField
 
 	default:
-		return errInternalServer
+		domErr = errInternalServer
 	}
+
+	ei := &errdetails.ErrorInfo{
+		Reason: domErr.message,
+		Domain: "user-service",
+	}
+
+	st, _ := status.New(domErr.code, "operation failed").WithDetails(ei)
+	return st.Err()
 }

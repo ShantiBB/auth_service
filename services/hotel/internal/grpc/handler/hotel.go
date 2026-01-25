@@ -21,7 +21,7 @@ func (h *Handler) CreateHotel(
 	created, err := h.svc.CreateHotel(ctx, hotel)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.CreateHotelResponse{
@@ -42,7 +42,7 @@ func (h *Handler) GetHotels(
 	hotelList, err := h.svc.GetHotels(ctx, ref, "title", page, limit)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.GetHotelsResponse{
@@ -65,7 +65,7 @@ func (h *Handler) GetHotel(
 	hotel, err := h.svc.GetHotelBySlug(ctx, ref)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.GetHotelResponse{
@@ -85,7 +85,7 @@ func (h *Handler) UpdateHotel(
 	hotel := mapper.UpdateHotelRequestToDomain(req)
 	if err := h.svc.UpdateHotelBySlug(ctx, ref, hotel); err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.UpdateHotelResponse{
@@ -107,7 +107,7 @@ func (h *Handler) UpdateHotelTitle(
 	updated, err := h.svc.UpdateHotelTitleBySlug(ctx, ref, hotel)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.UpdateHotelTitleResponse{
@@ -126,7 +126,7 @@ func (h *Handler) DeleteHotel(
 	ref := mapper.GetHotelRefRequestToDomain(req)
 	if err := h.svc.DeleteHotelBySlug(ctx, ref); err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
-		return nil, helper.DomainErr(err)
+		return nil, helper.HandleDomainErr(err)
 	}
 
 	return &hotelv1.DeleteHotelResponse{
