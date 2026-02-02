@@ -29,17 +29,13 @@ func (h *Handler) CreateHotel(
 	}, nil
 }
 
-func (h *Handler) GetHotels(
-	ctx context.Context,
-	req *hotelv1.GetHotelsRequest,
-) (*hotelv1.GetHotelsResponse, error) {
+func (h *Handler) GetHotels(ctx context.Context, req *hotelv1.GetHotelsRequest) (*hotelv1.GetHotelsResponse, error) {
 	if err := h.validator.Validate(req); err != nil {
 		return nil, helper.HandleValidationErr(err)
 	}
 
-	page, limit, ref := mapper.GetHotelsRequestToDomain(req)
-	//TODO Реализовать парс сортировки
-	hotelList, err := h.svc.GetHotels(ctx, ref, "title", page, limit)
+	ref, sort, page, limit := mapper.GetHotelsRequestToDomain(req)
+	hotelList, err := h.svc.GetHotels(ctx, ref, sort, page, limit)
 	if err != nil {
 		slog.ErrorContext(ctx, "failed", slog.String("error", err.Error()))
 		return nil, helper.HandleDomainErr(err)
@@ -53,10 +49,7 @@ func (h *Handler) GetHotels(
 	}, nil
 }
 
-func (h *Handler) GetHotel(
-	ctx context.Context,
-	req *hotelv1.GetHotelRequest,
-) (*hotelv1.GetHotelResponse, error) {
+func (h *Handler) GetHotel(ctx context.Context, req *hotelv1.GetHotelRequest) (*hotelv1.GetHotelResponse, error) {
 	if err := h.validator.Validate(req); err != nil {
 		return nil, helper.HandleValidationErr(err)
 	}
