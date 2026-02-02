@@ -26,3 +26,4 @@ go.work.sum
 .idea
 services/booking/build
 .venv
+.DS_Store
