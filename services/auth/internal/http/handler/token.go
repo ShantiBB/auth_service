@@ -5,13 +5,13 @@ import (
 	"errors"
 	"net/http"
 
-	helper2 "auth/internal/grpc/lib/utils/helper"
-	"auth/internal/http/dto/request"
-	"auth/internal/http/dto/response"
-	"auth/internal/http/utils/helper"
-	"auth/internal/http/utils/validation"
-	"auth/pkg/lib/utils/consts"
-	"auth/pkg/lib/utils/jwt"
+	helper2 "github.com/ShantiBB/fukuro-reserve/services/auth/internal/grpc/lib/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/request"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/response"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/utils/validation"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/jwt"
 )
 
 const BearerType = "Bearer"

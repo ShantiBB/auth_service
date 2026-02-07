@@ -8,8 +8,8 @@ import (
 	"github.com/go-chi/render"
 	"github.com/go-playground/validator/v10"
 
-	"auth/internal/http/utils/validation"
-	"auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/utils/validation"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
 )
 
 func ParseJSON(

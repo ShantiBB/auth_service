@@ -6,9 +6,9 @@ import (
 
 	"github.com/ilyakaznacheev/cleanenv"
 
-	"booking/internal/app/booking"
-	"booking/internal/config"
-	"booking/pkg/lib/logger"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/app/booking"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/config"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/pkg/lib/logger"
 )
 
 //	@title			Swagger Bookings API

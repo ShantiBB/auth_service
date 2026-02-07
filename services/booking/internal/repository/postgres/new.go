@@ -10,7 +10,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/lib/pq"
 
-	"booking/internal/config"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/config"
 )
 
 type DBTX interface {

@@ -9,11 +9,11 @@ import (
 	"google.golang.org/grpc/metadata"
 	"google.golang.org/grpc/status"
 
-	userv1 "auth/api/user/v1"
-	"auth/internal/grpc/lib/utils/helper"
-	"auth/internal/grpc/lib/utils/permission"
-	"auth/pkg/lib/utils/consts"
-	"auth/pkg/lib/utils/jwt"
+	userv1 "github.com/ShantiBB/fukuro-reserve/services/auth/api/user/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/grpc/lib/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/grpc/lib/utils/permission"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/jwt"
 )
 
 type contextKey string

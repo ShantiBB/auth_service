@@ -3,7 +3,7 @@ package helper
 import (
 	"time"
 
-	"booking/internal/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/utils/consts"
 )
 
 func Nights(checkIn, checkOut time.Time) (int, error) {

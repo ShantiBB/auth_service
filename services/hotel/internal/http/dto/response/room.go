@@ -3,8 +3,8 @@ package response
 import (
 	"time"
 
-	"hotel/internal/http/utils/pagination"
-	"hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/utils/pagination"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
 
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"

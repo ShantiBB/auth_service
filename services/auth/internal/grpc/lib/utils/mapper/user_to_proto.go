@@ -3,8 +3,8 @@ package mapper
 import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	userv1 "auth/api/user/v1"
-	"auth/internal/repository/models"
+	userv1 "github.com/ShantiBB/fukuro-reserve/services/auth/api/user/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
 )
 
 func userRoleToProto(status models.UserRole) userv1.UserRole {

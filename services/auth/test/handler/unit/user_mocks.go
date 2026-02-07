@@ -3,9 +3,9 @@ package unit
 import (
 	"github.com/stretchr/testify/mock"
 
-	"auth/internal/mocks"
-	"auth/internal/repository/models"
-	"auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/mocks"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
 )
 
 var (

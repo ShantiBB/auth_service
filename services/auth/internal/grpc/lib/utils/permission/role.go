@@ -1,7 +1,7 @@
 package permission
 
 import (
-	"auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
 )
 
 const (

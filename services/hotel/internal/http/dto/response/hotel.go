@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"hotel/internal/http/utils/pagination"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/utils/pagination"
 )
 
 type Location struct {

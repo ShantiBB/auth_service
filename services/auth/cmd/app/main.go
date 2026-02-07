@@ -6,9 +6,9 @@ import (
 
 	"github.com/joho/godotenv"
 
-	"auth/internal/app/auth"
-	"auth/internal/config"
-	"auth/pkg/lib/logger"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/app/auth"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/config"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/logger"
 )
 
 //	@title			Swagger Auth API

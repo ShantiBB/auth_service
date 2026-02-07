@@ -1,10 +1,10 @@
 package mapper
 
 import (
-	userv1 "auth/api/user/v1"
-	"auth/internal/grpc/lib/utils/helper"
-	"auth/internal/repository/models"
-	"auth/pkg/lib/utils/consts"
+	userv1 "github.com/ShantiBB/fukuro-reserve/services/auth/api/user/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/grpc/lib/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
 )
 
 func userRoleToDomain(role userv1.UserRole) models.UserRole {

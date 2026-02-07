@@ -4,9 +4,9 @@ import (
 	"context"
 	"log/slog"
 
-	userv1 "auth/api/user/v1"
-	"auth/internal/grpc/lib/utils/helper"
-	"auth/internal/grpc/lib/utils/mapper"
+	userv1 "github.com/ShantiBB/fukuro-reserve/services/auth/api/user/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/grpc/lib/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/grpc/lib/utils/mapper"
 )
 
 func (h *Handler) RegisterUser(

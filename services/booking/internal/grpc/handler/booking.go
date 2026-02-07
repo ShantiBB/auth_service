@@ -7,11 +7,11 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	bookingv1 "booking/api/booking/v1"
-	"booking/internal/grpc/utils/helper"
-	"booking/internal/grpc/utils/mapper"
-	"booking/internal/repository/models"
-	"booking/internal/utils/consts"
+	bookingv1 "github.com/ShantiBB/fukuro-reserve/services/booking/api/booking/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/grpc/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/grpc/utils/mapper"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/utils/consts"
 )
 
 func (h *Handler) CreateBooking(

@@ -12,10 +12,10 @@ import (
 	"github.com/go-chi/chi/v5"
 	"github.com/stretchr/testify/assert"
 
-	"auth/internal/http/dto/request"
-	"auth/internal/mocks"
-	"auth/pkg/lib/utils/consts"
-	"auth/test/handler/unit"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/request"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/mocks"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/test/handler/unit"
 )
 
 func TestUserCreate(t *testing.T) {

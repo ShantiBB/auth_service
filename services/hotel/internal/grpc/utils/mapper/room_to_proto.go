@@ -3,8 +3,8 @@ package mapper
 import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	hotelv1 "hotel/api/hotel/v1"
-	"hotel/internal/repository/models"
+	hotelv1 "github.com/ShantiBB/fukuro-reserve/services/hotel/api/hotel/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
 )
 
 func roomStatusToProto(status models.RoomStatus) hotelv1.RoomStatus {

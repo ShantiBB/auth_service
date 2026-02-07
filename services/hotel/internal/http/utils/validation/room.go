@@ -4,7 +4,7 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/shopspring/decimal"
 
-	"hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
 )
 
 func roomStatusValidator(fl validator.FieldLevel) bool {

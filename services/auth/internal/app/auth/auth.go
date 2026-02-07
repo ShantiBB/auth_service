@@ -12,12 +12,12 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	userv1 "auth/api/user/v1"
-	"auth/internal/config"
-	"auth/internal/grpc/handler"
-	"auth/internal/repository/postgres"
-	"auth/internal/service"
-	"auth/pkg/lib/utils/jwt"
+	userv1 "github.com/ShantiBB/fukuro-reserve/services/auth/api/user/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/config"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/grpc/handler"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/postgres"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/service"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/jwt"
 )
 
 type App struct {

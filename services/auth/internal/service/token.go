@@ -5,10 +5,10 @@ import (
 	"errors"
 	"log/slog"
 
-	"auth/internal/grpc/lib/utils/helper"
-	"auth/internal/repository/models"
-	"auth/pkg/lib/utils/consts"
-	"auth/pkg/lib/utils/jwt"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/grpc/lib/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/jwt"
 )
 
 func (s *Service) RegisterByEmail(ctx context.Context, user *models.CreateUser) (*jwt.Token, error) {

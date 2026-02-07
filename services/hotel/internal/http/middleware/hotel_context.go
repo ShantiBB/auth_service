@@ -4,8 +4,8 @@ import (
 	"context"
 	"net/http"
 
-	"hotel/internal/http/utils/helper"
-	"hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
 )
 
 type contextKey string

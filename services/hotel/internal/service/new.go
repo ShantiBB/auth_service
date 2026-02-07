@@ -5,7 +5,7 @@ import (
 
 	"github.com/google/uuid"
 
-	"hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
 )
 
 type HotelRepository interface {

@@ -5,9 +5,9 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	httpswagger "github.com/swaggo/http-swagger"
 
-	_ "auth/docs"
-	"auth/internal/http/handler"
-	"auth/internal/http/utils/permission"
+	_ "github.com/ShantiBB/fukuro-reserve/services/auth/docs"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/handler"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/utils/permission"
 )
 
 var (

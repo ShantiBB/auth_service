@@ -5,8 +5,8 @@ import (
 	"github.com/go-chi/chi/v5/middleware"
 	httpswagger "github.com/swaggo/http-swagger"
 
-	_ "hotel/docs"
-	"hotel/internal/http/handler"
+	_ "github.com/ShantiBB/fukuro-reserve/services/hotel/docs"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/handler"
 )
 
 func New(r chi.Router, h *handler.Handler) {

@@ -22,7 +22,14 @@
 go.work.sum
 
 # env file
-.env
+docker/.env
 .idea
 services/booking/build
 .venv
+.DS_Store
+build
+
+# node
+node_modules
+package-lock.json
+package.json

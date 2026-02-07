@@ -5,7 +5,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
-	"auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
 )
 
 func GenerateToken(sub int64, role models.UserRole, ttl time.Duration, secret []byte) (string, error) {

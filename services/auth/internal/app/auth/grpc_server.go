@@ -7,7 +7,7 @@ import (
 	"github.com/grpc-ecosystem/go-grpc-middleware/v2/interceptors/logging"
 	"google.golang.org/grpc"
 
-	"auth/internal/grpc/lib/interceptor"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/grpc/lib/interceptor"
 )
 
 func newGRPCServer(logger *slog.Logger, accessSecret string) *grpc.Server {

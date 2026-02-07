@@ -7,8 +7,8 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"auth/internal/http/dto/response"
-	"auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/response"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
 )
 
 type ResponseChecker func(*testing.T, *httptest.ResponseRecorder)

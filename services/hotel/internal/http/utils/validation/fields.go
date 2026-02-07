@@ -7,7 +7,7 @@ import (
 
 	"github.com/go-playground/validator/v10"
 
-	"hotel/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/pkg/lib/utils/consts"
 )
 
 type ErrorSchema struct {

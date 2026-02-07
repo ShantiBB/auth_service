@@ -3,8 +3,8 @@
 package mocks
 
 import (
-	models "auth/internal/repository/models"
 	context "context"
+	models "github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
 
 	mock "github.com/stretchr/testify/mock"
 )

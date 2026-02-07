@@ -1,8 +1,8 @@
 package mapper
 
 import (
-	hotelv1 "hotel/api/hotel/v1"
-	"hotel/internal/repository/models"
+	hotelv1 "github.com/ShantiBB/fukuro-reserve/services/hotel/api/hotel/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
 )
 
 type locationGetter interface {
@@ -43,12 +43,12 @@ func CreateHotelRequestToDomain(req *hotelv1.CreateHotelRequest) *models.CreateH
 	}
 }
 
-func GetHotelsRequestToDomain(req *hotelv1.GetHotelsRequest) (uint64, uint64, models.HotelRef) {
+func GetHotelsRequestToDomain(req *hotelv1.GetHotelsRequest) (models.HotelRef, string, uint64, uint64) {
 	hotelInfo := models.HotelRef{
 		CountryCode: req.CountryCode,
 		CitySlug:    req.CitySlug,
 	}
-	return req.Page, req.Limit, hotelInfo
+	return hotelInfo, req.SortBy, req.Page, req.Limit
 }
 
 func UpdateHotelRequestToDomain(req *hotelv1.UpdateHotelRequest) models.UpdateHotel {

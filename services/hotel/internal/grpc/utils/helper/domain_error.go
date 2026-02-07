@@ -7,7 +7,7 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 
-	"hotel/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/pkg/lib/utils/consts"
 )
 
 type domainErr struct {

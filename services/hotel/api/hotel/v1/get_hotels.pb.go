@@ -26,8 +26,9 @@ type GetHotelsRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	CountryCode   string                 `protobuf:"bytes,1,opt,name=country_code,json=countryCode,proto3" json:"country_code,omitempty"`
 	CitySlug      string                 `protobuf:"bytes,2,opt,name=city_slug,json=citySlug,proto3" json:"city_slug,omitempty"`
-	Page          uint64                 `protobuf:"varint,3,opt,name=page,proto3" json:"page,omitempty"`
-	Limit         uint64                 `protobuf:"varint,4,opt,name=limit,proto3" json:"limit,omitempty"`
+	SortBy        string                 `protobuf:"bytes,3,opt,name=sort_by,json=sortBy,proto3" json:"sort_by,omitempty"`
+	Page          uint64                 `protobuf:"varint,4,opt,name=page,proto3" json:"page,omitempty"`
+	Limit         uint64                 `protobuf:"varint,5,opt,name=limit,proto3" json:"limit,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -72,6 +73,13 @@ func (x *GetHotelsRequest) GetCountryCode() string {
 func (x *GetHotelsRequest) GetCitySlug() string {
 	if x != nil {
 		return x.CitySlug
+	}
+	return ""
+}
+
+func (x *GetHotelsRequest) GetSortBy() string {
+	if x != nil {
+		return x.SortBy
 	}
 	return ""
 }
@@ -162,13 +170,14 @@ var File_hotel_v1_rpc_hotel_get_hotels_proto protoreflect.FileDescriptor
 
 const file_hotel_v1_rpc_hotel_get_hotels_proto_rawDesc = "" +
 	"\n" +
-	"#hotel/v1/rpc/hotel/get_hotels.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bhotel/v1/models/hotel.proto\"\xc4\x01\n" +
+	"#hotel/v1/rpc/hotel/get_hotels.proto\x12\bhotel.v1\x1a\x1bbuf/validate/validate.proto\x1a\x1bhotel/v1/models/hotel.proto\"\xfc\x01\n" +
 	"\x10GetHotelsRequest\x124\n" +
 	"\fcountry_code\x18\x01 \x01(\tB\x11\xbaH\x0er\f2\n" +
 	"^[a-z]{2}$R\vcountryCode\x12<\n" +
-	"\tcity_slug\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\bcitySlug\x12\x1b\n" +
-	"\x04page\x18\x03 \x01(\x04B\a\xbaH\x042\x02(\x01R\x04page\x12\x1f\n" +
-	"\x05limit\x18\x04 \x01(\x04B\t\xbaH\x062\x04\x18d(\x01R\x05limit\"\x8c\x01\n" +
+	"\tcity_slug\x18\x02 \x01(\tB\x1f\xbaH\x1cr\x1a2\x18^[a-z0-9]+(-[a-z0-9]+)*$R\bcitySlug\x126\n" +
+	"\asort_by\x18\x03 \x01(\tB\x1d\xbaH\x1ar\x182\x16^(title|price|rating)$R\x06sortBy\x12\x1b\n" +
+	"\x04page\x18\x04 \x01(\x04B\a\xbaH\x042\x02(\x01R\x04page\x12\x1f\n" +
+	"\x05limit\x18\x05 \x01(\x04B\t\xbaH\x062\x04\x18d(\x01R\x05limit\"\x8c\x01\n" +
 	"\x11GetHotelsResponse\x12,\n" +
 	"\x06hotels\x18\x01 \x03(\v2\x14.hotel.v1.HotelShortR\x06hotels\x12\x1f\n" +
 	"\vtotal_count\x18\x02 \x01(\x04R\n" +

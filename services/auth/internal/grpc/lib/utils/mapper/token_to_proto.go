@@ -1,8 +1,8 @@
 package mapper
 
 import (
-	userv1 "auth/api/user/v1"
-	"auth/pkg/lib/utils/jwt"
+	userv1 "github.com/ShantiBB/fukuro-reserve/services/auth/api/user/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/jwt"
 )
 
 func JWTTokenResponseToProto(resp *jwt.Token) *userv1.Tokens {

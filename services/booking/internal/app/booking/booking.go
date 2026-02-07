@@ -12,11 +12,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	bookingv1 "booking/api/booking/v1"
-	"booking/internal/config"
-	"booking/internal/grpc/handler"
-	"booking/internal/repository/postgres"
-	"booking/internal/service"
+	bookingv1 "github.com/ShantiBB/fukuro-reserve/services/booking/api/booking/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/config"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/grpc/handler"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/repository/postgres"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/service"
 )
 
 type App struct {

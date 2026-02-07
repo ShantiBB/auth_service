@@ -3,7 +3,7 @@ package jwt
 import (
 	"github.com/golang-jwt/jwt/v5"
 
-	"auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
 )
 
 func ParseBearerToken(tokenStr string, secret string) (*Claims, error) {

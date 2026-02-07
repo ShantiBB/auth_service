@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
 
 	"github.com/gosimple/slug"
 )
