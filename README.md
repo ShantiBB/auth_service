@@ -19,3 +19,11 @@
 - Добавить сервис для обработки уведомлений (интеграция kafka)
 - Добавить сервис для обработки отзывов и комментариев.
 - Добавить небольшой frontend с интеграцией карт (OSM, Mapbox, Яндекс API)
+
+### Добавление тегов сервису
+```bash
+git tag services/<service_dir>/v0.1.0
+git push origin services/<service_dir>/v0.1.0
+
+go get github.com/ShantiBB/fukuro-reserve/services/<service_name>@v0.1.0
+```
