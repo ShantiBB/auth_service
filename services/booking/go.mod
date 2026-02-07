@@ -1,4 +1,4 @@
-module booking
+module github.com/ShantiBB/fukuro-reserve/services/booking
 
 go 1.25.4
 

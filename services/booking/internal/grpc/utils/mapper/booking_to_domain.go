@@ -4,9 +4,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/shopspring/decimal"
 
-	bookingv1 "booking/api/booking/v1"
-	"booking/internal/repository/models"
-	"booking/internal/utils/consts"
+	bookingv1 "github.com/ShantiBB/fukuro-reserve/services/booking/api/booking/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/utils/consts"
 )
 
 func CreateBookingRequestToDomain(req *bookingv1.CreateBookingRequest) (*models.CreateBooking, error) {

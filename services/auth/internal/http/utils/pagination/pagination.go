@@ -6,7 +6,7 @@ import (
 	"net/url"
 	"strconv"
 
-	"auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
 )
 
 func ParsePaginationQuery(r *http.Request) (Query, error) {

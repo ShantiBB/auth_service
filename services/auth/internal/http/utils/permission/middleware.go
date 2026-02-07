@@ -8,10 +8,10 @@ import (
 
 	"github.com/go-chi/chi/v5"
 
-	"auth/internal/http/dto/response"
-	"auth/internal/http/utils/helper"
-	"auth/pkg/lib/utils/consts"
-	"auth/pkg/lib/utils/jwt"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/response"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/jwt"
 )
 
 type contextKey string

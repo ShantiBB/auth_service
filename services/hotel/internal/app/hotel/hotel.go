@@ -12,11 +12,11 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	hotelv1 "hotel/api/hotel/v1"
-	"hotel/internal/config"
-	"hotel/internal/grpc/handler"
-	"hotel/internal/repository/postgres"
-	"hotel/internal/service"
+	hotelv1 "github.com/ShantiBB/fukuro-reserve/services/hotel/api/hotel/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/config"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/grpc/handler"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/postgres"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/service"
 )
 
 type App struct {

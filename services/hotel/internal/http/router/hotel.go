@@ -3,8 +3,8 @@ package router
 import (
 	"github.com/go-chi/chi/v5"
 
-	"hotel/internal/http/handler"
-	"hotel/internal/http/middleware"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/handler"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/middleware"
 )
 
 func hotelRouter(pattern string, r chi.Router, h *handler.Handler) {

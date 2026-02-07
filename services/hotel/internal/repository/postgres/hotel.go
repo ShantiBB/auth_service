@@ -4,9 +4,9 @@ import (
 	"context"
 	"errors"
 
-	"hotel/internal/repository/models"
-	"hotel/internal/repository/postgres/query"
-	"hotel/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/postgres/query"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/pkg/lib/utils/consts"
 
 	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"

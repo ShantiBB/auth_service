@@ -5,9 +5,9 @@ import (
 	"log/slog"
 	"time"
 
-	"booking/internal/repository/models"
-	"booking/internal/service/utils/helper"
-	"booking/internal/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/service/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/utils/consts"
 
 	"github.com/google/uuid"
 )

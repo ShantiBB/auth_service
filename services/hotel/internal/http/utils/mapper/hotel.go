@@ -1,9 +1,9 @@
 package mapper
 
 import (
-	"hotel/internal/http/dto/request"
-	"hotel/internal/http/dto/response"
-	"hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/dto/request"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/dto/response"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
 )
 
 func HotelCreateRequestToEntity(req request.HotelCreate) models.CreateHotel {

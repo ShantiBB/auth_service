@@ -1,4 +1,4 @@
-module hotel
+module github.com/ShantiBB/fukuro-reserve/services/hotel
 
 go 1.25.4
 

@@ -1,8 +1,8 @@
 package mapper
 
 import (
-	hotelv1 "hotel/api/hotel/v1"
-	"hotel/internal/repository/models"
+	hotelv1 "github.com/ShantiBB/fukuro-reserve/services/hotel/api/hotel/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
 )
 
 type locationGetter interface {

@@ -8,7 +8,7 @@ import (
 	"github.com/jackc/pgx/v5/pgxpool"
 	_ "github.com/lib/pq"
 
-	"hotel/internal/config"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/config"
 )
 
 type Repository struct {

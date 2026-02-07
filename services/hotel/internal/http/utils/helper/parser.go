@@ -8,11 +8,11 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 
-	"hotel/internal/http/dto/request"
-	"hotel/internal/http/utils/mapper"
-	"hotel/internal/http/utils/validation"
-	"hotel/internal/repository/models"
-	"hotel/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/dto/request"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/utils/mapper"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/utils/validation"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/pkg/lib/utils/consts"
 )
 
 func ParseJSON(

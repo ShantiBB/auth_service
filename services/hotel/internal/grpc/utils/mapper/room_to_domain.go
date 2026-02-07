@@ -3,9 +3,9 @@ package mapper
 import (
 	"github.com/shopspring/decimal"
 
-	hotelv1 "hotel/api/hotel/v1"
-	"hotel/internal/repository/models"
-	"hotel/pkg/lib/utils/consts"
+	hotelv1 "github.com/ShantiBB/fukuro-reserve/services/hotel/api/hotel/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/pkg/lib/utils/consts"
 )
 
 func roomTypeToDomain(status hotelv1.RoomType) models.RoomType {

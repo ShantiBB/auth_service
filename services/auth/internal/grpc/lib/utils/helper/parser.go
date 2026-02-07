@@ -3,7 +3,7 @@ package helper
 import (
 	"github.com/google/uuid"
 
-	"hotel/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/pkg/lib/utils/consts"
 )
 
 func ParseRoomID(roomID string) (uuid.UUID, error) {

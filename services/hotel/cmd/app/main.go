@@ -6,9 +6,9 @@ import (
 
 	"github.com/ilyakaznacheev/cleanenv"
 
-	"hotel/internal/app/hotel"
-	"hotel/internal/config"
-	"hotel/pkg/lib/logger"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/app/hotel"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/config"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/pkg/lib/logger"
 )
 
 //	@title			Swagger Hotel API

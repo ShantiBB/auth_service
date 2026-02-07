@@ -3,9 +3,9 @@ package unit
 import (
 	"time"
 
-	"auth/internal/http/dto/request"
-	"auth/internal/repository/models"
-	"auth/pkg/lib/utils/jwt"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/request"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/jwt"
 )
 
 var (

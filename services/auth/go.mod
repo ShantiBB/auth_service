@@ -1,4 +1,4 @@
-module auth
+module github.com/ShantiBB/fukuro-reserve/services/auth
 
 go 1.25.4
 

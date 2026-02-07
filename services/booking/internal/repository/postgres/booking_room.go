@@ -6,9 +6,9 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 
-	"booking/internal/repository/models"
-	"booking/internal/repository/postgres/query"
-	"booking/internal/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/repository/postgres/query"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/utils/consts"
 )
 
 func (r *Repository) CreateBookingRooms(

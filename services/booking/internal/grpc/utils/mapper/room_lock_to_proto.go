@@ -3,8 +3,8 @@ package mapper
 import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 
-	bookingv1 "booking/api/booking/v1"
-	"booking/internal/repository/models"
+	bookingv1 "github.com/ShantiBB/fukuro-reserve/services/booking/api/booking/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/repository/models"
 )
 
 func RoomLockToProto(r *models.RoomLockShort) *bookingv1.RoomLockShort {

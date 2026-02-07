@@ -5,8 +5,8 @@ import (
 
 	"github.com/shopspring/decimal"
 
-	"booking/internal/repository/models"
-	"booking/internal/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/utils/consts"
 )
 
 func CalculateTotalAmount(

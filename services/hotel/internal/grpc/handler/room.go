@@ -4,9 +4,9 @@ import (
 	"context"
 	"log/slog"
 
-	hotelv1 "hotel/api/hotel/v1"
-	"hotel/internal/grpc/utils/helper"
-	"hotel/internal/grpc/utils/mapper"
+	hotelv1 "github.com/ShantiBB/fukuro-reserve/services/hotel/api/hotel/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/grpc/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/grpc/utils/mapper"
 )
 
 func (h *Handler) CreateRoom(

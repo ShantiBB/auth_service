@@ -1,7 +1,7 @@
 package request
 
 import (
-	"hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
 
 	"github.com/shopspring/decimal"
 )

@@ -6,8 +6,8 @@ import (
 
 	"github.com/go-playground/validator/v10"
 
-	"hotel/internal/repository/models"
-	"hotel/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/pkg/lib/utils/consts"
 )
 
 func CustomValidationError(err validator.FieldError) string {

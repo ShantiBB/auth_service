@@ -3,9 +3,9 @@ package service
 import (
 	"context"
 
-	"auth/internal/repository/models"
-	"auth/internal/repository/postgres"
-	"auth/pkg/lib/utils/jwt"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/postgres"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/jwt"
 )
 
 type UserRepository interface {

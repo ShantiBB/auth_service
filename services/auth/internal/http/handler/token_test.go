@@ -9,11 +9,11 @@ import (
 
 	"github.com/stretchr/testify/assert"
 
-	"auth/internal/http/dto/request"
-	"auth/internal/mocks"
-	"auth/pkg/lib/utils/consts"
-	"auth/pkg/lib/utils/jwt"
-	"auth/test/handler/unit"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/request"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/mocks"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/jwt"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/test/handler/unit"
 )
 
 func TestRegisterByEmail(t *testing.T) {

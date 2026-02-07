@@ -3,7 +3,7 @@ package service
 import (
 	"context"
 
-	"auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
 )
 
 func (s *Service) CreateUser(ctx context.Context, user *models.CreateUser) (*models.User, error) {

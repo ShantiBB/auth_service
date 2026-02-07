@@ -7,7 +7,7 @@ import (
 	"github.com/google/uuid"
 	"github.com/jackc/pgx/v5"
 
-	"booking/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/booking/internal/repository/models"
 )
 
 type BookingTransactionRepository interface {

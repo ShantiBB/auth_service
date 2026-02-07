@@ -5,8 +5,8 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
-	"auth/internal/config"
-	"auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/config"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
 )
 
 type Claims struct {

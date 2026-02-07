@@ -5,9 +5,9 @@ import (
 
 	"buf.build/go/protovalidate"
 
-	userv1 "auth/api/user/v1"
-	"auth/internal/repository/models"
-	"auth/pkg/lib/utils/jwt"
+	userv1 "github.com/ShantiBB/fukuro-reserve/services/auth/api/user/v1"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/jwt"
 )
 
 type UserService interface {

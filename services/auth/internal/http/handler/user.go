@@ -4,14 +4,14 @@ import (
 	"context"
 	"net/http"
 
-	helper2 "auth/internal/grpc/lib/utils/helper"
-	"auth/internal/http/dto/request"
-	"auth/internal/http/dto/response"
-	"auth/internal/http/utils/helper"
-	"auth/internal/http/utils/pagination"
-	"auth/internal/http/utils/validation"
-	"auth/internal/repository/models"
-	consts2 "auth/pkg/lib/utils/consts"
+	helper2 "github.com/ShantiBB/fukuro-reserve/services/auth/internal/grpc/lib/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/request"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/response"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/utils/helper"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/utils/pagination"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/utils/validation"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
+	consts2 "github.com/ShantiBB/fukuro-reserve/services/auth/pkg/lib/utils/consts"
 )
 
 type UserService interface {

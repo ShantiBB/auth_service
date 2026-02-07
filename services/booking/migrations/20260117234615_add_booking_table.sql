@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS booking (
     hotel_id UUID NOT NULL,
     check_in  DATE NOT NULL,
     check_out DATE NOT NULL CHECK (check_out > check_in),
-    status booking_status NOT NULL DEFAULT 'pending',
+    status booking_status NOT NULL DEFAULT 'BOOKING_STATUS_PENDING',
     guest_name  TEXT NOT NULL,
     guest_email TEXT,
     guest_phone TEXT,

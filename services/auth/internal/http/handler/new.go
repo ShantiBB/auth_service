@@ -1,9 +1,9 @@
 package handler
 
 import (
-	"auth/internal/http/dto/request"
-	"auth/internal/http/dto/response"
-	"auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/request"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/dto/response"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
 )
 
 type Service interface {

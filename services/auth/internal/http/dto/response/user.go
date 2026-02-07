@@ -3,8 +3,8 @@ package response
 import (
 	"time"
 
-	"auth/internal/http/utils/pagination"
-	"auth/internal/repository/models"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/utils/pagination"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/repository/models"
 )
 
 type User struct {

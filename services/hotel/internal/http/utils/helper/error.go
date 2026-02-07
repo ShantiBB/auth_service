@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	"hotel/internal/http/dto/response"
-	"hotel/pkg/lib/utils/consts"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/internal/http/dto/response"
+	"github.com/ShantiBB/fukuro-reserve/services/hotel/pkg/lib/utils/consts"
 )
 
 type ErrorHandler struct {

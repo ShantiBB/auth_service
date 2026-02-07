@@ -3,7 +3,7 @@ package router
 import (
 	"github.com/go-chi/chi/v5"
 
-	"auth/internal/http/handler"
+	"github.com/ShantiBB/fukuro-reserve/services/auth/internal/http/handler"
 )
 
 func authRouter(pattern string, r chi.Router, h *handler.Handler) {
